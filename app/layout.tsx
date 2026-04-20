@@ -7,7 +7,7 @@ const robotoCondensed = Roboto_Condensed({
   style: ["normal", "italic"],
 });
 
-export const allison = Allison({
+const allison = Allison({
   subsets: ["latin"],
   weight: "400",
 });
