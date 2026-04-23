@@ -192,7 +192,6 @@ const handleToggleFollow = (athleteId: string) => {
   });
 
   localStorage.setItem("collection", JSON.stringify(updatedCollection));
-  setView("collection");
 };
 
 const isCollected = collection.some(
