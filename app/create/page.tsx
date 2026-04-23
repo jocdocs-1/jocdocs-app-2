@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import AthleteCard from "../components/AthleteCard";
-import MiniAthleteCard from "../components/MiniAthleteCard";
 import type { Athlete } from "../data/athletes";
 
 export default function CreateAthletePage() {
@@ -41,8 +40,6 @@ const [followedAthletes, setFollowedAthletes] = useState<string[]>([]);
 const [fansByAthlete, setFansByAthlete] = useState<Record<string, number>>({});
 
   const [collection, setCollection] = useState<Athlete[]>([]);
-  const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
-  const [view, setView] = useState<"create" | "collection">("create");
 
   useEffect(() => {
     const stored = localStorage.getItem("collection");
@@ -410,7 +407,7 @@ return (
             />
           </div>
 
-          <select name="theme" onChange={handleChange} className="input">
+                              <select name="theme" onChange={handleChange} className="input">
             <option value="gold">Gold</option>
             <option value="red">Red</option>
             <option value="orange">Orange</option>
@@ -425,103 +422,16 @@ return (
           </select>
         </div>
 
-        <div className="flex justify-center">
-          <div>
-            <div className="mb-4 text-sm text-white">
-              <p>link1: {athlete.link1 || "EMPTY"}</p>
-              <p>link2: {athlete.link2 || "EMPTY"}</p>
-            </div>
-
-            <div className="mb-4 text-sm text-white">
-              <p>Collected? {isCollected ? "YES" : "NO"}</p>
-              <p>Collection count: {collection.length}</p>
-            </div>
-
-            <div className="mb-4 text-sm text-yellow-300">
-              <p>Current view: {view}</p>
-            </div>
-
-            {view === "create" ? (
-              <AthleteCard
-  athlete={athlete}
-  isOwnCard={true}
-  onCollect={handleCollect}
-  onOpenCollection={() => {
-    console.log("CLICKED COLLECTION BUTTON");
-    setView("collection");
-  }}
-  collection={collection}
-  isCollected={isCollected}
-  fansCount={fansByAthlete[athlete.id] || 0}
-/>
-            ) : (
-              <div className="flex w-full max-w-[760px] max-h-[85vh] flex-col items-center overflow-y-auto rounded-2xl border border-white/20 bg-zinc-900 p-6 text-white shadow-xl">
-                <h2 className="text-white text-2xl font-extrabold tracking-wide">
-  My Collection ({collection.length})
-</h2>
-
-                {collection.length === 0 && (
-                  <div className="mt-6 grid w-full grid-cols-2 gap-4">
-                    <div className="h-[200px] rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center text-sm text-white/50">
-                      Empty
-                    </div>
-                    <div className="h-[200px] rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center text-sm text-white/50">
-                      Empty
-                    </div>
-                    <div className="h-[200px] rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center text-sm text-white/50">
-                      Empty
-                    </div>
-                    <div className="h-[200px] rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center text-sm text-white/50">
-                      Empty
-                    </div>
-                  </div>
-                )}
-
-                {collection.length > 0 && (
-                  <div className="mt-6 grid w-full grid-cols-2 gap-5 px-2 sm:grid-cols-3">
-                    {collection.map((savedAthlete, index) => (
-  <MiniAthleteCard
-    key={savedAthlete.id ?? index}
-    athlete={savedAthlete}
-    onClick={() => setSelectedAthlete(savedAthlete)}
-  />
-))}
-                  </div>
-                )}
-
-                <button
-                  type="button"
-                  className="mt-6 rounded-lg bg-white px-4 py-2 text-black"
-                  onClick={() => setView("create")}
-                >
-                  Back to Card
-                </button>
-
-                {selectedAthlete && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-                    <div className="relative max-h-[90vh] overflow-y-auto">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedAthlete(null)}
-                        className="absolute right-2 top-2 z-10 rounded-full bg-black/70 px-3 py-1 text-sm text-white"
-                      >
-                        Close
-                      </button>
-
-                      <AthleteCard
-  athlete={selectedAthlete}
-  isOwnCard={false}
-  isCollected={true}
-  isFollowed={followedAthletes.includes(selectedAthlete.id)}
-  fansCount={fansByAthlete[selectedAthlete.id] || 0}
-  onCollect={handleCollect}
-  onToggleFollow={() => handleToggleFollow(selectedAthlete.id)}
-/>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+        <div className="flex min-h-[100dvh] w-full justify-center bg-black px-2 py-2 text-white">
+  <div className="flex w-full max-w-[560px] items-center justify-center">
+            <AthleteCard
+              athlete={athlete}
+              isOwnCard={true}
+              onCollect={handleCollect}
+              collection={collection}
+              isCollected={isCollected}
+              fansCount={fansByAthlete[athlete.id] || 0}
+            />
           </div>
         </div>
       </div>
