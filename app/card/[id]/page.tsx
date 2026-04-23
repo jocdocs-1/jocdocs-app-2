@@ -160,12 +160,7 @@ export default function CardPage() {
   };
 
   return (
-  <main className="relative flex min-h-screen flex-col items-center justify-center bg-neutral-950 p-6">
-    {/* SUBTLE BRANDING */}
-    <div className="mb-2 text-[16px] font-semibold tracking-[0.38em] text-white/75">
-  JOCDOCS
-</div>
-
+  <main className="relative flex min-h-screen flex-col items-center justify-center bg-neutral-950 px-3 py-4">
     {/* CARD */}
     <AthleteCard
       athlete={athlete}
@@ -178,17 +173,13 @@ export default function CardPage() {
     />
 
     {/* CTA */}
-    <div className="mt-6 flex flex-col items-center">
+    <div className="mt-3 flex flex-col items-center">
       <button
         onClick={() => (window.location.href = "/create")}
         className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow-md transition hover:bg-gray-200"
       >
-        Create Your Card — It Takes 60 Seconds
+        Create Your Own Card — It Takes 60 Seconds
       </button>
-
-      <div className="mt-3 max-w-[320px] text-center text-sm leading-relaxed text-white/80">
-  Jocdocs lets athletes create and share their own interactive trading card.
-</div>
     </div>
   </main>
 );
