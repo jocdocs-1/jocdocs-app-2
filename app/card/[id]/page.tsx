@@ -20,7 +20,15 @@ export default function CardPage() {
       team: searchParams.get("team") || "",
       theme: searchParams.get("theme") || "gold",
       isLegacy: searchParams.get("isLegacy") === "true",
-      achievementBanner: searchParams.get("achievementBanner") || "none",
+      achievementBanner: (
+  searchParams.get("achievementBanner") === "state_champion" ||
+  searchParams.get("achievementBanner") === "national_champion" ||
+  searchParams.get("achievementBanner") === "world_champion" ||
+  searchParams.get("achievementBanner") === "gold_medalist" ||
+  searchParams.get("achievementBanner") === "first_place"
+    ? searchParams.get("achievementBanner")
+    : "none"
+) as Athlete["achievementBanner"],
       jerseyNumber: searchParams.get("jerseyNumber") || "",
       position: searchParams.get("position") || "",
       age: searchParams.get("age") || "",
