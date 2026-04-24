@@ -264,7 +264,7 @@ const randomMessage =
 
                       <div
                         className={`absolute ${
-                          ribbonPositionMap[athlete.achievementBanner] || ribbonPositionMap.default
+                          ribbonPositionMap[athlete.achievementBanner ?? "default"] || ribbonPositionMap.default
                         } rotate-[-45deg] text-center text-white`}
                       >
                         <div
