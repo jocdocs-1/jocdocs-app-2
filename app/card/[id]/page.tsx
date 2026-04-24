@@ -19,6 +19,8 @@ export default function CardPage() {
       primarySport: searchParams.get("sport") || "",
       team: searchParams.get("team") || "",
       theme: searchParams.get("theme") || "gold",
+      isLegacy: searchParams.get("isLegacy") === "true",
+      achievementBanner: searchParams.get("achievementBanner") || "none",
       jerseyNumber: searchParams.get("jerseyNumber") || "",
       position: searchParams.get("position") || "",
       age: searchParams.get("age") || "",
