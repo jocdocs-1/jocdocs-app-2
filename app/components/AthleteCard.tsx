@@ -254,7 +254,7 @@ const randomMessage =
               >
                 <div className="relative h-full w-full overflow-visible rounded-[22px] bg-white p-[7px] shadow-[0_10px_24px_rgba(120,120,120,0.45)]">
                   {/* ACHIEVEMENT RIBBON */}
-                  {true && (
+                  {athlete.achievementBanner && athlete.achievementBanner !== "none" && (
                     <div className="pointer-events-none absolute left-[-10.7px] top-[-19.7px] z-[300] h-[135px] w-[115px]">
                       <img
                         src="/ribbons/gold-ribbon-v2.png"
@@ -294,12 +294,9 @@ const randomMessage =
                       )`,
                     }}
                   >
-  <div className="absolute left-4 top-4 z-[9999] bg-red-600 px-3 py-2 text-white">
-    TEST
-  </div>
 
                     {/* LEGACY STRIP */}
-                    {true && (
+                    {athlete.isLegacy && (
                       <div className="absolute left-0 top-[57px] z-30">
                         <div
                           className="inline-block rounded-r-[3000px] pl-3 pr-3 py-[8px]"
