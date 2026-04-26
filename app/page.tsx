@@ -96,11 +96,9 @@ export default function HomePage() {
 
         {/* HEADLINE */}
         <div className="mt-2 text-center">
-  <h1 className="text-[28px] font-semibold leading-[0.96] tracking-[-0.015em]">
-    Your Athletic Career
-    <br />
-    Deserves Its Own Card
-  </h1>
+  <h1 className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
+  Your Athletic Career Deserves Its Own Card
+</h1>
 
   <p className="mt-2 text-[23px] font-normal leading-none tracking-[-0.02em]">
     Create. Collect. Connect.
