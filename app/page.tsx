@@ -96,11 +96,11 @@ export default function HomePage() {
 
         {/* HEADLINE */}
         <div className="mt-2 text-center">
-  <h1 className="text-[30px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
+  <h1 className="text-[26px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
   Your Athletic Career Deserves Its Own Card
 </h1>
 
-  <p className="mt-2 text-[23px] font-normal leading-none tracking-[-0.02em]">
+  <p className="mt-2 text-[20px] font-normal leading-none tracking-[-0.02em]">
     Create. Collect. Connect.
   </p>
 </div>
