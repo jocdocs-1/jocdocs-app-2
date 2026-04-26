@@ -15,10 +15,16 @@ const featuredCards = [
 
 export default function HomePage() {
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const [selectedCard, setSelectedCard] = useState<null | {
+    src: string;
+    alt: string;
+  }>(null);
+
   useEffect(() => {
-  const flipToBack = window.setTimeout(() => {
-    setIsFlipped(true);
-  }, 1400);
+    const flipToBack = window.setTimeout(() => {
+      setIsFlipped(true);
+    }, 1400);
 
   const flipToFront = window.setTimeout(() => {
     setIsFlipped(false);
@@ -152,22 +158,53 @@ export default function HomePage() {
         </div>
 
         <div className="-mx-5 mt-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {featuredCards.map((card) => (
-            <div
-              key={card.src}
-              className="w-[155px] shrink-0 snap-center overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.22)]"
-            >
-              <Image
-                src={card.src}
-                alt={card.alt}
-                width={330}
-                height={520}
-                className="h-auto w-full"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
+  {featuredCards.map((card) => (
+    <button
+      key={card.src}
+      type="button"
+      onClick={() => setSelectedCard(card)}
+      className="w-[155px] shrink-0 snap-center overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.22)] transition active:scale-[0.98]"
+    >
+      <Image
+        src={card.src}
+        alt={card.alt}
+        width={330}
+        height={520}
+        className="h-auto w-full"
+      />
+    </button>
+  ))}
+</div>
+</div>
+
+{selectedCard && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-5 backdrop-blur-sm"
+    onClick={() => setSelectedCard(null)}
+  >
+    <button
+      type="button"
+      onClick={() => setSelectedCard(null)}
+      className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[24px] text-black shadow-md"
+      aria-label="Close preview"
+    >
+      ×
+    </button>
+
+    <div
+      className="relative w-full max-w-[360px]"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Image
+        src={selectedCard.src}
+        alt={selectedCard.alt}
+        width={720}
+        height={1230}
+        className="h-auto w-full rounded-[28px] shadow-2xl"
+      />
+    </div>
+  </div>
+)}
+</main>
+);
 }
