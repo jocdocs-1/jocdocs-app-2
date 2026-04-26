@@ -160,11 +160,12 @@ export default function HomePage() {
         <div className="-mx-5 mt-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
   {featuredCards.map((card) => (
     <button
-      key={card.src}
-      type="button"
-      onClick={() => setSelectedCard(card)}
-      className="w-[155px] shrink-0 snap-center overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.22)] transition active:scale-[0.98]"
-    >
+  key={card.src}
+  type="button"
+  onClick={() => setSelectedCard(card)}
+  onPointerUp={() => setSelectedCard(card)}
+  className="w-[155px] shrink-0 snap-center overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.22)] transition active:scale-[0.98]"
+>
       <Image
         src={card.src}
         alt={card.alt}
