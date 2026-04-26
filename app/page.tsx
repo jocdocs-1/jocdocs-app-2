@@ -96,7 +96,7 @@ export default function HomePage() {
 
         {/* HEADLINE */}
         <div className="mt-2 text-center">
-  <h1 className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
+  <h1 className="text-[30px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
   Your Athletic Career Deserves Its Own Card
 </h1>
 
