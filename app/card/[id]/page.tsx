@@ -170,26 +170,28 @@ export default function CardPage() {
   };
 
   return (
-  <main className="relative flex min-h-screen flex-col items-center justify-center bg-neutral-950 px-3 py-4">
+  <main className="relative flex min-h-screen flex-col items-center justify-center bg-white px-5 py-8">
     {/* CARD */}
-    <AthleteCard
-      athlete={athlete}
-      isOwnCard={false}
-      onToggleFollow={handleToggleFollow}
-      onCollect={handleCollect}
-      isFollowed={isFollowed}
-      isCollected={isCollected}
-      fansCount={fansCount}
-    />
+<div className="rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
+  <AthleteCard
+    athlete={athlete}
+    isOwnCard={false}
+    onToggleFollow={handleToggleFollow}
+    onCollect={handleCollect}
+    isFollowed={isFollowed}
+    isCollected={isCollected}
+    fansCount={fansCount}
+  />
+</div>
 
     {/* CTA */}
     <div className="mt-3 flex flex-col items-center">
       <button
-        onClick={() => (window.location.href = "/create")}
-        className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black shadow-md transition hover:bg-gray-200"
-      >
-        Create Your Own Card — It Takes 60 Seconds
-      </button>
+  onClick={() => (window.location.href = "/create")}
+  className="rounded-full bg-[#C5A96A] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.02]"
+>
+  Create Your Own Card
+</button>
     </div>
   </main>
 );

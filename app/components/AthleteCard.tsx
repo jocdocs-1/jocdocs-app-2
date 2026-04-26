@@ -297,13 +297,13 @@ const randomMessage =
 
                     {/* LEGACY STRIP */}
                     {athlete.isLegacy && (
-                      <div className="absolute left-0 top-[57px] z-30">
+                      <div className="absolute left-0 top-[56px] z-30">
                         <div
                           className="inline-block rounded-r-[3000px] pl-3 pr-3 py-[8px]"
                           style={{ backgroundColor: "#C5A96A" }}
                         >
                           <span
-                            className="block translate-y-[5px] text-[13.5px] font-bold italic uppercase leading-none tracking-[0.01em] text-black"
+                            className="block translate-y-[6px] text-[13.5px] font-bold italic uppercase leading-none tracking-[0.01em] text-black"
                             style={{ fontFamily: '"Roboto Condensed", Roboto, sans-serif' }}
                           >
                             LEGACY
@@ -321,11 +321,11 @@ const randomMessage =
                     </div>
 
                     <div className="absolute left-0 top-[10px] z-30 w-[85%]">
-                      <div className="rounded-r-full bg-white py-[5px] pl-5 pr-5 shadow-md">
-                        <p className="text-center text-[18px] font-extrabold italic leading-none text-black">
+                      <div className="rounded-r-full bg-white py-[4px] pl-5 pr-5 shadow-md">
+                        <p className="text-center text-[19px] font-extrabold italic leading-none text-black">
                           {firstName}
                         </p>
-                        <h2 className="mt-[1px] text-center text-[29px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
+                        <h2 className="mt-[1px] text-center text-[30px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
                           {lastName || firstName}
                         </h2>
                       </div>
@@ -339,7 +339,7 @@ const randomMessage =
                       />
                     </div>
 
-                    <div className="absolute bottom-[122px] right-5 z-20 text-[58px] font-extrabold italic leading-none text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.85)]">
+                    <div className="absolute bottom-[118px] right-5 z-20 text-[62px] font-extrabold italic leading-none text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.85)]">
                       {athlete.jerseyNumber || String(athlete.number || "")}
                     </div>
 
@@ -534,7 +534,7 @@ const randomMessage =
 
                     <div className="px-5 pt-[11px]">
                       <div className="flex gap-[10px]">
-                        <div className="h-[112px] w-[106px] overflow-hidden rounded-[15px] border-[1.5px] border-white bg-neutral-300 shadow-md">
+                        <div className="h-[112px] w-[106px] shrink-0 overflow-hidden rounded-[15px] border-[1.5px] border-white bg-neutral-300 shadow-md">
                           <img
                             src={athlete.profileImage || athlete.portraitImage || "/portrait.png"}
                             alt="Athlete portrait"
@@ -542,12 +542,12 @@ const randomMessage =
                           />
                         </div>
 
-                        <div className="flex flex-1 flex-col justify-between py-[1px]">
-                          <p className="mb-[5px] truncate whitespace-nowrap text-[15px] font-bold italic leading-[0.9] text-white/90">
+                        <div className="flex min-w-0 flex-1 flex-col justify-between py-[1px]">
+                          <p className="mb-[5px] truncate whitespace-nowrap overflow-hidden text-[15px] font-bold italic leading-[0.9] text-white/90">
                             {athlete.school}
                           </p>
 
-                          <p className="truncate whitespace-nowrap text-[18px] font-extrabold italic uppercase leading-[0.92] text-white">
+                          <p className="truncate whitespace-nowrap overflow-hidden text-[18px] font-extrabold italic uppercase leading-[0.92] text-white">
                             {athlete.team}
                           </p>
 
