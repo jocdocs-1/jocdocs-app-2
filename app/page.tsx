@@ -100,7 +100,7 @@ export default function HomePage() {
   Your Athletic Career Deserves Its Own Card
 </h1>
 
-  <p className="mt-2 text-[21px] font-normal leading-none tracking-[-0.02em]">
+  <p className="mt-0 text-[21px] font-normal leading-none tracking-[-0.02em]">
     Create. Collect. Connect.
   </p>
 </div>
@@ -108,12 +108,12 @@ export default function HomePage() {
         {/* CTA */}
         <Link
           href="/create"
-          className="mt-5 flex w-full max-w-[315px] flex-col items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-white shadow-sm transition active:scale-[0.98]"
+          className="mt-2 flex w-full max-w-[315px] flex-col items-center justify-center rounded-full bg-[#C9AD68] px-6 py-[10px] text-center text-white shadow-sm transition active:scale-[0.98]"
         >
-          <span className="text-[25px] font-semibold leading-none tracking-[-0.003em]">
+          <span className="text-[25px] font-semibold leading-[0.95] tracking-[-0.003em]">
   Create Your Card
 </span>
-          <span className="mt-1 text-[18px] italic leading-none">
+          <span className="mt-[2px] text-[18px] italic leading-none">
             It takes 60 seconds
           </span>
         </Link>
@@ -121,7 +121,7 @@ export default function HomePage() {
         <button
           type="button"
           onClick={() => setShowFeatured(true)}
-          className="mt-5 text-[18px] italic underline underline-offset-4"
+          className="mt-2 text-[18px] italic underline underline-offset-4"
         >
           See Featured Cards
         </button>
