@@ -41,6 +41,13 @@ const [fansByAthlete, setFansByAthlete] = useState<Record<string, number>>({});
 
   const [collection, setCollection] = useState<Athlete[]>([]);
 
+const [showSaveModal, setShowSaveModal] = useState(false);
+
+const [contactInfo, setContactInfo] = useState({
+  email: "",
+  phone: "",
+});
+
   useEffect(() => {
     const stored = localStorage.getItem("collection");
     if (stored) {
@@ -419,7 +426,20 @@ return (
             <option value="silver">Silver</option>
             <option value="black">Black</option>
           </select>
-        </div>
+
+<div className="pt-4">
+  <button
+    type="button"
+    onClick={() => setShowSaveModal(true)}
+    className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[18px] font-extrabold uppercase tracking-[0.08em] text-black shadow-[0_0_24px_rgba(197,169,106,0.35)] transition active:scale-[0.98]"
+  >
+    Generate My Card
+  </button>
+
+  <p className="mt-3 text-center text-sm text-white/60">
+    Save your card and get your share link.
+  </p>
+</div>
 
         <div className="flex min-h-[100dvh] w-full justify-center bg-black px-2 py-2 text-white">
   <div className="flex w-full max-w-[560px] items-center justify-center">
@@ -435,5 +455,76 @@ return (
         </div>
       </div>
     </div>
+  );
+  {showSaveModal && (
+  <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 px-4">
+    <div className="w-full max-w-[520px] rounded-t-[28px] border border-white/10 bg-neutral-950 p-5 pb-7 shadow-2xl">
+      <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-white/25" />
+
+      <div className="text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#C5A96A]">
+          Your card is ready
+        </p>
+
+        <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.03em] text-white">
+          Save & Share Your Card
+        </h2>
+
+        <p className="mt-2 text-sm leading-5 text-white/60">
+          Enter your email so we can send your card link.
+        </p>
+      </div>
+
+      <div className="mt-6 space-y-4">
+        <div>
+          <label className="mb-2 block text-sm font-semibold text-white">
+            Email *
+          </label>
+          <input
+            type="email"
+            value={contactInfo.email}
+            onChange={(e) =>
+              setContactInfo({ ...contactInfo, email: e.target.value })
+            }
+            placeholder="you@example.com"
+            className="input"
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-semibold text-white">
+            Mobile number <span className="text-white/40">(optional)</span>
+          </label>
+          <input
+            type="tel"
+            value={contactInfo.phone}
+            onChange={(e) =>
+              setContactInfo({ ...contactInfo, phone: e.target.value })
+            }
+            placeholder="(555) 555-5555"
+            className="input"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowSaveModal(false)}
+          className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
+        >
+          Send Me My Card
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setShowSaveModal(false)}
+          className="w-full py-2 text-sm font-semibold text-white/50"
+        >
+          Not now
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
   );
 }
