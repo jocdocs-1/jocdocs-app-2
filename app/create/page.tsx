@@ -212,6 +212,7 @@ console.log("CURRENT ATHLETE:", athlete);
 console.log("COLLECTION:", collection);
 
 return (
+  <>
     <div className="min-h-screen bg-black p-6 text-white">
       <h1 className="mb-6 text-2xl font-bold">Create Your Athlete Card</h1>
 
@@ -523,8 +524,9 @@ return (
         </button>
       </div>
     </div>
-  </div>
-    )}
-  </>
-);
+    </div>
+)}
+
+    </>
+  );
 }
