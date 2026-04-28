@@ -190,7 +190,7 @@ export default function CardPage() {
   onClick={() => (window.location.href = "/create")}
   className="rounded-full bg-[#C5A96A] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.02]"
 >
-  Create Your Own Card
+  Create Your Own Card — It Takes 60 Seconds
 </button>
     </div>
   </main>

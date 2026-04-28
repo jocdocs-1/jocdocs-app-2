@@ -100,11 +100,11 @@ export default function HomePage() {
   Tap card to flip
 </div>
 
-        {/* HEADLINE */}
-        <div className="mt-2 text-center">
-  <h1 className="text-[23px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
-  Your Athletic Career Deserves Its Own Card
-</h1>
+{/* HEADLINE */}
+<div className="mt-2 text-center">
+  <h1 className="text-[21px] min-[390px]:text-[22px] min-[430px]:text-[23px] font-extrabold leading-[1.05] tracking-[-0.03em] text-black md:text-[58px]">
+    Your Athletic Career Deserves Its Own Card
+  </h1>
 
   <p className="mt-0 text-[21px] font-normal leading-none tracking-[-0.02em]">
     Create. Collect. Connect.
