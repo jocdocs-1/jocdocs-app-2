@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import AthleteCard from "../components/AthleteCard";
 import type { Athlete } from "../data/athletes";
+import { supabase } from "../lib/supabaseClient";
 
 export default function CreateAthletePage() {
 const [athlete, setAthlete] = useState<Athlete>({
@@ -219,6 +220,43 @@ function closeSaveModal() {
     setShowSaveModal(false);
     setIsSaveModalClosing(false);
   }, 320);
+}
+
+async function saveCardLead() {
+  console.log("SAVE BUTTON CLICKED");
+
+  try {
+    const { data: card, error: cardError } = await supabase
+      .from("cards")
+      .insert([
+        {
+          name: athlete.name,
+          school: athlete.school,
+          sport: athlete.primarySport,
+          card_data: athlete,
+        },
+      ])
+      .select()
+      .single();
+
+    if (cardError) throw cardError;
+
+    const { error: leadError } = await supabase.from("leads").insert([
+      {
+        email: contactInfo.email,
+        phone: contactInfo.phone,
+        card_id: card.id,
+      },
+    ]);
+
+    if (leadError) throw leadError;
+
+    console.log("Saved to Supabase:", card);
+
+    closeSaveModal();
+  } catch (error) {
+    console.error("Supabase save error:", error);
+  }
 }
 
 return (
@@ -546,7 +584,7 @@ return (
 
         <button
           type="button"
-          onClick={closeSaveModal}
+          onClick={saveCardLead}
           className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
         >
           Send Me My Card
