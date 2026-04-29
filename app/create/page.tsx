@@ -42,6 +42,7 @@ const [fansByAthlete, setFansByAthlete] = useState<Record<string, number>>({});
   const [collection, setCollection] = useState<Athlete[]>([]);
 
 const [showSaveModal, setShowSaveModal] = useState(false);
+const [isSaveModalClosing, setIsSaveModalClosing] = useState(false);
 
 const [contactInfo, setContactInfo] = useState({
   email: "",
@@ -210,6 +211,15 @@ const isCollected = collection.some(
 
 console.log("CURRENT ATHLETE:", athlete);
 console.log("COLLECTION:", collection);
+
+function closeSaveModal() {
+  setIsSaveModalClosing(true);
+
+  setTimeout(() => {
+    setShowSaveModal(false);
+    setIsSaveModalClosing(false);
+  }, 320);
+}
 
 return (
     <div className="min-h-screen bg-black p-6 text-white">
@@ -457,9 +467,37 @@ return (
     </div>
     
   {showSaveModal && (
-  <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 px-4">
-    <div className="w-full max-w-[520px] rounded-t-[28px] border border-white/10 bg-neutral-950 p-5 pb-7 shadow-2xl">
-      <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-white/25" />
+  <div
+  className="
+    fixed inset-0 z-50
+    flex items-end justify-center px-4
+    bg-black/70
+  "
+>
+    <div
+  className="
+    w-full max-w-[520px]
+    rounded-t-[28px]
+    border border-white/10
+    bg-neutral-950
+    p-5 pb-7
+    shadow-2xl
+    translate-y-0
+    transition-all duration-300 ease-out
+  "
+  style={{
+    animation: isSaveModalClosing
+  ? "slideDown .38s ease-in-out forwards"
+  : "slideUp .38s ease-in-out forwards",
+    boxShadow: `
+  0 0 0 1px rgba(255,255,255,.20),
+  0 -10px 38px rgba(197,169,106,.30),
+  0 0 54px rgba(197,169,106,.22),
+  0 0 34px rgba(255,255,255,.10)
+`
+  }}
+>
+      <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-[#C5A96A]/40" />
 
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#C5A96A]">
@@ -508,7 +546,7 @@ return (
 
         <button
           type="button"
-          onClick={() => setShowSaveModal(false)}
+          onClick={closeSaveModal}
           className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
         >
           Send Me My Card
@@ -516,7 +554,7 @@ return (
 
         <button
           type="button"
-          onClick={() => setShowSaveModal(false)}
+          onClick={closeSaveModal}
           className="w-full py-2 text-sm font-semibold text-white/50"
         >
           Not now
