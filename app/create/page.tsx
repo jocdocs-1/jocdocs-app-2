@@ -222,10 +222,59 @@ function closeSaveModal() {
   }, 320);
 }
 
+function dataURLtoFile(dataurl: string, filename: string) {
+  const arr = dataurl.split(",");
+  const mime = arr[0].match(/:(.*?);/)?.[1] || "";
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+
 async function saveCardLead() {
   console.log("SAVE BUTTON CLICKED");
 
   try {
+    let actionImageUrl = null;
+    let portraitImageUrl = null;
+
+    if (athlete.actionImage && athlete.actionImage.startsWith("data:")) {
+      const actionFileName = `${Date.now()}-action.png`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("card-images")
+        .upload(actionFileName, dataURLtoFile(athlete.actionImage, actionFileName));
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase.storage
+        .from("card-images")
+        .getPublicUrl(actionFileName);
+
+      actionImageUrl = publicUrlData.publicUrl;
+    }
+
+    if (athlete.portraitImage && athlete.portraitImage.startsWith("data:")) {
+      const portraitFileName = `${Date.now()}-portrait.png`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("card-images")
+        .upload(portraitFileName, dataURLtoFile(athlete.portraitImage, portraitFileName));
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase.storage
+        .from("card-images")
+        .getPublicUrl(portraitFileName);
+
+      portraitImageUrl = publicUrlData.publicUrl;
+    }
+
     const { data: card, error: cardError } = await supabase
       .from("cards")
       .insert([
@@ -233,7 +282,13 @@ async function saveCardLead() {
           name: athlete.name,
           school: athlete.school,
           sport: athlete.primarySport,
-          card_data: athlete,
+          action_image_url: actionImageUrl,
+          portrait_image_url: portraitImageUrl,
+          card_data: {
+            ...athlete,
+            actionImage: actionImageUrl,
+            portraitImage: portraitImageUrl,
+          },
         },
       ])
       .select()
