@@ -41,19 +41,16 @@ export default function HomePage() {
     <main className="min-h-screen bg-white text-black">
       <section className="mx-auto flex min-h-screen w-full max-w-[430px] flex-col items-center px-5 pb-8 pt-8">
         {/* LOGO */}
-        <div className="mb-2 flex flex-col items-center">
-          <Image
-  src="/jocdocs-logo-full-v2.png"
-  alt="jocdocs"
-  style={{ width: "150px", margin: "0 auto 18px auto", display: "block" }}
-/>
-            alt="jocdocs"
-            width={280}
-            height={95}
-            priority
-            className="h-auto w-[245px]"
-          />
-        </div>
+<div className="mb-2 flex flex-col items-center">
+  <Image
+    src="/jocdocs-logo-full-v2.png"
+    alt="jocdocs"
+    width={280}
+    height={95}
+    priority
+    className="h-auto w-[245px]"
+  />
+</div>
 
         {/* HERO FLIP CARD */}
         <button
