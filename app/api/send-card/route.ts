@@ -20,11 +20,7 @@ export async function POST(req: Request) {
   html: `
     <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; background-color: #f9f9f9;">
 
-    <img 
-  src="https://jocdocs.com/jocdocs-logo-full-v2.png" 
-  alt="jocdocs"
-  style="width: 150px; height: auto; margin: 0 auto 18px auto; display: block;"
-/>
+    import Image from "next/image";
       
       <h1 style="color: #000; margin-bottom: 10px;">
         Your jocdocs Card is Ready 🏆
