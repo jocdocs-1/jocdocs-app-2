@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import AthleteCard from "@/app/components/AthleteCard";
 import type { Athlete } from "@/app/data/athletes";
+import { supabase } from "@/app/lib/supabaseClient";
 
 export default function CardPage() {
   const params = useParams<{ id: string }>();
@@ -57,12 +58,47 @@ export default function CardPage() {
   );
 
   const [athlete, setAthlete] = useState<Athlete>(fallbackAthlete);
-  const [isFollowed, setIsFollowed] = useState(false);
-  const [isCollected, setIsCollected] = useState(false);
-  const [fansCount, setFansCount] = useState(0);
+const [isFollowed, setIsFollowed] = useState(false);
+const [isCollected, setIsCollected] = useState(false);
+const [fansCount, setFansCount] = useState(0);
 
-  useEffect(() => {
-    const shareKey = `jocdocs_share_${id}`;
+useEffect(() => {
+  async function loadCardFromSupabase() {
+    if (!id) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("cards")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error || !data) {
+        console.log("No Supabase card found, falling back...");
+        return;
+      }
+
+      console.log("LOADED FROM SUPABASE:", data);
+
+      if (data.card_data) {
+        setAthlete({
+          ...data.card_data,
+          id: data.id,
+          actionImage: data.action_image_url || data.card_data.actionImage,
+          portraitImage: data.portrait_image_url || data.card_data.portraitImage,
+          profileImage: data.portrait_image_url || data.card_data.profileImage,
+        });
+      }
+    } catch (err) {
+      console.error("Error loading card from Supabase:", err);
+    }
+  }
+
+  loadCardFromSupabase();
+}, [id]);
+
+useEffect(() => {
+  const shareKey = `jocdocs_share_${id}`;
 
     try {
       const saved = localStorage.getItem(shareKey);
@@ -170,7 +206,7 @@ export default function CardPage() {
   };
 
   return (
-  <main className="relative flex min-h-screen flex-col items-center justify-center bg-white px-5 py-8">
+  <main className="relative flex flex-col items-center bg-white px-5 pt-4 pb-20">
     {/* CARD */}
 <div className="rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
   <AthleteCard

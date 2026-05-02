@@ -50,6 +50,9 @@ const [contactInfo, setContactInfo] = useState({
   phone: "",
 });
 
+const [savedCardLink, setSavedCardLink] = useState<string | null>(null);
+const [copySuccess, setCopySuccess] = useState(false);
+
   useEffect(() => {
     const stored = localStorage.getItem("collection");
     if (stored) {
@@ -259,40 +262,43 @@ async function saveCardLead() {
       actionImageUrl = publicUrlData.publicUrl;
     }
 
-    if (athlete.portraitImage && athlete.portraitImage.startsWith("data:")) {
-      const portraitFileName = `${Date.now()}-portrait.png`;
+    const portraitSource = athlete.portraitImage || athlete.profileImage;
 
-      const { error: uploadError } = await supabase.storage
-        .from("card-images")
-        .upload(portraitFileName, dataURLtoFile(athlete.portraitImage, portraitFileName));
+if (portraitSource && portraitSource.startsWith("data:")) {
+  const portraitFileName = `${Date.now()}-portrait.png`;
 
-      if (uploadError) throw uploadError;
+  const { error: uploadError } = await supabase.storage
+    .from("card-images")
+    .upload(portraitFileName, dataURLtoFile(portraitSource, portraitFileName));
 
-      const { data: publicUrlData } = supabase.storage
-        .from("card-images")
-        .getPublicUrl(portraitFileName);
+  if (uploadError) throw uploadError;
 
-      portraitImageUrl = publicUrlData.publicUrl;
-    }
+  const { data: publicUrlData } = supabase.storage
+    .from("card-images")
+    .getPublicUrl(portraitFileName);
+
+  portraitImageUrl = publicUrlData.publicUrl;
+}
 
     const { data: card, error: cardError } = await supabase
-      .from("cards")
-      .insert([
-        {
-          name: athlete.name,
-          school: athlete.school,
-          sport: athlete.primarySport,
-          action_image_url: actionImageUrl,
-          portrait_image_url: portraitImageUrl,
-          card_data: {
-            ...athlete,
-            actionImage: actionImageUrl,
-            portraitImage: portraitImageUrl,
-          },
-        },
-      ])
-      .select()
-      .single();
+  .from("cards")
+  .insert([
+    {
+      name: athlete.name,
+      school: athlete.school,
+      sport: athlete.primarySport,
+      action_image_url: actionImageUrl,
+      portrait_image_url: portraitImageUrl,
+      card_data: {
+        ...athlete,
+        actionImage: actionImageUrl,
+        portraitImage: portraitImageUrl,
+        profileImage: portraitImageUrl,
+      },
+    },
+  ])
+  .select()
+  .single();
 
     if (cardError) throw cardError;
 
@@ -308,7 +314,24 @@ async function saveCardLead() {
 
     console.log("Saved to Supabase:", card);
 
-    closeSaveModal();
+const savedCardLink = `${window.location.origin}/card/${card.id}`;
+
+setSavedCardLink(savedCardLink);
+const emailResponse = await fetch("/api/send-card", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    email: contactInfo.email,
+    name: athlete.name,
+    shareUrl: savedCardLink,
+  }),
+});
+
+const emailResult = await emailResponse.json();
+
+console.log("EMAIL RESPONSE:", emailResult);
   } catch (error) {
     console.error("Supabase save error:", error);
   }
@@ -597,13 +620,23 @@ return (
           Your card is ready
         </p>
 
-        <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.03em] text-white">
-          Save & Share Your Card
-        </h2>
+        <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.03em] text-white leading-tight">
+  {savedCardLink ? (
+    <>
+      YOUR CARD IS SAVED
+      <br />
+      AND READY TO SHARE
+    </>
+  ) : (
+    "SAVE & SHARE YOUR CARD"
+  )}
+</h2>
 
-        <p className="mt-2 text-sm leading-5 text-white/60">
-          Enter your email so we can send your card link.
-        </p>
+        {!savedCardLink && (
+  <p className="mt-2 text-sm leading-5 text-white/60">
+    Enter your email to save your card.
+  </p>
+)}
       </div>
 
       <div className="mt-6 space-y-4">
@@ -637,21 +670,60 @@ return (
           />
         </div>
 
-        <button
-          type="button"
-          onClick={saveCardLead}
-          className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
-        >
-          Send Me My Card
-        </button>
+        {!savedCardLink ? (
+  <>
+    <button
+      type="button"
+      onClick={saveCardLead}
+      className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
+    >
+      Send Me My Card
+    </button>
 
-        <button
-          type="button"
-          onClick={closeSaveModal}
-          className="w-full py-2 text-sm font-semibold text-white/50"
-        >
-          Not now
-        </button>
+    <button
+      type="button"
+      onClick={closeSaveModal}
+      className="w-full py-2 text-sm font-semibold text-white/50"
+    >
+      Not now
+    </button>
+  </>
+) : (
+  <>
+    <div className="flex flex-col items-center text-center space-y-4">
+      <div className="text-lg font-bold text-white">
+        Your card is ready!
+      </div>
+
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(savedCardLink!);
+          setCopySuccess(true);
+        }}
+        className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
+      >
+        COPY LINK
+      </button>
+
+      {copySuccess && (
+        <p className="text-sm font-semibold text-[#C5A96A] tracking-[0.04em]">
+  LINK COPIED
+</p>
+      )}
+
+      <button
+        onClick={() => {
+          setSavedCardLink(null);
+          setCopySuccess(false);
+          closeSaveModal();
+        }}
+        className="text-xs text-white/40"
+      >
+        Done
+      </button>
+    </div>
+  </>
+)}
       </div>
     </div>
   </div>
