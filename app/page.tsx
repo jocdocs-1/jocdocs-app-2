@@ -43,7 +43,7 @@ export default function HomePage() {
         {/* LOGO */}
         <div className="mb-2 flex flex-col items-center">
           <Image
-            src="/jocdocs-logo-full.png"
+            src="/jocdocs-logo-full-v2.png"
             alt="jocdocs"
             width={280}
             height={95}
