@@ -317,6 +317,7 @@ if (portraitSource && portraitSource.startsWith("data:")) {
 const savedCardLink = `${window.location.origin}/card/${card.id}`;
 
 setSavedCardLink(savedCardLink);
+
 const emailResponse = await fetch("/api/send-card", {
   method: "POST",
   headers: {
@@ -329,9 +330,8 @@ const emailResponse = await fetch("/api/send-card", {
   }),
 });
 
-const emailResult = await emailResponse.json();
+await emailResponse.json();
 
-console.log("EMAIL RESPONSE:", emailResult);
   } catch (error) {
     console.error("Supabase save error:", error);
   }

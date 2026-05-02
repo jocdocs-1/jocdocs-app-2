@@ -14,33 +14,61 @@ export async function POST(req: Request) {
     }
 
     const data = await resend.emails.send({
-      from: "jocdocs <hello@jocdocs.com>",
-      to: email,
-      subject: `${name || "Your"} jocdocs card is ready`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Your jocdocs card is ready 🃏</h2>
-          <p>Click below to view and share your card:</p>
-          
-          <a href="${shareUrl}" 
-             style="
-               display:inline-block;
-               padding:12px 20px;
-               background:#C9AD68;
-               color:#ffffff;
-               text-decoration:none;
-               border-radius:6px;
-               font-weight:bold;
-             ">
-            View My Card
-          </a>
+  from: "jocdocs <hello@jocdocs.com>",
+  to: email,
+  subject: `${name || "Your"} jocdocs card is ready`,
+  html: `
+    <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; background-color: #f9f9f9;">
 
-          <p style="margin-top:20px;font-size:12px;color:#888;">
-            Create. Collect. Connect.
-          </p>
-        </div>
-      `,
-    });
+    <img 
+  src="https://jocdocs.com/jocdocs-logo-full-v2.png" 
+  alt="jocdocs"
+  style="width: 150px; height: auto; margin: 0 auto 18px auto; display: block;"
+/>
+      
+      <h1 style="color: #000; margin-bottom: 10px;">
+        Your jocdocs Card is Ready 🏆
+      </h1>
+
+      <p style="font-size: 16px; color: #444; margin-bottom: 20px;">
+        ${name ? `${name}, your` : "Your"} digital trading card is live.
+      </p>
+
+      <div style="margin-bottom: 20px;">
+        <a 
+          href="${shareUrl}" 
+          target="_blank"
+          style="display: inline-block; padding: 12px 24px; background-color: #C9AD68; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;"
+        >
+          View Your Card
+        </a>
+      </div>
+
+      <p style="font-size: 14px; color: #666; margin: 0; line-height: 1.2;">
+  Know another athlete?
+</p>
+
+<p style="font-size: 14px; color: #000; font-weight: bold; margin: 4px 0 0 0; line-height: 1.2;">
+  Share your card with them 👇
+</p>
+
+<p style="font-size: 13px; color: #888; margin: 4px 0 0 0; line-height: 1.2;">
+  Forward this email or send them your link.
+</p>
+
+<p style="margin-top: 10px;">
+  <a 
+    href="https://jocdocs.com" 
+    target="_blank"
+    style="font-size: 15px; color: #C9AD68; text-decoration: none; font-weight: bold;"
+  >
+    Visit jocdocs.com →
+  </a>
+</p>
+
+    </div>
+  `,
+});
 
     console.log("EMAIL SENT:", data);
 
