@@ -206,29 +206,27 @@ useEffect(() => {
   };
 
   return (
-  <main className="relative flex flex-col items-center bg-white px-5 pt-4 pb-20">
-    {/* CARD */}
-<div className="rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.10)]">
-  <AthleteCard
-    athlete={athlete}
-    isOwnCard={false}
-    onToggleFollow={handleToggleFollow}
-    onCollect={handleCollect}
-    isFollowed={isFollowed}
-    isCollected={isCollected}
-    fansCount={fansCount}
-  />
-</div>
+  <main className="min-h-screen bg-white flex flex-col items-center justify-start px-4 py-8">
 
-    {/* CTA */}
-    <div className="mt-3 flex flex-col items-center">
-      <button
-  onClick={() => (window.location.href = "/create")}
-  className="rounded-full bg-[#C5A96A] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.02]"
->
-  Create Your Own Card — It Takes 60 Seconds
-</button>
+    {/* CARD */}
+    <div className="w-full max-w-[420px]">
+      <AthleteCard {...athlete} isOwnCard={false} />
     </div>
+
+    {/* CTA SECTION */}
+    <div className="mt-6 text-center">
+      <p className="text-sm text-gray-600 mb-2">
+        Want one of your own?
+      </p>
+
+      <a
+        href="/create"
+        className="inline-block bg-[#C9AD68] text-white font-bold px-6 py-3 rounded-md text-sm"
+      >
+        Create Your Own Card — It Takes 60 Seconds
+      </a>
+    </div>
+
   </main>
 );
 }
