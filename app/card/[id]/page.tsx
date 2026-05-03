@@ -220,13 +220,20 @@ useEffect(() => {
       </p>
 
       <a
-        href="/create"
-        className="inline-block bg-[#C9AD68] text-white font-bold px-6 py-3 rounded-md text-sm"
-      >
-        Create Your Own Card — It Takes 60 Seconds
-      </a>
-    </div>
+  href="/create"
+  className="inline-block bg-[#C9AD68] text-white font-bold px-6 py-3 rounded-md text-sm"
+>
+  Create Your Own Card — It Takes 60 Seconds
+</a>
 
-  </main>
+<div className="mt-3">
+  <a href="/" className="text-black underline text-sm">
+    Visit jocdocs.com →
+  </a>
+</div>
+
+</div>
+
+</main>
 );
 }
