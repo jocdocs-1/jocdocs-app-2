@@ -227,7 +227,10 @@ useEffect(() => {
 </a>
 
 <div className="mt-3">
-  <a href="/" className="text-black underline text-sm">
+  <a
+    href="/"
+    className="inline-block text-black underline text-base mt-1 px-2 py-1"
+  >
     Visit jocdocs.com →
   </a>
 </div>
