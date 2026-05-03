@@ -210,7 +210,7 @@ useEffect(() => {
 
     {/* CARD */}
     <div className="w-full max-w-[420px]">
-      <AthleteCard {...athlete} isOwnCard={false} />
+      <AthleteCard athlete={athlete} isOwnCard={false} />
     </div>
 
     {/* CTA SECTION */}
