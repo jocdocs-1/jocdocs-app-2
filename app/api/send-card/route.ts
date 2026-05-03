@@ -16,54 +16,55 @@ export async function POST(req: Request) {
     const data = await resend.emails.send({
   from: "jocdocs <hello@jocdocs.com>",
   to: email,
-  subject: `${name || "Your"} jocdocs card is ready`,
+  subject: `${name ? `${name}, your` : "Your"} jocdocs card is ready`,
   html: `
-    <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; background-color: #f9f9f9;">
+  <div style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 24px; text-align: center;">
 
-    import Image from "next/image";
-      
-      <h1 style="color: #000; margin-bottom: 10px;">
-        Your jocdocs Card is Ready 🏆
-      </h1>
-
-      <p style="font-size: 16px; color: #444; margin-bottom: 20px;">
-        ${name ? `${name}, your` : "Your"} digital trading card is live.
-      </p>
-
-      <div style="margin-bottom: 20px;">
-        <a 
-          href="${shareUrl}" 
-          target="_blank"
-          style="display: inline-block; padding: 12px 24px; background-color: #C9AD68; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;"
-        >
-          View Your Card
-        </a>
-      </div>
-
-      <p style="font-size: 14px; color: #666; margin: 0; line-height: 1.2;">
-  Know another athlete?
-</p>
-
-<p style="font-size: 14px; color: #000; font-weight: bold; margin: 4px 0 0 0; line-height: 1.2;">
-  Share your card with them 👇
-</p>
-
-<p style="font-size: 13px; color: #888; margin: 4px 0 0 0; line-height: 1.2;">
-  Forward this email or send them your link.
-</p>
-
-<p style="margin-top: 10px;">
-  <a 
-    href="https://jocdocs.com" 
-    target="_blank"
-    style="font-size: 15px; color: #C9AD68; text-decoration: none; font-weight: bold;"
-  >
-    Visit jocdocs.com →
-  </a>
-</p>
-
+    <!-- LOGO -->
+    <div style="margin-bottom: 20px;">
+      <img src="https://jocdocs.com/logo.png" alt="jocdocs" style="height: 38px;" />
     </div>
-  `,
+
+    <!-- HEADLINE -->
+    <h1 style="font-size: 26px; color: #000000; margin-bottom: 10px;">
+      Your jocdocs card is ready.
+    </h1>
+
+    <!-- SUBTEXT -->
+    <p style="font-size: 15px; color: #333333; margin-bottom: 30px;">
+      Tap below to view and share your card.
+    </p>
+
+    <!-- PRIMARY CTA -->
+    <a href="${shareUrl}" 
+       style="
+         display: inline-block;
+         padding: 13px 26px;
+         background-color: #C9AD68;
+         color: #ffffff;
+         text-decoration: none;
+         font-weight: bold;
+         border-radius: 6px;
+         font-size: 15px;
+         margin-bottom: 24px;
+       ">
+      VIEW CARD
+    </a>
+
+    <!-- SECONDARY LINK -->
+    <div style="margin-top: 10px;">
+      <a href="https://jocdocs.com" 
+         style="
+           color: #000000;
+           text-decoration: underline;
+           font-size: 16px;
+         ">
+        Visit jocdocs.com →
+      </a>
+    </div>
+
+  </div>
+`,
 });
 
     console.log("EMAIL SENT:", data);
