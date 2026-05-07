@@ -322,12 +322,12 @@ const randomMessage =
 
                     <div className="absolute left-0 top-[10px] z-30 w-[85%]">
                       <div className="rounded-r-full bg-white py-[4px] pl-5 pr-5 shadow-md">
-                        <p className="text-center text-[19px] font-extrabold italic leading-none text-black">
-                          {firstName}
-                        </p>
-                        <h2 className="mt-[1px] text-center text-[30px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
-                          {lastName || firstName}
-                        </h2>
+                        <p className="truncate whitespace-nowrap overflow-hidden text-center text-[19px] font-extrabold italic leading-none text-black">
+  {firstName}
+</p>
+<h2 className="mt-[1px] truncate whitespace-nowrap overflow-hidden text-center text-[30px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
+  {lastName || firstName}
+</h2>
                       </div>
                     </div>
 
@@ -522,12 +522,12 @@ const randomMessage =
 
                       <div className="w-[86%]">
                         <div className="rounded-r-full bg-white py-[3px] pl-5 pr-4 shadow-md">
-                          <p className="text-center text-[15px] font-extrabold italic leading-none text-black">
-                            {firstName}
-                          </p>
-                          <h2 className="mt-[1px] text-center text-[24px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
-                            {lastName || firstName}
-                          </h2>
+                          <p className="truncate whitespace-nowrap overflow-hidden text-center text-[15px] font-extrabold italic leading-none text-black">
+  {firstName}
+</p>
+<h2 className="mt-[1px] truncate whitespace-nowrap overflow-hidden text-center text-[24px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
+  {lastName || firstName}
+</h2>
                         </div>
                       </div>
                     </div>
@@ -551,9 +551,9 @@ const randomMessage =
                             {athlete.team}
                           </p>
 
-                          <p className="my-[2px] text-[17px] font-medium italic leading-[1.0] text-white/90">
-                            {athlete.position}
-                          </p>
+                          <p className="my-[2px] truncate whitespace-nowrap overflow-hidden text-[17px] font-medium italic leading-[1.0] text-white/90">
+  {athlete.position}
+</p>
 
                           <p className="text-[53px] font-extrabold italic leading-[0.84] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]">
                             <span className="relative -top-[17px] mr-[1px] text-[27px] font-normal italic">
@@ -565,10 +565,10 @@ const randomMessage =
                       </div>
 
                       <div
-                        className={`mt-[3px] pl-[1px] text-[42px] leading-none text-white/65 ${allison.className}`}
-                      >
-                        {signatureName}
-                      </div>
+  className={`mt-[3px] max-w-full overflow-hidden truncate whitespace-nowrap pl-[1px] text-[42px] leading-none text-white/65 ${allison.className}`}
+>
+  {signatureName}
+</div>
 
                       <div className="mt-[6px] space-y-[2px] text-[14.5px] leading-tight text-white">
                         <p>
@@ -577,9 +577,12 @@ const randomMessage =
                           &nbsp;&nbsp; Weight: <span className="font-bold">{athlete.weight || "—"}</span>
                         </p>
 
-                        <p>
-                          Hometown: <span className="font-bold">{athlete.hometown || "—"}</span>
-                        </p>
+                        <p className="truncate whitespace-nowrap overflow-hidden">
+  Hometown:{" "}
+  <span className="font-bold">
+    {athlete.hometown || "—"}
+  </span>
+</p>
 
                         <p className="truncate whitespace-nowrap">
                           <span className="font-normal">Sport:</span>{" "}
@@ -609,16 +612,17 @@ const randomMessage =
                           { label: athlete.statLabel3 || "STAT", value: athlete.stat3 || "—" },
                         ].map((stat, index) => (
                           <div
-                            key={index}
-                            className="w-[75px] shrink-0 rounded-xl border border-white/20 bg-white/5 px-2 py-[4px] text-center shadow-sm"
-                          >
-                            <div className="text-[19px] font-extrabold italic leading-none text-white">
-                              {stat.value}
-                            </div>
-                            <div className="mt-[1px] truncate text-[8px] uppercase tracking-[0.05em] text-white/75">
-                              {stat.label}
-                            </div>
-                          </div>
+  key={index}
+  className="min-w-0 w-[75px] shrink-0 rounded-xl border border-white/20 bg-white/5 px-2 py-[4px] text-center shadow-sm"
+>
+  <div className="truncate text-[19px] font-extrabold italic leading-none text-white">
+    {stat.value}
+  </div>
+
+  <div className="mt-[1px] truncate text-[8px] uppercase tracking-[0.05em] text-white/75">
+    {stat.label}
+  </div>
+</div>
                         ))}
                       </div>
                     </div>

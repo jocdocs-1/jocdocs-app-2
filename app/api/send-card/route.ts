@@ -4,6 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
+
     const { email, name, shareUrl } = await req.json();
 
     if (!email || !shareUrl) {

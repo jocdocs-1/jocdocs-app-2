@@ -206,37 +206,47 @@ useEffect(() => {
   };
 
   return (
-  <main className="min-h-screen bg-white flex flex-col items-center justify-start px-4 py-8">
+  <main className="min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
 
     {/* CARD */}
-    <div className="w-full max-w-[420px]">
-      <AthleteCard athlete={athlete} isOwnCard={false} />
-    </div>
+<div className="relative z-10 w-full max-w-[420px] pb-[160px]">
+  <AthleteCard
+    athlete={athlete}
+    isOwnCard={false}
+    isFollowed={isFollowed}
+    isCollected={isCollected}
+    fansCount={fansCount}
+    onToggleFollow={handleToggleFollow}
+    onCollect={handleCollect}
+  />
+</div>
 
     {/* CTA SECTION */}
-    <div className="mt-6 text-center">
-      <p className="text-sm text-gray-600 mb-2">
-        Want one of your own?
-      </p>
+<div className="relative z-0 mt-6 flex w-full flex-col items-center">
+  <p className="mb-4 text-[15px] text-neutral-500">
+    Want one of your own?
+  </p>
 
-      <a
-  href="/create"
-  className="inline-block bg-[#C9AD68] text-white font-bold px-6 py-3 rounded-md text-sm"
->
-  Create Your Own Card — It Takes 60 Seconds
-</a>
+  <a
+    href="/?ref=card"
+    className="flex w-full max-w-[340px] flex-col items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+  >
+    <span className="text-[26px] font-bold leading-tight">
+      Create Your Own Card
+    </span>
+    <span className="-mt-[2px] text-[20px] font-roboto-condensed italic leading-tight tracking-tight opacity-90">
+      It takes 60 seconds
+    </span>
+  </a>
 
-<div className="mt-3">
   <a
     href="/"
-    className="inline-block text-black underline text-base mt-1 px-2 py-1"
+    className="mt-4 text-[18px] font-medium text-black underline underline-offset-4"
   >
     Visit jocdocs.com →
   </a>
 </div>
 
-</div>
-
-</main>
+  </main>
 );
 }

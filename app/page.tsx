@@ -67,26 +67,28 @@ export default function HomePage() {
             }`}
           >
             {/* FRONT */}
-            <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
-              <Image
-                src="/hero-cards/fernando-front.png"
-                alt="Fernando Mendoza front sample card"
-                fill
-                priority
-                className="scale-[1] object-contain"
-              />
-            </div>
+<div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
+  <Image
+    src="/hero-cards/fernando-front.png"
+    alt="Fernando Mendoza front sample card"
+    fill
+    priority
+    sizes="(max-width: 768px) 92vw, 360px"
+    className="scale-[1] object-contain"
+  />
+</div>
 
             {/* BACK */}
-            <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
-              <Image
-                src="/hero-cards/fernando-back.png"
-                alt="Fernando Mendoza back sample card"
-                fill
-                priority
-                className="scale-[1] object-contain"
-              />
-            </div>
+<div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+  <Image
+    src="/hero-cards/fernando-back.png"
+    alt="Fernando Mendoza back sample card"
+    fill
+    priority
+    sizes="(max-width: 768px) 92vw, 360px"
+    className="scale-[1] object-contain"
+  />
+</div>
 
 {/* SHIMMER */}
     <div className="pointer-events-none absolute inset-0 z-40 overflow-hidden rounded-[28px]">
