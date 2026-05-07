@@ -182,7 +182,9 @@ useEffect(() => {
   };
 
   const handleCollect = () => {
-    try {
+  if (!athlete) return;
+
+  try {
       const collection = JSON.parse(
         localStorage.getItem("jocdocs_collection") || "[]"
       ) as Athlete[];
