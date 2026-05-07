@@ -57,7 +57,7 @@ export default function CardPage() {
     [id, searchParams]
   );
 
-  const [athlete, setAthlete] = useState<Athlete>(fallbackAthlete);
+  const [athlete, setAthlete] = useState<Athlete | null>(null);
 const [isFollowed, setIsFollowed] = useState(false);
 const [isCollected, setIsCollected] = useState(false);
 const [fansCount, setFansCount] = useState(0);
@@ -203,7 +203,17 @@ useEffect(() => {
     } catch (error) {
       console.error("Error collecting shared card:", error);
     }
-  };
+   };
+
+  if (!athlete) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-white px-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-black/40">
+          Loading card...
+        </p>
+      </main>
+    );
+  }
 
   return (
   <main className="min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
@@ -222,7 +232,7 @@ useEffect(() => {
 </div>
 
     {/* CTA SECTION */}
-<div className="relative z-0 mt-6 flex w-full flex-col items-center">
+<div className="relative z-0 mt-2 flex w-full flex-col items-center">
   <p className="mb-4 text-[15px] text-neutral-500">
     Want one of your own?
   </p>
