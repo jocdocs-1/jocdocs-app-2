@@ -213,7 +213,7 @@ useEffect(() => {
   <main className="min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
 
     {/* CARD */}
-<div className="relative z-10 w-full max-w-[420px] pb-[160px]">
+<div className="relative z-10 w-full max-w-[420px] pb-[24px] sm:pb-[160px]">
   <AthleteCard
     athlete={athlete}
     isOwnCard={false}

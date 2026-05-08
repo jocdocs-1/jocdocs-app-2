@@ -45,7 +45,7 @@ export async function POST(req: Request) {
          color: #ffffff;
          text-decoration: none;
          font-weight: bold;
-         border-radius: 6px;
+         border-radius: 999px;
          font-size: 15px;
          margin-bottom: 24px;
        ">
