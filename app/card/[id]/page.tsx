@@ -226,7 +226,7 @@ useEffect(() => {
 </div>
 
     {/* CTA SECTION */}
-<div className="relative z-0 mt-4 flex w-full flex-col items-center sm:mt-6">
+<div className="relative z-0 mt-1 flex w-full flex-col items-center sm:mt-6">
   <p className="mb-4 text-[15px] text-neutral-500">
     Want one of your own?
   </p>
