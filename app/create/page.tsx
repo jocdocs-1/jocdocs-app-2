@@ -213,9 +213,6 @@ const isCollected = collection.some(
     item.school === athlete.school
 );
 
-console.log("CURRENT ATHLETE:", athlete);
-console.log("COLLECTION:", collection);
-
 function closeSaveModal() {
   setIsSaveModalClosing(true);
 
