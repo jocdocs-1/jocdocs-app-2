@@ -225,32 +225,23 @@ const randomMessage =
       style={{ fontFamily: '"Roboto Condensed", Roboto, sans-serif' }}
     >
       <div className="relative w-full aspect-[310/530]">
-        <div
-  className="absolute left-1/2 top-0"
-  style={{
-    width: "310px",
-    height: "530px",
-    transform: `translateX(-50%) scale(${cardScale})`,
-    transformOrigin: "top center",
-  }}
->
-          <div className="relative h-[530px] w-[310px] [perspective:1400px]">
-            <div
-  className="relative h-full w-full transform-gpu rounded-[22px] duration-700 ease-in-out"
-  style={{
-    transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
-    transformStyle: "preserve-3d",
-    WebkitTransformStyle: "preserve-3d",
-    boxShadow:
-      "0 18px 45px rgba(0,0,0,0.7), 0 4px 14px rgba(0,0,0,0.55)",
-  }}
->
-              style={{
-                transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
-                transformStyle: "preserve-3d",
-                WebkitTransformStyle: "preserve-3d",
-              }}
-            >
+  <div
+    className="absolute left-1/2 top-0"
+    style={{
+      width: "310px",
+      height: "530px",
+      transform: `translateX(-50%) scale(${cardScale})`,
+      transformOrigin: "top center",
+    }}
+  >
+    <div
+      className="relative h-full w-full transform-gpu duration-700 ease-in-out"
+      style={{
+        transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+        transformStyle: "preserve-3d",
+        WebkitTransformStyle: "preserve-3d",
+      }}
+    >
               {/* FRONT */}
               <div
                 className="absolute inset-0 z-20"
@@ -545,7 +536,7 @@ const randomMessage =
                   WebkitBackfaceVisibility: "hidden",
                 }}
               >
-                <div className="relative h-full w-full rounded-[20px] bg-white p-[7px] shadow-[0_10px_24px_rgba(120,120,120,0.45)]">
+                <div className="relative h-full w-full rounded-[20px] bg-white p-[7px] shadow-[0_14px_38px_rgba(0,0,0,0.62)]">
                   <div className="flex h-full w-full flex-col overflow-hidden rounded-[16px] bg-gradient-to-b from-[#4a4a4a] to-[#2f2f2f] text-white">
                     <div className="relative px-0 pt-[10px]">
                       <div className="absolute right-[2px] top-[2px] z-20 flex h-10 w-10 items-center justify-center overflow-hidden">
@@ -849,9 +840,8 @@ const randomMessage =
                 </div>
               </div>
             </div>
-          </div>
 
-          {showToast && (
+                    {showToast && (
             <div className="pointer-events-none absolute bottom-4 left-1/2 z-[400] -translate-x-1/2 rounded-full bg-black/85 px-4 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">
               Card link copied — share it! 🔥
             </div>

@@ -69,7 +69,7 @@ export default function HomePage() {
             {/* FRONT */}
 <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
   <Image
-    src="/hero-cards/fernando-front.png"
+    src="/hero-cards/fernando-front-v2.png"
     alt="Fernando Mendoza front sample card"
     fill
     priority
