@@ -236,7 +236,15 @@ const randomMessage =
 >
           <div className="relative h-[530px] w-[310px] [perspective:1400px]">
             <div
-              className="relative h-full w-full transform-gpu duration-700 ease-in-out"
+  className="relative h-full w-full transform-gpu rounded-[22px] duration-700 ease-in-out"
+  style={{
+    transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+    transformStyle: "preserve-3d",
+    WebkitTransformStyle: "preserve-3d",
+    boxShadow:
+      "0 18px 45px rgba(0,0,0,0.7), 0 4px 14px rgba(0,0,0,0.55)",
+  }}
+>
               style={{
                 transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
                 transformStyle: "preserve-3d",
@@ -252,7 +260,14 @@ const randomMessage =
                   WebkitBackfaceVisibility: "hidden",
                 }}
               >
-                <div className="relative h-full w-full overflow-visible rounded-[22px] bg-white p-[7px] shadow-[0_10px_24px_rgba(120,120,120,0.45)]">
+                <div
+  className="relative h-full w-full overflow-visible rounded-[22px] bg-white p-[7px]"
+  style={{
+    boxShadow:
+      "0 14px 38px rgba(0,0,0,0.62), 0 3px 10px rgba(0,0,0,0.55)",
+  }}
+>
+
                   {/* ACHIEVEMENT RIBBON */}
                   {athlete.achievementBanner && athlete.achievementBanner !== "none" && (
                     <div className="pointer-events-none absolute left-[-10.7px] top-[-19.7px] z-[300] h-[135px] w-[115px]">
@@ -303,7 +318,7 @@ const randomMessage =
                           style={{ backgroundColor: "#C5A96A" }}
                         >
                           <span
-                            className="block translate-y-[6px] text-[13.5px] font-bold italic uppercase leading-none tracking-[0.01em] text-black"
+                            className="block translate-y-[5px] text-[13.5px] font-bold italic uppercase leading-none tracking-[0.01em] text-black"
                             style={{ fontFamily: '"Roboto Condensed", Roboto, sans-serif' }}
                           >
                             LEGACY
@@ -321,27 +336,48 @@ const randomMessage =
                     </div>
 
                     <div className="absolute left-0 top-[10px] z-30 w-[85%]">
-                      <div className="rounded-r-full bg-white py-[4px] pl-5 pr-5 shadow-md">
+                      <div className="rounded-r-full bg-white pt-[3.25px] pb-[1px] pl-5 pr-5 shadow-md">
                         <p className="truncate whitespace-nowrap overflow-hidden text-center text-[19px] font-extrabold italic leading-none text-black">
   {firstName}
 </p>
-<h2 className="mt-[1px] truncate whitespace-nowrap overflow-hidden text-center text-[30px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
+<h2 className="mt-[0.5px] truncate whitespace-nowrap overflow-hidden text-center text-[33px] font-black italic uppercase leading-none tracking-[-0.01em] text-black">
   {lastName || firstName}
 </h2>
                       </div>
                     </div>
 
-                    <div className="absolute bottom-[94px] left-[10px] right-[10px] top-[52px] overflow-hidden rounded-[15px] border-[2px] border-white bg-neutral-300">
-                      <img
-                        src={athlete.actionImage || athlete.image || "/action.jpg"}
-                        alt="Athlete action"
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
+                    <div className="absolute bottom-[94px] left-[10px] right-[10px] top-[52px] overflow-hidden rounded-[15px] border-[2.7px] border-white bg-neutral-300 shadow-[0_0_0_1px_rgba(0,0,0,0.18),inset_0_0_0_1px_rgba(255,255,255,0.55)]">
+  <img
+    src={athlete.actionImage || athlete.image || "/action.jpg"}
+    alt="Athlete action"
+    className="h-full w-full object-cover"
+    style={{
+      filter: "contrast(1.06) saturate(1.05) brightness(0.96)",
+    }}
+  />
 
-                    <div className="absolute bottom-[118px] right-5 z-20 text-[62px] font-extrabold italic leading-none text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.85)]">
-                      {athlete.jerseyNumber || String(athlete.number || "")}
-                    </div>
+  {/* PHOTO ATMOSPHERE LAYER */}
+  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_0%,rgba(0,0,0,0.12)_68%,rgba(0,0,0,0.35)_100%)]" />
+
+  {/* BOTTOM READABILITY GRADIENT */}
+  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black/45 via-black/18 to-transparent" />
+</div>
+
+                    <div
+  className="absolute bottom-[127px] right-5.25 z-20 leading-none select-none pointer-events-none"
+  style={{
+    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+    fontSize: '82px',
+    lineHeight: '0.85',
+    WebkitTextStroke: '2.25px white',
+    color: 'rgba(255,255,255,0.28)',
+    textShadow: '3px 4px 6px rgba(0,0,0,0.50)',
+    letterSpacing: '0.03em',
+    transform: 'skewX(-8deg)',
+  }}
+>
+  {athlete.jerseyNumber || String(athlete.number || "")}
+</div>
 
                     <div className="absolute bottom-[70px] right-0 z-30 w-[86%]">
                       <div className="rounded-l-full bg-black py-[7px] pl-6 pr-4 text-left text-white shadow-lg">
@@ -509,7 +545,7 @@ const randomMessage =
                   WebkitBackfaceVisibility: "hidden",
                 }}
               >
-                <div className="relative h-full w-full rounded-[22px] bg-white p-[7px] shadow-[0_10px_24px_rgba(120,120,120,0.45)]">
+                <div className="relative h-full w-full rounded-[20px] bg-white p-[7px] shadow-[0_10px_24px_rgba(120,120,120,0.45)]">
                   <div className="flex h-full w-full flex-col overflow-hidden rounded-[16px] bg-gradient-to-b from-[#4a4a4a] to-[#2f2f2f] text-white">
                     <div className="relative px-0 pt-[10px]">
                       <div className="absolute right-[2px] top-[2px] z-20 flex h-10 w-10 items-center justify-center overflow-hidden">
@@ -521,18 +557,19 @@ const randomMessage =
                       </div>
 
                       <div className="w-[86%]">
-                        <div className="rounded-r-full bg-white py-[3px] pl-5 pr-4 shadow-md">
-                          <p className="truncate whitespace-nowrap overflow-hidden text-center text-[15px] font-extrabold italic leading-none text-black">
-  {firstName}
-</p>
-<h2 className="mt-[1px] truncate whitespace-nowrap overflow-hidden text-center text-[24px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
-  {lastName || firstName}
-</h2>
-                        </div>
-                      </div>
+  <div className="rounded-r-full bg-white py-[3px] pl-5 pr-4 shadow-md">
+    <p className="truncate whitespace-nowrap overflow-hidden text-center text-[15px] font-extrabold italic leading-none text-black">
+      {firstName}
+    </p>
+
+    <h2 className="mt-[1px] truncate whitespace-nowrap overflow-hidden text-center text-[28px] font-extrabold italic uppercase leading-none tracking-[0.01em] text-black">
+      {lastName || firstName}
+    </h2>
+  </div>
+</div>
                     </div>
 
-                    <div className="px-5 pt-[11px]">
+                    <div className="px-5 pt-[8px]">
                       <div className="flex gap-[10px]">
                         <div className="h-[112px] w-[106px] shrink-0 overflow-hidden rounded-[15px] border-[1.5px] border-white bg-neutral-300 shadow-md">
                           <img
@@ -598,7 +635,7 @@ const randomMessage =
                       </div>
                     </div>
 
-                    <div className="mx-5 my-[8px] h-[1px] bg-white/25" />
+                    <div className="mx-5 my-[4.5px] h-[1px] bg-white/25" />
 
                     <div className="px-5">
                       <p className="mb-[4px] text-[11px] font-bold uppercase tracking-[0.18em] text-white/75">
