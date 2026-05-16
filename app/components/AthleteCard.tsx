@@ -52,6 +52,8 @@ export default function AthleteCard({
   const collectLabel = isCollected ? "Collected" : "Collect";
   const fansLabel = `Fans ${fansCount}`;
   const themeColors = themeMap[athlete.theme || "gold"] || themeMap.gold;
+  const cardColor = themeColors.from;
+
 const [isFlipped, setIsFlipped] = useState(false);
 const [showToast, setShowToast] = useState(false);
 const [cardScale, setCardScale] = useState(1);
@@ -355,13 +357,13 @@ const randomMessage =
 </div>
 
                     <div
-  className="absolute bottom-[127px] right-5.25 z-20 leading-none select-none pointer-events-none"
+  className="absolute bottom-[127px] right-4.5 z-20 leading-none select-none pointer-events-none"
   style={{
     fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
     fontSize: '82px',
     lineHeight: '0.85',
-    WebkitTextStroke: '2.25px white',
-    color: 'rgba(255,255,255,0.28)',
+    WebkitTextStroke: "1.75px rgba(255,255,255,0.72)",
+    color: `${cardColor}60`,
     textShadow: '3px 4px 6px rgba(0,0,0,0.50)',
     letterSpacing: '0.03em',
     transform: 'skewX(-8deg)',

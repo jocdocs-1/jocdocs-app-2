@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import AthleteCard from "../components/AthleteCard";
 import type { Athlete } from "../data/athletes";
 import { supabase } from "../lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 export default function CreateAthletePage() {
+  const router = useRouter();
 const [athlete, setAthlete] = useState<Athlete>({
   id: crypto.randomUUID(),
   name: "",
@@ -327,6 +329,8 @@ const emailResponse = await fetch("/api/send-card", {
   }),
 });
 
+router.push(`/card/${card.id}`);
+
 await emailResponse.json();
 
   } catch (error) {
@@ -335,11 +339,17 @@ await emailResponse.json();
 }
 
 return (
-    <div className="min-h-screen bg-black p-6 text-white">
-      <h1 className="mb-6 text-2xl font-bold">Create Your Athlete Card</h1>
+  <div className="min-h-screen bg-black p-6 text-white">
+    <h1 className="mb-1 text-2xl font-bold">
+      Create Your Athlete Card
+    </h1>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="space-y-4">
+    <p className="mb-8 text-sm leading-tight text-white/70">
+  Watch your card come to life at the bottom of the form as you build.
+</p>
+
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="space-y-4">
           <input
             name="name"
             placeholder="Name"
@@ -556,12 +566,8 @@ return (
     onClick={() => setShowSaveModal(true)}
     className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[18px] font-extrabold uppercase tracking-[0.08em] text-black shadow-[0_0_24px_rgba(197,169,106,0.35)] transition active:scale-[0.98]"
   >
-    Generate My Card
+    Publish Card
   </button>
-
-  <p className="mt-3 text-center text-sm text-white/60">
-    Save your card and get your share link.
-  </p>
 </div>
 
         <div className="flex min-h-[100dvh] w-full justify-center bg-black px-2 py-2 text-white">
@@ -581,60 +587,46 @@ return (
     
   {showSaveModal && (
   <div
-  className="
-    fixed inset-0 z-50
-    flex items-end justify-center px-4
-    bg-black/70
-  "
->
+    className="
+      fixed inset-0 z-50
+      flex items-end justify-center px-4
+      bg-black/70
+    "
+  >
     <div
-  className="
-    w-full max-w-[520px]
-    rounded-t-[28px]
-    border border-white/10
-    bg-neutral-950
-    p-5 pb-7
-    shadow-2xl
-    translate-y-0
-    transition-all duration-300 ease-out
-  "
-  style={{
-    animation: isSaveModalClosing
-  ? "slideDown .38s ease-in-out forwards"
-  : "slideUp .38s ease-in-out forwards",
-    boxShadow: `
-  0 0 0 1px rgba(255,255,255,.20),
-  0 -10px 38px rgba(197,169,106,.30),
-  0 0 54px rgba(197,169,106,.22),
-  0 0 34px rgba(255,255,255,.10)
-`
-  }}
->
+      className="
+        w-full max-w-[520px]
+        rounded-t-[28px]
+        border border-white/10
+        bg-neutral-950
+        p-5 pb-7
+        shadow-2xl
+        translate-y-0
+        transition-all duration-300 ease-out
+      "
+      style={{
+        animation: isSaveModalClosing
+          ? "slideDown .38s ease-in-out forwards"
+          : "slideUp .38s ease-in-out forwards",
+        boxShadow: `
+          0 0 0 1px rgba(255,255,255,.20),
+          0 -10px 38px rgba(197,169,106,.30),
+          0 0 54px rgba(197,169,106,.22),
+          0 0 34px rgba(255,255,255,.10)
+        `,
+      }}
+    >
       <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-[#C5A96A]/40" />
 
-      <div className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#C5A96A]">
-          Your card is ready
-        </p>
+<div className="text-center">
+  <h2 className="text-[38px] font-extrabold tracking-[-0.03em] leading-[1.0] text-white">
+    Your Card Is Published!
+  </h2>
 
-        <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.03em] text-white leading-tight">
-  {savedCardLink ? (
-    <>
-      YOUR CARD IS SAVED
-      <br />
-      AND READY TO SHARE
-    </>
-  ) : (
-    "SAVE & SHARE YOUR CARD"
-  )}
-</h2>
-
-        {!savedCardLink && (
-  <p className="mt-2 text-sm leading-5 text-white/60">
-    Enter your email to save your card.
+  <p className="mt-3 text-[16px] leading-[1.35] text-white/70">
+    Enter your email to access your live card anytime.
   </p>
-)}
-      </div>
+</div>
 
       <div className="mt-6 space-y-4">
         <div>
@@ -667,64 +659,25 @@ return (
           />
         </div>
 
-        {!savedCardLink ? (
-  <>
-    <button
-      type="button"
-      onClick={saveCardLead}
-      className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
-    >
-      Send Me My Card
-    </button>
+        <button
+          type="button"
+          onClick={saveCardLead}
+          className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[22px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
+        >
+          Go To My Card
+        </button>
 
-    <button
-      type="button"
-      onClick={closeSaveModal}
-      className="w-full py-2 text-sm font-semibold text-white/50"
-    >
-      Not now
-    </button>
-  </>
-) : (
-  <>
-    <div className="flex flex-col items-center text-center space-y-4">
-      <div className="text-lg font-bold text-white">
-        Your card is ready!
-      </div>
-
-      <button
-        onClick={() => {
-          navigator.clipboard.writeText(savedCardLink!);
-          setCopySuccess(true);
-        }}
-        className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[16px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
-      >
-        COPY LINK
-      </button>
-
-      {copySuccess && (
-        <p className="text-sm font-semibold text-[#C5A96A] tracking-[0.04em]">
-  LINK COPIED
-</p>
-      )}
-
-      <button
-        onClick={() => {
-          setSavedCardLink(null);
-          setCopySuccess(false);
-          closeSaveModal();
-        }}
-        className="text-xs text-white/40"
-      >
-        Done
-      </button>
-    </div>
-  </>
-)}
+        <button
+          type="button"
+          onClick={closeSaveModal}
+          className="w-full py-2 text-sm font-semibold text-white/50"
+        >
+          Not now
+        </button>
       </div>
     </div>
   </div>
-            )}
+)}
     </div>
   );
 }

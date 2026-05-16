@@ -61,6 +61,7 @@ export default function CardPage() {
 const [isFollowed, setIsFollowed] = useState(false);
 const [isCollected, setIsCollected] = useState(false);
 const [fansCount, setFansCount] = useState(0);
+const [copySuccess, setCopySuccess] = useState(false);
 
 useEffect(() => {
   async function loadCardFromSupabase() {
@@ -209,11 +210,34 @@ useEffect(() => {
   return <main className="min-h-screen bg-white" />;
 }
 
-  return (
+const handleShareCard = async () => {
+  const shareUrl = window.location.href;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: `${athlete.name}'s jocdocs Card`,
+        text: `Check out ${athlete.name}'s jocdocs card.`,
+        url: shareUrl,
+      });
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopySuccess(true);
+
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 2000);
+    }
+  } catch (error) {
+    console.error("Error sharing card:", error);
+  }
+};
+
+return (
   <main className="min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
 
     {/* CARD */}
-<div className="relative z-10 w-full max-w-[420px] pb-[24px] sm:pb-[160px]">
+<div className="relative z-10 w-full max-w-[420px] pb-[24px]">
   <AthleteCard
     athlete={athlete}
     isOwnCard={false}
@@ -225,7 +249,7 @@ useEffect(() => {
   />
 </div>
 
-    {/* CTA SECTION */}
+{/* CTA SECTION */}
 <div className="relative z-0 mt-1 flex w-full flex-col items-center sm:mt-6">
   <p className="mb-4 text-[15px] text-neutral-500">
     Want one of your own?
@@ -243,7 +267,27 @@ useEffect(() => {
     </span>
   </a>
 
-  <a
+{/* SHARE SECTION */}
+
+<p className="mt-8 max-w-[320px] text-center text-[15px] italic leading-[1.25] text-neutral-500">
+  Use share button either on card or below to share with teammates,
+  friends, family and coaches.
+</p>
+
+<button
+  onClick={handleShareCard}
+  className="mt-4 flex w-full max-w-[340px] items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-[26px] font-bold leading-tight text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+>
+  Share My Card
+</button>
+
+{copySuccess && (
+  <p className="mt-3 text-center text-[13px] font-bold text-[#C5A96A]">
+    Link copied.
+  </p>
+)}
+
+<a
     href="/"
     className="mt-4 text-[18px] font-medium text-black underline underline-offset-4"
   >
