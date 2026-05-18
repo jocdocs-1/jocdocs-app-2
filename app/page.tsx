@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "./components/Footer";
 
 const featuredCards = [
   { src: "/featured-cards/track.png", alt: "Featured track athlete card" },
@@ -208,6 +209,7 @@ export default function HomePage() {
     </div>
   </div>
 )}
+<Footer />
 </main>
 );
 }

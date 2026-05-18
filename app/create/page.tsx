@@ -5,6 +5,7 @@ import AthleteCard from "../components/AthleteCard";
 import type { Athlete } from "../data/athletes";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import Footer from "../components/Footer";
 
 export default function CreateAthletePage() {
   const router = useRouter();
@@ -54,6 +55,8 @@ const [contactInfo, setContactInfo] = useState({
 
 const [savedCardLink, setSavedCardLink] = useState<string | null>(null);
 const [copySuccess, setCopySuccess] = useState(false);
+
+const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("collection");
@@ -584,6 +587,8 @@ return (
         </div>
       </div>
     </div>
+
+    <Footer theme="dark" />
     
   {showSaveModal && (
   <div
@@ -654,15 +659,54 @@ return (
             onChange={(e) =>
               setContactInfo({ ...contactInfo, phone: e.target.value })
             }
-            placeholder="(555) 555-5555"
+                        placeholder="(555) 555-5555"
             className="input"
           />
         </div>
 
+        <label className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-[1.4] text-white/75">
+          <input
+            type="checkbox"
+            checked={agreedToTerms}
+            onChange={(e) => setAgreedToTerms(e.target.checked)}
+            className="mt-1"
+          />
+
+          <span>
+            I confirm that I have the right to use the images and information
+            submitted to jocdocs. If I am under 18, I confirm that I have
+            permission from a parent or guardian.
+
+            <span className="mt-2 block text-xs text-white/45">
+              By publishing, you agree to the{" "}
+              <a
+                href="/terms"
+                target="_blank"
+                className="underline hover:text-white"
+              >
+                Terms
+              </a>{" "}
+              and{" "}
+              <a
+                href="/privacy"
+                target="_blank"
+                className="underline hover:text-white"
+              >
+                Privacy Policy
+              </a>.
+            </span>
+          </span>
+        </label>
+
         <button
           type="button"
           onClick={saveCardLead}
-          className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[22px] font-extrabold uppercase tracking-[0.08em] text-black transition active:scale-[0.98]"
+          disabled={!agreedToTerms}
+          className={`w-full rounded-2xl px-6 py-4 text-[22px] font-extrabold uppercase tracking-[0.08em] transition active:scale-[0.98] ${
+            agreedToTerms
+              ? "bg-[#C5A96A] text-black"
+              : "cursor-not-allowed bg-white/10 text-white/30"
+          }`}
         >
           Go To My Card
         </button>
@@ -678,6 +722,7 @@ return (
     </div>
   </div>
 )}
+
     </div>
   );
 }
