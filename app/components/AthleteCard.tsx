@@ -10,6 +10,12 @@ import {
 } from "lucide-react";
 import type { Athlete } from "../data/athletes";
 import { allison } from "../fonts";
+import { Bebas_Neue } from "next/font/google";
+
+const bebas = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 const themeMap: Record<string, { from: string; to: string }> = {
   gold: { from: "#eab308", to: "#a16207" },
@@ -356,18 +362,30 @@ const randomMessage =
   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black/45 via-black/18 to-transparent" />
 </div>
 
-                    <div
-  className="absolute bottom-[127px] right-4.5 z-20 leading-none select-none pointer-events-none"
+  <div
+  className={`${bebas.className} absolute bottom-[119px] right-[21px] z-20 leading-none select-none pointer-events-none`}
   style={{
-    fontFamily: 'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-    fontSize: '82px',
-    lineHeight: '0.85',
-    WebkitTextStroke: "1.75px rgba(255,255,255,0.72)",
-    color: `${cardColor}60`,
-    textShadow: '3px 4px 6px rgba(0,0,0,0.50)',
-    letterSpacing: '0.03em',
-    transform: 'skewX(-8deg)',
-  }}
+  fontSize: '82px',
+  lineHeight: '0.85',
+
+  color: cardColor,
+
+  letterSpacing: '0.015em',
+
+  transform: 'skewX(-8deg) scaleX(1.06)',
+
+  transformOrigin: 'center',
+
+  textShadow: `
+    0 0 0 #fff,
+    1px 0 0 #fff,
+   -1px 0 0 #fff,
+    0 1px 0 #fff,
+    0 -1px 0 #fff,
+
+    0 4px 8px rgba(0,0,0,0.58)
+  `,
+}}
 >
   {athlete.jerseyNumber || String(athlete.number || "")}
 </div>

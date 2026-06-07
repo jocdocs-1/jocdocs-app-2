@@ -70,8 +70,8 @@ export default function HomePage() {
             {/* FRONT */}
 <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
   <Image
-    src="/hero-cards/fernando-front-v2.png"
-    alt="Fernando Mendoza front sample card"
+    src="/hero-cards/valbano-front.png"
+    alt="athlete front sample card"
     fill
     priority
     sizes="(max-width: 768px) 92vw, 360px"
@@ -82,8 +82,8 @@ export default function HomePage() {
             {/* BACK */}
 <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
   <Image
-    src="/hero-cards/fernando-back.png"
-    alt="Fernando Mendoza back sample card"
+    src="/hero-cards/valbano-back.png"
+    alt="athlete back sample card"
     fill
     priority
     sizes="(max-width: 768px) 92vw, 360px"
