@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: Request) {
   try {
 
-    const { email, name, shareUrl } = await req.json();
+    const { email, name, shareUrl, editUrl } = await req.json();
 
     if (!email || !shareUrl) {
       return Response.json(
@@ -33,24 +33,40 @@ export async function POST(req: Request) {
 
     <!-- SUBTEXT -->
     <p style="font-size: 15px; color: #333333; margin-bottom: 30px;">
-      Tap below to view and share your card.
-    </p>
+  Your card is now live. Use the links below anytime to view, share or update your card.
+</p>
 
     <!-- PRIMARY CTA -->
-    <a href="${shareUrl}" 
-       style="
-         display: inline-block;
-         padding: 13px 26px;
-         background-color: #C9AD68;
-         color: #ffffff;
-         text-decoration: none;
-         font-weight: bold;
-         border-radius: 999px;
-         font-size: 15px;
-         margin-bottom: 24px;
-       ">
-      VIEW CARD
-    </a>
+<a href="${shareUrl}" 
+   style="
+     display: inline-block;
+     padding: 13px 26px;
+     background-color: #C9AD68;
+     color: #ffffff;
+     text-decoration: none;
+     font-weight: bold;
+     border-radius: 999px;
+     font-size: 15px;
+     margin-bottom: 24px;
+   ">
+  VIEW CARD
+</a>
+
+<div style="margin-top: 8px; margin-bottom: 24px;">
+  <a href="${editUrl}" 
+     style="
+       display: inline-block;
+       padding: 13px 26px;
+       background-color: #000000;
+       color: #ffffff;
+       text-decoration: none;
+       font-weight: bold;
+       border-radius: 999px;
+       font-size: 15px;
+     ">
+    EDIT CARD
+  </a>
+</div>
 
     <!-- SECONDARY LINK -->
     <div style="margin-top: 10px;">

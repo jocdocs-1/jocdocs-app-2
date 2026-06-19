@@ -1,16 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AthleteCard from "../components/AthleteCard";
-import type { Athlete } from "../data/athletes";
-import { supabase } from "../lib/supabaseClient";
-import { useRouter } from "next/navigation";
-import Footer from "../components/Footer";
+import AthleteCard from "../../components/AthleteCard";
+import type { Athlete } from "../../data/athletes";
+import { supabase } from "../../lib/supabaseClient";
+import { useRouter, useParams } from "next/navigation";
+import Footer from "../../components/Footer";
 
 export default function CreateAthletePage() {
   const router = useRouter();
-const [athlete, setAthlete] = useState<Athlete>({
-  id: crypto.randomUUID(),
+  const params = useParams();
+  const token = params.token as string;
+
+  const [athlete, setAthlete] = useState<Athlete>({
+    id: crypto.randomUUID(),
   name: "",
   school: "",
   team: "",
@@ -39,6 +42,27 @@ const [athlete, setAthlete] = useState<Athlete>({
   isLegacy: false,
   achievementBanner: "none",
 });
+
+useEffect(() => {
+  async function loadCard() {
+    if (!token) return;
+
+    const { data, error } = await supabase
+      .from("cards")
+      .select("*")
+      .eq("edit_token", token)
+      .single();
+
+    if (error || !data) {
+      console.error(error);
+      return;
+    }
+
+    setAthlete(data.card_data);
+  }
+
+  loadCard();
+}, [token]);
 
 const [followedAthletes, setFollowedAthletes] = useState<string[]>([]);
 const [fansByAthlete, setFansByAthlete] = useState<Record<string, number>>({});
@@ -279,28 +303,36 @@ if (portraitSource && portraitSource.startsWith("data:")) {
     .from("card-images")
     .getPublicUrl(portraitFileName);
 
-  portraitImageUrl = publicUrlData.publicUrl;
+    portraitImageUrl = publicUrlData.publicUrl;
 }
-const editToken = crypto.randomUUID();
+
+const finalActionImage =
+  actionImageUrl || athlete.actionImage;
+
+const finalPortraitImage =
+  portraitImageUrl || athlete.portraitImage || athlete.profileImage;
+
+const editToken = token;
+
+console.log("TOKEN FROM URL:", token);
 
 const { data: card, error: cardError } = await supabase
   .from("cards")
-  .insert([
-    {
-      name: athlete.name,
-      school: athlete.school,
-      sport: athlete.primarySport,
-      action_image_url: actionImageUrl,
-      portrait_image_url: portraitImageUrl,
-      edit_token: editToken,
-      card_data: {
-        ...athlete,
-        actionImage: actionImageUrl,
-        portraitImage: portraitImageUrl,
-        profileImage: portraitImageUrl,
-      },
-    },
-  ])
+  .update({
+  name: athlete.name,
+  school: athlete.school,
+  sport: athlete.primarySport,
+  action_image_url: finalActionImage,
+portrait_image_url: finalPortraitImage,
+  edit_token: editToken,
+  card_data: {
+    ...athlete,
+    actionImage: finalActionImage,
+portraitImage: finalPortraitImage,
+profileImage: finalPortraitImage,
+  },
+})
+  .eq("edit_token", token)
   .select()
   .single();
 
@@ -316,6 +348,9 @@ const { error: leadError } = await supabase.from("leads").insert([
     card_id: card.id,
   },
 ]);
+
+console.log("CONTACT INFO:", contactInfo);
+console.log("LEAD ERROR:", leadError);
 
 if (leadError) throw leadError;
 
@@ -336,41 +371,47 @@ const emailResponse = await fetch("/api/send-card", {
   }),
 });
 
-router.push(`/card/${card.id}`);
+window.location.href = `/card/${card.id}`;
 
 await emailResponse.json();
 
-  } catch (error) {
-    console.error("Supabase save error:", error);
-  }
+  } catch (error: any) {
+  console.error(
+  "Supabase save error:",
+  JSON.stringify(error, null, 2)
+);
+}
 }
 
 return (
   <div className="min-h-screen bg-black p-6 text-white">
     <h1 className="mb-1 text-2xl font-bold">
-      Create Your Athlete Card
+      Edit Your Athlete Card
     </h1>
 
     <p className="mb-8 text-sm leading-tight text-white/70">
-  Watch your card come to life at the bottom of the form as you build.
+  Update your information, photos, stats and links at any time. Watch your card change at the bottom of the form.
 </p>
 
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
       <div className="space-y-4">
           <input
             name="name"
+            value={athlete.name}
             placeholder="Name"
             onChange={handleChange}
             className="input"
           />
           <input
             name="school"
+            value={athlete.school}
             placeholder="School Name"
             onChange={handleChange}
             className="input"
           />
           <input
             name="team"
+            value={athlete.team}
             placeholder="Team Name"
             onChange={handleChange}
             className="input"
@@ -378,18 +419,21 @@ return (
 
           <input
             name="primarySport"
+            value={athlete.primarySport}
             placeholder="Primary Sport"
             onChange={handleChange}
             className="input"
           />
           <input
             name="otherSport1"
+            value={athlete.otherSport1}
             placeholder="Other Sport 1"
             onChange={handleChange}
             className="input"
           />
           <input
             name="otherSport2"
+            value={athlete.otherSport2}
             placeholder="Other Sport 2"
             onChange={handleChange}
             className="input"
@@ -433,6 +477,7 @@ return (
 
 <input
   name="position"
+  value={athlete.position}
   placeholder="Position"
   onChange={handleChange}
   className="input"
@@ -440,6 +485,7 @@ return (
 
 <input
   name="jerseyNumber"
+  value={athlete.jerseyNumber}
   placeholder="Jersey Number"
   onChange={handleChange}
   className="input"
@@ -447,24 +493,28 @@ return (
 
           <input
             name="age"
+            value={athlete.age}
             placeholder="Age"
             onChange={handleChange}
             className="input"
           />
           <input
             name="height"
+            value={athlete.height}
             placeholder="Height"
             onChange={handleChange}
             className="input"
           />
           <input
             name="weight"
+            value={athlete.weight}
             placeholder="Weight"
             onChange={handleChange}
             className="input"
           />
           <input
             name="hometown"
+            value={athlete.hometown}
             placeholder="Hometown"
             onChange={handleChange}
             className="input"
@@ -472,6 +522,7 @@ return (
 
           <input
             name="statsYear"
+            value={athlete.statsYear}
             placeholder="Stats Year"
             onChange={handleChange}
             className="input"
@@ -479,12 +530,14 @@ return (
 
           <input
             name="statLabel1"
+            value={athlete.statLabel1}
             placeholder="Stat 1 Label"
             onChange={handleChange}
             className="input"
           />
           <input
             name="stat1"
+            value={athlete.stat1}
             placeholder="Stat 1 Number"
             onChange={handleChange}
             className="input"
@@ -498,6 +551,7 @@ return (
           />
           <input
             name="stat2"
+            value={athlete.stat2}
             placeholder="Stat 2 Number"
             onChange={handleChange}
             className="input"
@@ -505,12 +559,14 @@ return (
 
           <input
             name="statLabel3"
+            value={athlete.statLabel3}
             placeholder="Stat 3 Label"
             onChange={handleChange}
             className="input"
           />
           <input
             name="stat3"
+            value={athlete.stat3}
             placeholder="Stat 3 Number"
             onChange={handleChange}
             className="input"
@@ -518,42 +574,55 @@ return (
 
           <input
             name="link1"
+            value={athlete.link1}
             placeholder="Highlight Link 1"
             onChange={handleChange}
             className="input"
           />
           <input
             name="link2"
+            value={athlete.link2}
             placeholder="Highlight Link 2"
             onChange={handleChange}
             className="input"
           />
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-white">
-              Upload Action Photo
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e, "actionImage")}
-              className="input"
-            />
-          </div>
+  <label className="block text-sm font-semibold text-white">
+    Replace Action Photo (Optional)
+  </label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => handleImageUpload(e, "actionImage")}
+    className="input"
+  />
+  <p className="text-xs text-white/60">
+    Current photo is in place. Choose a new photo if you want to change.
+  </p>
+</div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-white">
-              Upload Profile Photo
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleImageUpload(e, "profileImage")}
-              className="input"
-            />
-          </div>
+  <label className="block text-sm font-semibold text-white">
+    Replace Profile Photo (Optional)
+  </label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => handleImageUpload(e, "profileImage")}
+    className="input"
+  />
+  <p className="text-xs text-white/60">
+    Currant photo is in place. Choose a new photo if you want to change.
+  </p>
+</div>
 
-                              <select name="theme" onChange={handleChange} className="input">
+            <select
+  name="theme"
+  value={athlete.theme}
+  onChange={handleChange}
+  className="input"
+>
             <option value="gold">Gold</option>
             <option value="red">Red</option>
             <option value="orange">Orange</option>
@@ -573,7 +642,7 @@ return (
     onClick={() => setShowSaveModal(true)}
     className="w-full rounded-2xl bg-[#C5A96A] px-6 py-4 text-[18px] font-extrabold uppercase tracking-[0.08em] text-black shadow-[0_0_24px_rgba(197,169,106,0.35)] transition active:scale-[0.98]"
   >
-    Publish Card
+    Update Card
   </button>
 </div>
 
@@ -629,7 +698,7 @@ return (
 
 <div className="text-center">
   <h2 className="text-[38px] font-extrabold tracking-[-0.03em] leading-[1.0] text-white">
-    Your Card Is Published!
+    Your Card Is Updated!
   </h2>
 
   <p className="mt-3 text-[16px] leading-[1.35] text-white/70">
