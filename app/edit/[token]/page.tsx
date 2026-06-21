@@ -6,6 +6,7 @@ import type { Athlete } from "../../data/athletes";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter, useParams } from "next/navigation";
 import Footer from "../../components/Footer";
+import Link from "next/link";
 
 export default function CreateAthletePage() {
   const router = useRouter();
@@ -385,9 +386,16 @@ await emailResponse.json();
 
 return (
   <div className="min-h-screen bg-black p-6 text-white">
-    <h1 className="mb-1 text-2xl font-bold">
-      Edit Your Athlete Card
-    </h1>
+     <Link
+  href="/"
+  className="mb-6 inline-block text-md text-[#C5A96A] underline underline-offset-4"
+>
+  ← Back to Home
+</Link>
+
+<h1 className="mb-1 text-3xl font-bold">
+  Edit Your Athlete Card
+</h1>  
 
     <p className="mb-8 text-sm leading-tight text-white/70">
   Update your information, photos, stats and links at any time. Watch your card change at the bottom of the form.
