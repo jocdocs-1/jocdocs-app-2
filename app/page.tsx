@@ -127,13 +127,30 @@ export default function HomePage() {
           </span>
         </Link>
 
-        <button
-          type="button"
-          onClick={() => setShowFeatured(true)}
-          className="mt-2 text-[18px] italic underline underline-offset-4"
-        >
-          See Featured Cards
-        </button>
+        <div className="mt-4 flex w-full max-w-[315px] flex-col gap-3">
+  <Link
+    href="/my-cards"
+    className="rounded-full border border-[#C9AD68] bg-white px-6 py-3 text-center font-semibold text-[#C9AD68] transition hover:bg-[#C9AD68]/10"
+  >
+    Manage My Cards
+  </Link>
+
+  <Link
+    href="/explore"
+    className="rounded-full border border-[#C9AD68] bg-white px-6 py-3 text-center font-semibold text-[#C9AD68] transition hover:bg-[#C9AD68]/10"
+  >
+    Explore Athletes
+  </Link>
+</div>
+
+<button
+  type="button"
+  onClick={() => setShowFeatured(true)}
+  className="mt-6 text-[18px] italic underline underline-offset-4"
+>
+  See Featured Cards
+</button>
+
       </section>
 
       {/* SLIDE-UP FEATURED CARDS PANEL */}
@@ -209,7 +226,8 @@ export default function HomePage() {
     </div>
   </div>
 )}
-<Footer />
+  <Footer />
+
 </main>
 );
 }

@@ -7,9 +7,9 @@ export default function ContactPage() {
         <button
   type="button"
   onClick={() => window.history.back()}
-  className="text-sm font-bold underline"
+  className="text-md font-bold underline"
 >
-  ← Back
+  ← Back to Home
 </button>
 
         <h1 className="mt-8 text-4xl font-extrabold tracking-tight">
