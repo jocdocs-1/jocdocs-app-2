@@ -18,7 +18,7 @@ export default function TermsPage() {
         </h1>
 
         <p className="mt-3 text-sm text-black/60">
-          Last updated: May 18, 2026
+          Last updated: June 27, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[16px] leading-7 text-black/80">
@@ -71,14 +71,22 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-extrabold text-black">
-              Removal requests
-            </h2>
-            <p className="mt-2">
-              To request removal of a card or image, email hello.jocdocs@gmail.com
-              with the card link and a brief explanation of the request.
-            </p>
-          </section>
+  <h2 className="text-xl font-extrabold text-black">
+    Removal and Account Management
+  </h2>
+
+  <p className="mt-2">
+    Users may edit, manage, or delete their own cards at any time
+    through the Manage My Cards page.
+  </p>
+
+  <p className="mt-4">
+    If you believe content on jocdocs violates your rights,
+    contains unauthorized material, or should otherwise be
+    removed, please email hello.jocdocs@gmail.com with the
+    card link and a brief explanation of your request.
+  </p>
+</section>
 
           <section>
             <h2 className="text-xl font-extrabold text-black">

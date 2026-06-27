@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Link from "next/link";
+import Footer from "../components/Footer";
 
 export default function ExplorePage() {
   const [cards, setCards] = useState<any[]>([]);
@@ -27,6 +28,20 @@ console.table(data?.slice(0, 1));
     setCards(data);
   }
 }
+
+const themeColors: Record<string, string> = {
+  gold: "#C5A96A",
+  red: "#D62828",
+  orange: "#E89B2C",
+  yellow: "#D4B03A",
+  green: "#2E8B57",
+  navy: "#1B365D",
+  royal: "#3B82F6",
+  purple: "#3B2E7E",
+  maroon: "#800000",
+  silver: "#999999",
+  black: "#222222",
+};
 
 const sports = [
   "All",
@@ -108,33 +123,119 @@ const matchesSport =
 </div>
 
 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-  {filteredCards.map((card) => (
-  <a
-  key={card.id}
-  href={`/card/${card.id}`}
-  className="rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10"
+  {filteredCards.map((card) => {
+    const themeColor =
+      themeColors[card.card_data?.theme || "gold"] || "#C5A96A";
+
+    const nameParts = card.name?.split(" ") || [];
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ");
+
+    return (
+      <a
+        key={card.id}
+        href={`/card/${card.id}`}
+        className="block transition hover:scale-[1.02]"
+      >
+        <div className="rounded-[24px] bg-white p-[6px] shadow-[0_8px_20px_rgba(0,0,0,0.45)]">
+
+  <div
+    className="overflow-hidden rounded-[18px]"
+    style={{ backgroundColor: themeColor }}
+  >
+
+            {/* NAME */}
+<div
+  className="
+    ml-0
+    mr-5
+    mt-3
+    -mb-4
+    relative
+    z-20
+    rounded-r-full
+    bg-white
+    px-3
+    pt-1
+    pb-1
+    text-center
+  "
 >
-  <img
-    src={card.action_image_url}
-    alt={card.name}
-    className="aspect-[2.5/3.5] w-full rounded-xl object-cover"
-  />
+              <div className="text-[20px] italic font-semibold leading-[1.05] text-black">
+  {firstName}
+</div>
 
-  <h2 className="mt-3 font-bold text-white">
-    {card.name}
-  </h2>
+<div className="text-[32px] italic font-black uppercase leading-[0.88] text-black">
+  {lastName}
+</div>
+            </div>
 
-  <p className="mt-1 text-sm text-white/70">
-    {card.school}
-  </p>
+            {/* IMAGE */}
+            <div className="px-[10px] pt-1.5">
+              <img
+                src={card.action_image_url}
+                alt={card.name}
+                className="
+  aspect-[2.5/3.5]
+  w-full
+  rounded-xl
+  border
+  border-white
+  object-cover
+"
+              />
+            </div>
 
-  <p className="mt-2 text-xs uppercase tracking-wider text-[#C5A96A]">
-    {card.sport}
-  </p>
-</a>
-))}
+            {/* SCHOOL */}
+            <div className="pl-5 pr-0 -mt-6 relative z-20">
+  <div
+  title={card.school}
+  className="
+    max-w-[95%]
+    rounded-l-full
+    bg-black
+    py-[8px]
+    pl-7
+    pr-4
+    text-left
+    text-[17px]
+    font-medium
+    text-white
+    whitespace-nowrap
+    overflow-hidden
+    text-ellipsis
+  "
+>
+  {card.school || "\u00A0"}
+</div>
+</div>
+
+            {/* SPORT */}
+<div
+  className="
+  px-4
+  pt-1
+  pb-2
+  text-right
+  text-[16px]
+    uppercase
+    tracking-[0.12em]
+    text-white
+  "
+>
+  {card.sport}
+</div>
+
+          </div>
+        </div>
+      </a>
+    );
+  })}
 </div>
       </div>
-    </main>
-  );
+
+<Footer theme="dark" />
+
+</main>
+);
 }

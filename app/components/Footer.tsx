@@ -17,6 +17,26 @@ export default function Footer({ theme = "light" }: FooterProps) {
         }`}
       >
         <a
+          href="/explore"
+          className={`transition ${
+            isDark ? "hover:text-white" : "hover:text-black"
+          }`}
+        >
+          Explore Athletes
+        </a>
+
+        <a
+          href="/my-cards"
+          className={`font-semibold transition ${
+            isDark
+              ? "text-[#C5A96A] hover:text-white"
+              : "text-[#C5A96A] hover:text-black"
+          }`}
+        >
+          Manage My Cards
+        </a>
+
+        <a
           href="/terms"
           className={`transition ${
             isDark ? "hover:text-white" : "hover:text-black"
@@ -35,24 +55,13 @@ export default function Footer({ theme = "light" }: FooterProps) {
         </a>
 
         <a
-  href="/contact"
-  className={`transition ${
-    isDark ? "hover:text-white" : "hover:text-black"
-  }`}
->
-  Contact
-</a>
-
-<a
-  href="/my-cards"
-  className={`font-semibold transition ${
-    isDark
-      ? "text-[#C5A96A] hover:text-white"
-      : "text-[#C5A96A] hover:text-black"
-  }`}
->
-  Manage My Cards
-</a>
+          href="/contact"
+          className={`transition ${
+            isDark ? "hover:text-white" : "hover:text-black"
+          }`}
+        >
+          Contact
+        </a>
       </div>
     </footer>
   );
