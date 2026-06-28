@@ -137,95 +137,108 @@ const matchesSport =
         href={`/card/${card.id}`}
         className="block transition hover:scale-[1.02]"
       >
-        <div className="rounded-[24px] bg-white p-[6px] shadow-[0_8px_20px_rgba(0,0,0,0.45)]">
-
-  <div
-    className="overflow-hidden rounded-[18px]"
-    style={{ backgroundColor: themeColor }}
-  >
-
+        <div className="rounded-[20px] bg-white p-[4px] shadow-[0_8px_20px_rgba(0,0,0,0.45)] md:rounded-[24px] md:p-[5px]">
+          <div
+            className="overflow-hidden rounded-[16px] md:rounded-[19px]"
+            style={{ backgroundColor: themeColor }}
+          >
             {/* NAME */}
-<div
-  className="
-    ml-0
-    mr-5
-    mt-3
-    -mb-4
-    relative
-    z-20
-    rounded-r-full
-    bg-white
-    px-3
-    pt-1
-    pb-1
-    text-center
-  "
->
-              <div className="text-[20px] italic font-semibold leading-[1.05] text-black">
-  {firstName}
-</div>
+            <div
+              className="
+                ml-0
+                mr-5
+                mt-2
+                -mb-3
+                relative
+                z-20
+                rounded-r-full
+                bg-white
+                px-2
+                pt-[3px]
+                pb-[4px]
+                text-center
+                md:mt-3
+                md:-mb-4
+                md:px-3
+                md:pt-1
+                md:pb-1
+              "
+            >
+              <div className="text-[15px] italic font-semibold leading-[1.05] text-black md:text-[18px] lg:text-[20px]">
+                {firstName}
+              </div>
 
-<div className="text-[32px] italic font-black uppercase leading-[0.88] text-black">
-  {lastName}
-</div>
+              <div className="text-[24px] italic font-black uppercase leading-[0.88] text-black md:text-[28px] lg:text-[32px]">
+                {lastName}
+              </div>
             </div>
 
             {/* IMAGE */}
-            <div className="px-[10px] pt-1.5">
+            <div className="px-[8px] pt-1 md:px-[10px] md:pt-1.5">
               <img
                 src={card.action_image_url}
                 alt={card.name}
                 className="
-  aspect-[2.5/3.5]
-  w-full
-  rounded-xl
-  border
-  border-white
-  object-cover
-"
+                  aspect-[2.5/3.5]
+                  w-full
+                  rounded-lg
+                  border
+                  border-white
+                  object-cover
+                  md:rounded-xl
+                "
               />
             </div>
 
             {/* SCHOOL */}
-            <div className="pl-5 pr-0 -mt-6 relative z-20">
-  <div
-  title={card.school}
-  className="
-    max-w-[95%]
-    rounded-l-full
-    bg-black
-    py-[8px]
-    pl-7
-    pr-4
-    text-left
-    text-[17px]
-    font-medium
-    text-white
-    whitespace-nowrap
-    overflow-hidden
-    text-ellipsis
-  "
->
-  {card.school || "\u00A0"}
-</div>
-</div>
+            <div className="relative z-20 -mt-5 pl-7 pr-0 md:-mt-6 md:pl-8">
+              <div
+                title={card.school}
+                className="
+                  ml-auto
+                  max-w-[92%]
+                  rounded-l-full
+                  bg-black
+                  py-[6px]
+                  pl-5
+                  pr-3
+                  text-left
+                  text-[14px]
+                  font-medium
+                  text-white
+                  whitespace-nowrap
+                  overflow-hidden
+                  text-ellipsis
+                  md:max-w-[94%]
+                  md:py-[7px]
+                  md:pl-6
+                  md:pr-4
+                  md:text-[16px]
+                  lg:text-[17px]
+                "
+              >
+                {card.school || "\u00A0"}
+              </div>
+            </div>
 
             {/* SPORT */}
-<div
-  className="
-  px-4
-  pt-1
-  pb-2
-  text-right
-  text-[16px]
-    uppercase
-    tracking-[0.12em]
-    text-white
-  "
->
-  {card.sport}
-</div>
-
+            <div
+              className="
+                px-3
+                pt-1
+                pb-2
+                text-right
+                text-[14px]
+                uppercase
+                tracking-[0.12em]
+                text-white
+                md:px-4
+                md:text-[15px]
+                lg:text-[16px]
+              "
+            >
+              {card.sport}
+            </div>
           </div>
         </div>
       </a>
