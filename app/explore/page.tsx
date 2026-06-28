@@ -191,7 +191,7 @@ const matchesSport =
             </div>
 
             {/* SCHOOL */}
-            <div className="relative z-20 -mt-5 pl-7 pr-0 md:-mt-6 md:pl-8">
+            <div className="relative z-20 -mt-5 pl-4 pr-0 md:-mt-6 md:pl-6">
               <div
                 title={card.school}
                 className="
