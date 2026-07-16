@@ -70,7 +70,7 @@ export default function HomePage() {
             {/* FRONT */}
 <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
   <Image
-    src="/hero-cards/valbano-front.png"
+    src="/hero-cards/bdavie-front.png"
     alt="athlete front sample card"
     fill
     priority
@@ -82,7 +82,7 @@ export default function HomePage() {
             {/* BACK */}
 <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
   <Image
-    src="/hero-cards/valbano-back.png"
+    src="/hero-cards/bdavie-back.png"
     alt="athlete back sample card"
     fill
     priority
