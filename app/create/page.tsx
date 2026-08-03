@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AthleteCard from "../components/AthleteCard";
+import AthleteCard from "../components/cards/AthleteCard";
 import type { Athlete } from "../data/athletes";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/navigation";

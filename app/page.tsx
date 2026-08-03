@@ -52,20 +52,21 @@ export default function HomePage() {
     <main className="min-h-screen bg-white text-black">
       <section className="mx-auto flex w-full max-w-[430px] flex-col items-center px-5 pb-6 pt-7">
         {/* LOGO */}
-        <div className="flex flex-col items-center">
-          <Image
-  src="/jocdocs-logo-full-v2.png"
-  alt="jocdocs"
-  width={320}
-  height={110}
-  priority
-  className="h-auto w-[292px]"
-/>
+        <div className="w-[292px] max-w-full">
+  <Image
+    src="/jocdocs-logo-full-v2.png"
+    alt="jocdocs"
+    width={320}
+    height={110}
+    priority
+    className="h-auto w-full"
+  />
 
-<p className="mt-0 text-[21px] leading-none tracking-[-0.02em]">
-  Create. Collect. Connect.
-</p>
-        </div>
+  {/* Centered beneath the JOCDOCS typography, excluding the badge */}
+  <p className="ml-[65px] mt-[-4px] text-center text-[19px] font-normal leading-none tracking-[-0.01em] text-black">
+    Create. Collect. Connect.
+  </p>
+</div>
 
         {/* FEATURED ATHLETE HEADING */}
         <div className="mt-7 text-center">
@@ -182,16 +183,16 @@ export default function HomePage() {
           </Link>
 
           {/* SPORTS FAN INVITATION */}
-          <div className="relative mt-5 overflow-hidden rounded-[25px] border-2 border-[#C9AD68] bg-black px-5 py-5 text-white shadow-[0_10px_22px_rgba(0,0,0,0.20)]">
-            <div className="absolute right-4 top-4 rounded-full bg-[#C9AD68] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-black">
-              Coming Soon
-            </div>
+          <Link
+  href="/create-fan"
+  className="group relative mt-5 block overflow-hidden rounded-[25px] border-2 border-[#C9AD68] bg-black px-5 py-5 text-white shadow-[0_10px_22px_rgba(0,0,0,0.20)] transition duration-200 active:translate-y-[2px] active:shadow-[0_5px_12px_rgba(0,0,0,0.18)]"
+>
 
             <div className="text-center">
               <p
                 className={`${frederickSans.className} text-[38px] leading-none tracking-[0.04em] text-[#C9AD68]`}
               >
-                SPORTS FANS
+                FANS
               </p>
 
               <h2
@@ -204,7 +205,14 @@ export default function HomePage() {
                 Collect and follow your favorite athletes.
               </p>
             </div>
-          </div>
+          <span
+  aria-hidden="true"
+  className="absolute bottom-4 right-5 text-[24px] text-[#C9AD68] transition-transform group-hover:translate-x-1"
+>
+  →
+</span>
+
+</Link>
 
           {/* EVERYONE INVITATION */}
           <Link

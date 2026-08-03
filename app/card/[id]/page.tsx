@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import AthleteCard from "@/app/components/AthleteCard";
+import AthleteCard from "../../components/cards/AthleteCard";
 import type { Athlete } from "@/app/data/athletes";
 import { supabase } from "@/app/lib/supabaseClient";
 
@@ -271,7 +271,7 @@ return (
 
 <p className="mt-8 max-w-[320px] text-center text-[15px] italic leading-[1.25] text-neutral-500">
   Use share button either on card or below to share with teammates,
-  friends, family and coaches.
+  friends, family, coaches and fans.
 </p>
 
 <button
