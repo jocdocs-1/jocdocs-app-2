@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import Footer from "../components/Footer";
 import NavigationButton from "../components/navigation/NavigationButton";
 import { useSearchParams } from "next/navigation";
 
-export default function ExplorePage() {
+function ExplorePageContent() {
   const searchParams = useSearchParams();
 
   const fromParam = searchParams.get("from");
@@ -283,4 +283,20 @@ const matchesSport =
 
 </main>
 );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-black text-white">
+          <p className="pt-12 text-center text-sm text-white/50">
+            Loading athletes...
+          </p>
+        </main>
+      }
+    >
+      <ExplorePageContent />
+    </Suspense>
+  );
 }

@@ -6,22 +6,13 @@ import { supabase } from "@/app/lib/supabaseClient";
 import MiniFanTicket from "@/app/components/cards/MiniFanTicket";
 import MiniAthleteCard from "@/app/components/MiniAthleteCard";
 import NavigationButton from "../../components/navigation/NavigationButton";
+import type { Athlete } from "@/app/data/athletes";
 
 type FanRecord = {
   id: string;
   created_at: string;
   name: string;
   photo_url: string | null;
-};
-
-type AthleteRecord = {
-  id: string;
-  name: string;
-  school: string;
-  primarySport: string;
-  actionImage: string;
-  portraitImage: string;
-  theme?: string;
 };
 
 export default function AthleteFansPage() {
@@ -33,9 +24,7 @@ export default function AthleteFansPage() {
 
   const [athleteName, setAthleteName] = useState("Athlete");
   const [fanCollectors, setFanCollectors] = useState<FanRecord[]>([]);
-  const [athleteCollectors, setAthleteCollectors] = useState<AthleteRecord[]>(
-    []
-  );
+  const [athleteCollectors, setAthleteCollectors] = useState<Athlete[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const totalFans = fanCollectors.length + athleteCollectors.length;
@@ -124,25 +113,25 @@ export default function AthleteFansPage() {
             throw cardError;
           }
 
-          const resolvedAthleteCollectors =
-            cardRows?.map((row) => ({
-              ...(row.card_data ?? {}),
-              id: row.id,
-              name: row.card_data?.name ?? row.name ?? "",
-              school: row.card_data?.school ?? row.school ?? "",
-              primarySport:
-                row.card_data?.primarySport ?? row.sport ?? "",
-              actionImage:
-                row.card_data?.actionImage ??
-                row.action_image_url ??
-                "",
-              portraitImage:
-                row.card_data?.portraitImage ??
-                row.portrait_image_url ??
-                "",
-              theme:
-                row.card_data?.theme ?? "gold",
-            })) ?? [];
+          const resolvedAthleteCollectors: Athlete[] =
+  cardRows?.map((row) => ({
+    ...(row.card_data ?? {}),
+    id: row.id,
+    name: row.card_data?.name ?? row.name ?? "",
+    school: row.card_data?.school ?? row.school ?? "",
+    primarySport:
+      row.card_data?.primarySport ?? row.sport ?? "",
+    actionImage:
+      row.card_data?.actionImage ??
+      row.action_image_url ??
+      "",
+    portraitImage:
+      row.card_data?.portraitImage ??
+      row.portrait_image_url ??
+      "",
+    theme:
+      row.card_data?.theme ?? "gold",
+  })) ?? [];
 
           setAthleteCollectors(resolvedAthleteCollectors);
         } else {

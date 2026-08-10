@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import MiniAthleteCard from "../components/MiniAthleteCard";
 import NavigationButton from "../components/navigation/NavigationButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "../lib/supabaseClient";
 import Link from "next/link";
 
-export default function CollectionPage() {
+function CollectionPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -186,5 +186,21 @@ if (!collectorId) {
         )}
       </div>
     </main>
+  );
+}
+
+export default function CollectionPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-black text-white">
+          <p className="pt-12 text-center text-sm text-white/50">
+            Loading collection...
+          </p>
+        </main>
+      }
+    >
+      <CollectionPageContent />
+    </Suspense>
   );
 }
