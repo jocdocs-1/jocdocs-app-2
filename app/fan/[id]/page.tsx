@@ -1,6 +1,7 @@
 import FanTicket from "@/app/components/cards/FanTicket";
 import ShareFanTicketActions from "@/app/components/fan/ShareFanTicketActions";
 import { supabase } from "@/app/lib/supabaseClient";
+import NavigationButton from "../../components/navigation/NavigationButton";
 
 type FanPageProps = {
   params: Promise<{
@@ -19,11 +20,30 @@ export default async function FanPage({
     .eq("id", id)
     .single();
 
+    const { count: collectedCount, error: collectionCountError } =
+  await supabase
+    .from("collections")
+    .select("*", { count: "exact", head: true })
+    .eq("collector_type", "fan")
+    .eq("collector_id", id)
+    .eq("collected_type", "athlete_card");
+
+if (collectionCountError) {
+  console.error(
+    "Fan collection count error:",
+    collectionCountError
+  );
+}
+
   if (error) {
     console.error("Fan fetch error:", error);
 
     return (
       <main className="min-h-screen bg-white p-8 text-black">
+        <NavigationButton
+  type="back"
+  href="/"
+/>
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl font-bold">
             Fan Ticket unavailable
@@ -79,11 +99,11 @@ export default async function FanPage({
       "
     >
       <FanTicket
-        name={fan.name}
-        photo={fan.photo_url || ""}
-        collectedCount={0}
-        createdAt={fan.created_at}
-      />
+  name={fan.name}
+  photo={fan.photo_url || ""}
+  collectedCount={collectedCount ?? 0}
+  createdAt={fan.created_at}
+/>
     </div>
   </div>
 </div>

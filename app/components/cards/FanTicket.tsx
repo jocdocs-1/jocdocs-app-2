@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Bookmark,
   Share2,
@@ -5,6 +7,7 @@ import {
 } from "lucide-react";
 import { frederickSans } from "../../fonts";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type FanTicketProps = {
   name?: string;
@@ -19,6 +22,9 @@ export default function FanTicket({
   collectedCount = 0,
   createdAt,
 }: FanTicketProps) {
+
+  const router = useRouter();
+
   const memberSince = new Intl.DateTimeFormat("en-US", {
   month: "long",
   year: "numeric",
@@ -101,8 +107,7 @@ export default function FanTicket({
             aria-hidden="true"
             preserveAspectRatio="none"
             style={{
-  filter:
-    "drop-shadow(0 10px 28px rgba(0,0,0,0.62)) drop-shadow(0 2px 8px rgba(0,0,0,0.55))",
+  filter: "drop-shadow(0 10px 24px rgba(0,0,0,0.42))",
 }}
           >
             <defs>
@@ -390,7 +395,8 @@ export default function FanTicket({
 {/* MY COLLECTION BUTTON */}
 <button
   type="button"
-  className="absolute left-[36px] right-[36px] top-[370px] z-20 h-[62px] rounded-[17px] border-[2px] border-[#C5A96A] bg-black px-[10px] text-white shadow-[0_8px_20px_rgba(0,0,0,0.3)] transition-transform duration-200 hover:scale-[1.01] active:scale-[0.98]"
+  onClick={() => router.push("/collection?from=fan")}
+  className="absolute left-[36px] right-[36px] top-[370px] z-20 h-[62px] rounded-[17px] border-[2px] border-[#C5A96A] bg-black px-[10px] text-white"
 >
   <span className="flex h-full items-center">
     {/* COLLECTION ICON */}
@@ -427,19 +433,20 @@ export default function FanTicket({
           {/* ACTION BUTTONS */}
 <footer className="absolute bottom-[7px] left-[50px] right-[50px] z-20 grid h-[75px] grid-cols-2 text-center text-black">
   {/* COLLECTION ACTION */}
-  <button
-    type="button"
-    aria-label={`View ${collectedCount} collected athlete cards`}
-    className="flex flex-col items-center justify-center border-r border-black/10"
-  >
-    <span className="flex h-[41px] w-[41px] items-center justify-center rounded-full border-[1.5px] border-[#C5A96A] bg-black text-white shadow-[0_4px_10px_rgba(0,0,0,0.22)]">
-  <Bookmark size={21} strokeWidth={1.9} />
-</span>
+<button
+  type="button"
+  aria-label={`View ${collectedCount} collected athlete cards`}
+  onClick={() => router.push("/collection?from=fan")}
+  className="flex flex-col items-center justify-center border-r border-black/10"
+>
+  <span className="flex h-[41px] w-[41px] items-center justify-center rounded-full border-[1.5px] border-[#C5A96A] bg-black text-white shadow-[0_4px_10px_rgba(0,0,0,0.22)]">
+    <Bookmark size={21} strokeWidth={1.9} />
+  </span>
 
-    <span className="mt-[9px] text-[9px] font-bold uppercase leading-none tracking-[0.12em] text-black/55">
-      {collectedCount} Collected
-    </span>
-  </button>
+  <span className="mt-[9px] text-[9px] font-bold uppercase leading-none tracking-[0.12em] text-black/55">
+    {collectedCount} Collected
+  </span>
+</button>
 
   {/* SHARE ACTION */}
   <button

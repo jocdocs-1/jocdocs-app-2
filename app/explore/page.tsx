@@ -2,10 +2,29 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import Link from "next/link";
 import Footer from "../components/Footer";
+import NavigationButton from "../components/navigation/NavigationButton";
+import { useSearchParams } from "next/navigation";
 
 export default function ExplorePage() {
+  const searchParams = useSearchParams();
+
+  const fromParam = searchParams.get("from");
+
+const from =
+  fromParam === "athlete"
+    ? "athlete"
+    : fromParam === "fan"
+      ? "fan"
+      : null;
+
+const ownerId = searchParams.get("ownerId");
+
+const source =
+  searchParams.get("source") === "collection"
+    ? "collection"
+    : "home";
+
   const [cards, setCards] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [selectedSport, setSelectedSport] = useState("All");
@@ -76,14 +95,23 @@ const matchesSport =
 });
 
   return (
-    <main className="min-h-screen bg-black px-4 py-10 text-white">
+    <main className="relative min-h-screen bg-black px-4 py-10 text-white">
+      <NavigationButton
+  type="back"
+  onClick={() => {
+    if (source === "collection" && from) {
+      const ownerParam = ownerId ? `&ownerId=${ownerId}` : "";
+
+      window.location.href =
+        `/collection?from=${from}${ownerParam}`;
+      return;
+    }
+
+    window.location.href = "/";
+  }}
+/>
       <div className="mx-auto max-w-6xl">
-        <Link
-        href="/"
-        className="mb-6 inline-block text-[16px] underline underline-offset-4 text-[#C5A96A]"
-      >
-        ← Back to Home
-      </Link>
+
         <h1 className="mb-2 text-center text-4xl font-bold">
   Explore Athletes
 </h1>
@@ -133,10 +161,14 @@ const matchesSport =
 
     return (
       <a
-        key={card.id}
-        href={`/card/${card.id}`}
-        className="block transition hover:scale-[1.02]"
-      >
+  key={card.id}
+  href={`/card/${card.id}?source=explore&exploreSource=${source}${
+  from ? `&from=${from}` : ""
+}${
+  ownerId ? `&ownerId=${ownerId}` : ""
+}`}
+  className="block transition hover:scale-[1.02]"
+>
         <div className="rounded-[20px] bg-white p-[4px] shadow-[0_8px_20px_rgba(0,0,0,0.45)] md:rounded-[24px] md:p-[5px]">
           <div
             className="overflow-hidden rounded-[16px] md:rounded-[19px]"

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import FanTicket from "../components/cards/FanTicket";
 import Footer from "../components/Footer";
 import { supabase } from "../lib/supabaseClient";
+import NavigationButton from "../components/navigation/NavigationButton";
 
 export default function CreateFanPage() {
   const router = useRouter();
@@ -263,6 +264,8 @@ export default function CreateFanPage() {
         );
       }
 
+      window.localStorage.setItem("jocdocsFanId", fan.id);
+      
       router.push(`/fan/${fan.id}`);
     } catch (error) {
       console.error("Fan Ticket save error:", error);
@@ -276,18 +279,15 @@ export default function CreateFanPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative min-h-screen bg-black text-white">
+      <NavigationButton
+  type="back"
+  href="/"
+/>
       <main className="px-6 py-10">
         <div className="mx-auto max-w-5xl">
-          <button
-            type="button"
-            onClick={() => window.history.back()}
-            className="text-sm font-bold underline underline-offset-4"
-          >
-            ← Back
-          </button>
 
-          <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-2">
             {/* FORM */}
             <section>
               <h1 className="text-3xl font-extrabold">

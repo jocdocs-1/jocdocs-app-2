@@ -6,6 +6,7 @@ import type { Athlete } from "../data/athletes";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Footer from "../components/Footer";
+import NavigationButton from "../components/navigation/NavigationButton";
 
 export default function CreateAthletePage() {
   const router = useRouter();
@@ -306,6 +307,8 @@ const { data: card, error: cardError } = await supabase
 
     if (cardError) throw cardError;
 
+    localStorage.setItem("jocdocsAthleteCardId", card.id);
+
 const cardUrl = `${window.location.origin}/card/${card.id}`;
 const editUrl = `${window.location.origin}/edit/${card.edit_token}`;
 
@@ -346,7 +349,12 @@ await emailResponse.json();
 }
 
 return (
-  <div className="min-h-screen bg-black p-6 text-white">
+  <div className="relative min-h-screen bg-black px-6 pb-6 pt-24 text-white">
+    <NavigationButton
+  type="back"
+  href="/"
+/>
+
     <h1 className="mb-1 text-2xl font-bold">
       Create Your Athlete Card
     </h1>
@@ -582,7 +590,7 @@ return (
             <AthleteCard
               athlete={athlete}
               isOwnCard={true}
-              onCollect={handleCollect}
+              onToggleCollect={handleCollect}
               collection={collection}
               isCollected={isCollected}
               fansCount={fansByAthlete[athlete.id] || 0}

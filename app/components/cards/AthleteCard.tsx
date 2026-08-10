@@ -6,7 +6,6 @@ import {
   Bookmark,
   Share2,
   RefreshCw,
-  UserPlus,
 } from "lucide-react";
 import type { Athlete } from "../../data/athletes";
 import { allison } from "../../fonts";
@@ -35,28 +34,26 @@ export default function AthleteCard({
   athlete,
   isOwnCard = true,
   onOpenCollection,
-  onCollect,
-  onToggleFollow,
+  onOpenFans,
+  onToggleCollect,
   onShare,
-  collection,
+  collectionCount = 0,
   isCollected = false,
-  isFollowed = false,
   fansCount = 0,
 }: {
   athlete: Athlete;
   isOwnCard?: boolean;
   onOpenCollection?: () => void;
-  onCollect?: () => void;
-  onToggleFollow?: () => void;
+  onOpenFans?: () => void;
+  onToggleCollect?: () => void;
   onShare?: () => void;
-  collection?: Athlete[];
+  collectionCount?: number;
   isCollected?: boolean;
-  isFollowed?: boolean;
   fansCount?: number;
 }) {
-    const followLabel = isFollowed ? "Following" : "Follow";
   const collectLabel = isCollected ? "Collected" : "Collect";
   const fansLabel = `Fans ${fansCount}`;
+  const collectionLabel = `Collection ${collectionCount}`;
   const themeColors = themeMap[athlete.theme || "gold"] || themeMap.gold;
   const cardColor = themeColors.from;
 
@@ -408,9 +405,13 @@ const randomMessage =
                       {isOwnCard ? (
                         <>
                           <button
-                            type="button"
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onOpenFans?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
                             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
                               <Users size={18} strokeWidth={2} />
                             </span>
@@ -425,7 +426,7 @@ const randomMessage =
                             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
                               <Bookmark size={18} strokeWidth={2} />
                             </span>
-                            <span className="text-[10px]">Collection</span>
+                            <span className="text-[10px]">{collectionLabel}</span>
                           </button>
 
                           <button
@@ -455,91 +456,95 @@ const randomMessage =
                         </>
                       ) : (
                         <>
-                          <button
-                            type="button"
-                            onClick={onToggleFollow}
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
-                            <span
-                              className={`flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-150 ${
-                                isFollowed
-                                  ? "border-white/80 bg-white/80"
-                                  : "border-white/40 bg-white/10"
-                              }`}
-                            >
-                              <UserPlus
-                                size={18}
-                                strokeWidth={2}
-                                className={isFollowed ? "text-neutral-700" : "text-white"}
-                              />
-                            </span>
 
-                            <span
-                              className={`text-[10px] ${
-                                isFollowed ? "font-semibold text-white" : "text-white"
-                              }`}
-                            >
-                              {followLabel}
-                            </span>
-                          </button>
+                          {/* COLLECT */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onToggleCollect?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+  aria-label={
+    isCollected
+      ? `Remove ${athlete.name} from collection`
+      : `Add ${athlete.name} to collection`
+  }
+>
+  <span
+    className={`flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] backdrop-blur-sm transition-all duration-150 ${
+      isCollected
+        ? "border-white/70 bg-white/80"
+        : "border-white/40 bg-white/10"
+    }`}
+  >
+    <Bookmark
+      size={18}
+      strokeWidth={2}
+      className={
+        isCollected
+          ? "fill-neutral-600 text-neutral-600"
+          : "text-white"
+      }
+    />
+  </span>
 
-                          <button
-                            type="button"
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
-                            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
-                              <Users size={18} strokeWidth={2} />
-                            </span>
-                            <span className="text-[10px]">{fansLabel}</span>
-                          </button>
+  <span className="text-[10px] font-semibold">
+    {collectLabel}
+  </span>
+</button>
 
-                          <button
-                            type="button"
-                            onClick={isCollected ? undefined : onCollect}
-                            disabled={isCollected}
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
-                            <span
-                              className={`flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] backdrop-blur-sm ${
-                                isCollected
-                                  ? "border-white/70 bg-white/80"
-                                  : "border-white/40 bg-white/10"
-                              }`}
-                            >
-                              <Bookmark
-                                size={18}
-                                strokeWidth={2}
-                                className={isCollected ? "text-neutral-600 fill-neutral-600" : "text-white"}
-                              />
-                            </span>
+{/* FANS */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onOpenFans?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+  aria-label={`View fans of ${athlete.name}`}
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
+    <Users size={18} strokeWidth={2} />
+  </span>
 
-                            <span className="text-[10px] font-semibold">{collectLabel}</span>
-                          </button>
+  <span className="text-[10px]">
+    {fansLabel}
+  </span>
+</button>
 
-                          <button
-                            type="button"
-                            onClick={handleShare}
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
-                            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
-                              <Share2 size={18} strokeWidth={2} />
-                            </span>
-                            <span className="text-[10px]">Share</span>
-                          </button>
+{/* SHARE */}
+<button
+  type="button"
+  onClick={handleShare}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
+    <Share2 size={18} strokeWidth={2} />
+  </span>
 
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsFlipped(true);
-                            }}
-                            className="flex w-[70px] flex-col items-center gap-1 text-white"
-                          >
-                            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
-                              <RefreshCw size={18} strokeWidth={2} />
-                            </span>
-                            <span className="text-[10px]">Flip</span>
-                          </button>
+  <span className="text-[10px]">
+    Share
+  </span>
+</button>
+
+{/* FLIP */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    setIsFlipped(true);
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
+    <RefreshCw size={18} strokeWidth={2} />
+  </span>
+
+  <span className="text-[10px]">
+    Flip
+  </span>
+</button>
                         </>
                       )}
                     </div>
@@ -715,9 +720,13 @@ const randomMessage =
                         {isOwnCard ? (
                           <>
                             <button
-                              type="button"
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onOpenFans?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
                               <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
                                 <Users size={18} strokeWidth={2} />
                               </span>
@@ -727,17 +736,16 @@ const randomMessage =
                             <button
                               type="button"
                               onClick={onOpenCollection}
-                              disabled={isCollected}
                               className="flex w-[70px] flex-col items-center gap-1 text-white"
                             >
                               <span className="flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-sm border-white/40 bg-white/10">
                                 <Bookmark
                                   size={18}
                                   strokeWidth={2}
-                                  className={isCollected ? "text-white fill-white" : "text-white"}
+                                  className="text-white"
                                 />
                               </span>
-                              <span className="text-[10px]">Collection</span>
+                              <span className="text-[10px]">{collectionLabel}</span>
                             </button>
 
                             <button
@@ -767,91 +775,95 @@ const randomMessage =
                           </>
                         ) : (
                           <>
-                            <button
-                              type="button"
-                              onClick={onToggleFollow ?? (() => {})}
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
-                              <span
-                                className={`flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-150 ${
-                                  isFollowed
-                                    ? "border-white/80 bg-white/80"
-                                    : "border-white/40 bg-white/10"
-                                }`}
-                              >
-                                <UserPlus
-                                  size={18}
-                                  strokeWidth={2}
-                                  className={isFollowed ? "text-neutral-700" : "text-white"}
-                                />
-                              </span>
 
-                              <span
-                                className={`text-[10px] ${
-                                  isFollowed ? "font-semibold text-white" : "text-white"
-                                }`}
-                              >
-                                {followLabel}
-                              </span>
-                            </button>
+{/* COLLECT */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onToggleCollect?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+  aria-label={
+    isCollected
+      ? `Remove ${athlete.name} from collection`
+      : `Add ${athlete.name} to collection`
+  }
+>
+  <span
+    className={`flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] backdrop-blur-sm ${
+      isCollected
+        ? "border-white/70 bg-white/80"
+        : "border-white/40 bg-white/10"
+    }`}
+  >
+    <Bookmark
+      size={18}
+      strokeWidth={2}
+      className={
+        isCollected
+          ? "fill-neutral-600 text-neutral-600"
+          : "text-white"
+      }
+    />
+  </span>
 
-                            <button
-                              type="button"
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
-                              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
-                                <Users size={18} strokeWidth={2} />
-                              </span>
-                              <span className="text-[10px]">{fansLabel}</span>
-                            </button>
+  <span className="text-[10px] font-semibold">
+    {collectLabel}
+  </span>
+</button>
 
-                            <button
-                              type="button"
-                              onClick={isCollected ? undefined : (onCollect ?? (() => {}))}
-                              disabled={isCollected}
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
-                              <span
-                                className={`flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] backdrop-blur-sm ${
-                                  isCollected
-                                    ? "border-white/70 bg-white/80"
-                                    : "border-white/40 bg-white/10"
-                                }`}
-                              >
-                                <Bookmark
-                                  size={18}
-                                  strokeWidth={2}
-                                  className={isCollected ? "text-neutral-600 fill-neutral-600" : "text-white"}
-                                />
-                              </span>
+{/* FANS */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onOpenFans?.();
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+  aria-label={`View fans of ${athlete.name}`}
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
+    <Users size={18} strokeWidth={2} />
+  </span>
 
-                              <span className="text-[10px] font-semibold">{collectLabel}</span>
-                            </button>
+  <span className="text-[10px]">
+    {fansLabel}
+  </span>
+</button>
 
-                            <button
-                              type="button"
-                              onClick={onShare ?? handleShare}
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
-                              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
-                                <Share2 size={18} strokeWidth={2} />
-                              </span>
-                              <span className="text-[10px]">Share</span>
-                            </button>
+{/* SHARE */}
+<button
+  type="button"
+  onClick={onShare ?? handleShare}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
+    <Share2 size={18} strokeWidth={2} />
+  </span>
 
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setIsFlipped(false);
-                              }}
-                              className="flex w-[70px] flex-col items-center gap-1 text-white"
-                            >
-                              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
-                                <RefreshCw size={18} strokeWidth={2} />
-                              </span>
-                              <span className="text-[10px]">Flip</span>
-                            </button>
+  <span className="text-[10px]">
+    Share
+  </span>
+</button>
+
+{/* FLIP */}
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    setIsFlipped(false);
+  }}
+  className="flex w-[70px] flex-col items-center gap-1 text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/10 backdrop-blur-sm">
+    <RefreshCw size={18} strokeWidth={2} />
+  </span>
+
+  <span className="text-[10px]">
+    Flip
+  </span>
+</button>
                           </>
                         )}
                       </div>

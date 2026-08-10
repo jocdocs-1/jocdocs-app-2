@@ -659,7 +659,7 @@ return (
             <AthleteCard
               athlete={athlete}
               isOwnCard={true}
-              onCollect={handleCollect}
+              onToggleCollect={handleCollect}
               collection={collection}
               isCollected={isCollected}
               fansCount={fansByAthlete[athlete.id] || 0}

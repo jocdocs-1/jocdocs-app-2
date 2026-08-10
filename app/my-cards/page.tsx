@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
+import NavigationButton from "../components/navigation/NavigationButton";
 
 type CardRecord = {
   id: string;
@@ -110,12 +111,13 @@ async function deleteCard(cardId: string) {
  return (
   <main className="min-h-screen bg-black px-5 py-8 text-white">
     <div className="mx-auto max-w-[520px]">
-      <Link
-        href="/"
-        className="mb-6 inline-block text-[16px] underline underline-offset-4 text-[#C5A96A]"
-      >
-        ← Back to Home
-      </Link>
+      
+        <NavigationButton
+  type="back"
+  onClick={() => {
+    window.location.href = "/";
+  }}
+/>
 
       <h1 className="text-4xl font-black tracking-[-0.04em]">
         Manage My Cards
@@ -171,12 +173,21 @@ async function deleteCard(cardId: string) {
     </p>
 
     <div className="mt-4 flex gap-3">
-  <Link
-    href={`/card/${card.id}`}
-    className="rounded-xl bg-[#C5A96A] px-4 py-2 text-sm font-bold text-black"
-  >
-    View Card
-  </Link>
+  <button
+  type="button"
+  onClick={() => {
+    window.localStorage.setItem(
+      "jocdocsAthleteCardId",
+      card.id
+    );
+
+    window.location.href =
+      `/card/${card.id}?from=athlete&ownerId=${card.id}`;
+  }}
+  className="rounded-xl bg-[#C5A96A] px-4 py-2 text-sm font-bold text-black"
+>
+  View Card
+</button>
 
   {card.edit_token && (
     <Link

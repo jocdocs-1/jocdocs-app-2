@@ -5,12 +5,29 @@ import { useParams, useSearchParams } from "next/navigation";
 import AthleteCard from "../../components/cards/AthleteCard";
 import type { Athlete } from "@/app/data/athletes";
 import { supabase } from "@/app/lib/supabaseClient";
+import NavigationButton from "@/app/components/navigation/NavigationButton";
 
 export default function CardPage() {
   const params = useParams<{ id: string }>();
   const searchParams = useSearchParams();
 
+  const source = searchParams.get("source");
+
+const exploreSource =
+  searchParams.get("exploreSource") === "collection"
+    ? "collection"
+    : "home";
+
+  const from =
+  searchParams.get("from") === "athlete" ? "athlete" : "fan";
+
+const ownerId = searchParams.get("ownerId");
+
   const id = typeof params?.id === "string" ? params.id : "unknown-athlete";
+
+  const [collectionCount, setCollectionCount] = useState(0);
+
+  const [isOwnCard, setIsOwnCard] = useState(false);
 
   const fallbackAthlete = useMemo<Athlete>(
     () => ({
@@ -57,11 +74,49 @@ export default function CardPage() {
     [id, searchParams]
   );
 
-  const [athlete, setAthlete] = useState<Athlete | null>(null);
+const [athlete, setAthlete] = useState<Athlete | null>(null);
 const [isFollowed, setIsFollowed] = useState(false);
 const [isCollected, setIsCollected] = useState(false);
 const [fansCount, setFansCount] = useState(0);
 const [copySuccess, setCopySuccess] = useState(false);
+const [collectionMessage, setCollectionMessage] = useState("");
+
+useEffect(() => {
+  if (!collectionMessage) return;
+
+  const timer = window.setTimeout(() => {
+    setCollectionMessage("");
+  }, 2200);
+
+  return () => window.clearTimeout(timer);
+}, [collectionMessage]);
+
+useEffect(() => {
+  const ownCardId = localStorage.getItem("jocdocsAthleteCardId");
+  setIsOwnCard(ownCardId === id);
+}, [id]);
+
+useEffect(() => {
+  if (!isOwnCard || !id) return;
+
+  async function loadCollectionCount() {
+    const { count, error } = await supabase
+      .from("collections")
+      .select("*", { count: "exact", head: true })
+      .eq("collector_type", "athlete")
+      .eq("collector_id", id)
+      .eq("collected_type", "athlete_card");
+
+    if (error) {
+      console.error("Error loading collection count:", error);
+      return;
+    }
+
+    setCollectionCount(count ?? 0);
+  }
+
+  loadCollectionCount();
+}, [isOwnCard, id]);
 
 useEffect(() => {
   async function loadCardFromSupabase() {
@@ -85,9 +140,12 @@ useEffect(() => {
         setAthlete({
           ...data.card_data,
           id: data.id,
-          actionImage: data.action_image_url || data.card_data.actionImage,
-          portraitImage: data.portrait_image_url || data.card_data.portraitImage,
-          profileImage: data.portrait_image_url || data.card_data.profileImage,
+          actionImage:
+            data.action_image_url || data.card_data.actionImage,
+          portraitImage:
+            data.portrait_image_url || data.card_data.portraitImage,
+          profileImage:
+            data.portrait_image_url || data.card_data.profileImage,
         });
       }
     } catch (err) {
@@ -117,96 +175,188 @@ useEffect(() => {
   }, [id]);
 
   useEffect(() => {
-    try {
-      const followedIds = JSON.parse(
-        localStorage.getItem("jocdocs_followed_ids") || "[]"
-      ) as string[];
+  try {
+    const followedIds = JSON.parse(
+      localStorage.getItem("jocdocs_followed_ids") || "[]"
+    ) as string[];
 
-      const collectedCards = JSON.parse(
-        localStorage.getItem("jocdocs_collection") || "[]"
-      ) as Athlete[];
+    setIsFollowed(followedIds.includes(id));
+  } catch (error) {
+    console.error("Error loading follow state:", error);
+  }
+}, [id]);
 
-      const storedFans = JSON.parse(
-        localStorage.getItem("jocdocs_fans_counts") || "{}"
-      ) as Record<string, number>;
+useEffect(() => {
+  async function loadFansCount() {
+    if (!id) return;
 
-      setIsFollowed(followedIds.includes(id));
-      setIsCollected(collectedCards.some((card) => card.id === id));
-      setFansCount(storedFans[id] || 0);
-    } catch (error) {
-      console.error("Error loading shared card interaction state:", error);
+    const { count, error } = await supabase
+      .from("collections")
+      .select("*", { count: "exact", head: true })
+      .eq("collected_type", "athlete_card")
+      .eq("collected_id", id);
+
+    if (error) {
+      console.error("Error loading fans count:", error);
+      return;
     }
-  }, [id]);
 
-  const handleToggleFollow = () => {
+    setFansCount(count ?? 0);
+  }
+
+  loadFansCount();
+}, [id]);
+
+useEffect(() => {
+  async function checkCollectionStatus() {
+    const collectorType = from;
+
+    const collectorId =
+      from === "athlete"
+        ? ownerId || window.localStorage.getItem("jocdocsAthleteCardId")
+        : window.localStorage.getItem("jocdocsFanId");
+
+    if (!collectorId || !id) {
+      setIsCollected(false);
+      return;
+    }
+
     try {
-      const followedIds = JSON.parse(
-        localStorage.getItem("jocdocs_followed_ids") || "[]"
-      ) as string[];
+      const { data, error } = await supabase
+        .from("collections")
+        .select("id")
+        .eq("collector_type", collectorType)
+        .eq("collector_id", collectorId)
+        .eq("collected_type", "athlete_card")
+        .eq("collected_id", id)
+        .maybeSingle();
 
-      const storedFans = JSON.parse(
-        localStorage.getItem("jocdocs_fans_counts") || "{}"
-      ) as Record<string, number>;
-
-      let nextFollowedIds = [...followedIds];
-      let nextFans = storedFans[id] || 0;
-      let nextIsFollowed = false;
-
-      if (followedIds.includes(id)) {
-        nextFollowedIds = followedIds.filter((followedId) => followedId !== id);
-        nextFans = Math.max(0, nextFans - 1);
-        nextIsFollowed = false;
-      } else {
-        nextFollowedIds.push(id);
-        nextFans = nextFans + 1;
-        nextIsFollowed = true;
+      if (error) {
+        throw error;
       }
 
-      storedFans[id] = nextFans;
-
-      localStorage.setItem(
-        "jocdocs_followed_ids",
-        JSON.stringify(nextFollowedIds)
-      );
-      localStorage.setItem(
-        "jocdocs_fans_counts",
-        JSON.stringify(storedFans)
-      );
-
-      setIsFollowed(nextIsFollowed);
-      setFansCount(nextFans);
+      setIsCollected(Boolean(data));
     } catch (error) {
-      console.error("Error toggling follow:", error);
+      console.error("Error checking collection status:", error);
     }
-  };
+  }
 
-  const handleCollect = () => {
+  checkCollectionStatus();
+}, [id, from, ownerId]);
+
+  const handleToggleFollow = () => {
+  try {
+    const followedIds = JSON.parse(
+      localStorage.getItem("jocdocs_followed_ids") || "[]"
+    ) as string[];
+
+    let nextFollowedIds: string[];
+    let nextIsFollowed: boolean;
+
+    if (followedIds.includes(id)) {
+      nextFollowedIds = followedIds.filter(
+        (followedId) => followedId !== id
+      );
+      nextIsFollowed = false;
+    } else {
+      nextFollowedIds = [...followedIds, id];
+      nextIsFollowed = true;
+    }
+
+    localStorage.setItem(
+      "jocdocs_followed_ids",
+      JSON.stringify(nextFollowedIds)
+    );
+
+    setIsFollowed(nextIsFollowed);
+  } catch (error) {
+    console.error("Error toggling follow:", error);
+  }
+};
+
+  const handleCollect = async () => {
   if (!athlete) return;
 
+  const collectorType = from;
+
+  const collectorId =
+    from === "athlete"
+      ? ownerId || window.localStorage.getItem("jocdocsAthleteCardId")
+      : window.localStorage.getItem("jocdocsFanId");
+
+  if (!collectorId) {
+    if (from === "athlete") {
+      window.alert(
+        "We could not identify your Athlete Card. Please return to your card and try again."
+      );
+      return;
+    }
+
+    const createFanTicket = window.confirm(
+      "Create your Fan Ticket first so you can begin your collection."
+    );
+
+    if (createFanTicket) {
+      window.location.href = "/create-fan";
+    }
+
+    return;
+  }
+
   try {
-      const collection = JSON.parse(
-        localStorage.getItem("jocdocs_collection") || "[]"
-      ) as Athlete[];
+    // REMOVE FROM COLLECTION
+    if (isCollected) {
+      const { error } = await supabase
+        .from("collections")
+        .delete()
+        .eq("collector_type", collectorType)
+        .eq("collector_id", collectorId)
+        .eq("collected_type", "athlete_card")
+        .eq("collected_id", athlete.id);
 
-      const alreadyCollected = collection.some((card) => card.id === athlete.id);
+      if (error) {
+        throw error;
+      }
 
-      if (alreadyCollected) {
+      setIsCollected(false);
+      setFansCount((count) => Math.max(0, count - 1));
+      setCollectionMessage("Removed from My Collection");
+      return;
+    }
+
+    // ADD TO COLLECTION
+    const { error } = await supabase.from("collections").insert({
+      collector_type: collectorType,
+      collector_id: collectorId,
+      collected_type: "athlete_card",
+      collected_id: athlete.id,
+    });
+
+    if (error) {
+      if (error.code === "23505") {
         setIsCollected(true);
+        setCollectionMessage("Already in My Collection");
         return;
       }
 
-      const updatedCollection = [...collection, athlete];
-      localStorage.setItem(
-        "jocdocs_collection",
-        JSON.stringify(updatedCollection)
-      );
-      setIsCollected(true);
-    } catch (error) {
-      console.error("Error collecting shared card:", error);
+      throw error;
     }
-   };
 
-  if (!athlete) {
+    setIsCollected(true);
+    setFansCount((count) => count + 1);
+    setCollectionMessage("Added to My Collection");
+  } catch (error) {
+    console.error("Error updating Athlete Card collection:", error);
+
+    window.alert(
+      isCollected
+        ? "We could not remove this Athlete Card from your collection."
+        : "We could not add this Athlete Card to your collection."
+    );
+  }
+};
+
+if (!athlete) {
   return <main className="min-h-screen bg-white" />;
 }
 
@@ -233,28 +383,78 @@ const handleShareCard = async () => {
   }
 };
 
+const handleOpenFans = () => {
+  window.location.href = `/fans/${athlete.id}`;
+};
+
+const handleOpenCollection = () => {
+  const athleteOwnerId =
+    ownerId || window.localStorage.getItem("jocdocsAthleteCardId");
+
+  if (!athleteOwnerId) {
+    window.location.href = "/collection?from=athlete";
+    return;
+  }
+
+  window.location.href =
+    `/collection?from=athlete&ownerId=${athleteOwnerId}`;
+};
+
 return (
-  <main className="min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
+  <main className="relative min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
+    <NavigationButton
+  type={isOwnCard ? "back" : "close"}
+  onClick={() => {
+    if (isOwnCard) {
+      window.location.href = "/";
+      return;
+    }
+
+    const ownerParam = ownerId ? `&ownerId=${ownerId}` : "";
+
+    // Card was opened directly from My Collection.
+    if (source === "collection") {
+      window.location.href =
+        `/collection?from=${from}${ownerParam}`;
+      return;
+    }
+
+    // Card was opened from Explore.
+    if (source === "explore") {
+      const fromParam = from ? `&from=${from}` : "";
+
+      window.location.href =
+        `/explore?source=${exploreSource}${fromParam}${ownerParam}`;
+      return;
+    }
+
+    // Shared/direct Athlete Card with no known parent.
+    window.location.href = "/";
+  }}
+/>
 
     {/* CARD */}
-<div className="relative z-10 w-full max-w-[420px] pb-[24px]">
+<div className="relative z-10 w-full max-w-[420px] pb-[48px]">
   <AthleteCard
-    athlete={athlete}
-    isOwnCard={false}
-    isFollowed={isFollowed}
-    isCollected={isCollected}
-    fansCount={fansCount}
-    onToggleFollow={handleToggleFollow}
-    onCollect={handleCollect}
-  />
+  athlete={athlete}
+  isOwnCard={isOwnCard}
+  isCollected={isCollected}
+  fansCount={fansCount}
+  collectionCount={collectionCount}
+  onToggleCollect={handleCollect}
+  onOpenFans={handleOpenFans}
+  onOpenCollection={handleOpenCollection}
+/>
+
+  {collectionMessage && (
+  <div className="pointer-events-none absolute bottom-[56px] left-1/2 z-[500] -translate-x-1/2 whitespace-nowrap rounded-full border border-[#C9AD68] bg-white px-5 py-3 text-center text-sm font-semibold text-black shadow-lg">
+    {collectionMessage}
+  </div>
+)}
 </div>
 
 {/* CTA SECTION */}
-<div className="relative z-0 mt-1 flex w-full flex-col items-center sm:mt-6">
-  <p className="mb-4 text-[15px] text-neutral-500">
-    Want one of your own?
-  </p>
-
+<div className="relative z-0 mt-6 flex w-full flex-col items-center sm:mt-6">
   <a
     href="/?ref=card"
     className="flex w-full max-w-[340px] flex-col items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
@@ -269,7 +469,7 @@ return (
 
 {/* SHARE SECTION */}
 
-<p className="mt-8 max-w-[320px] text-center text-[15px] italic leading-[1.25] text-neutral-500">
+<p className="mt-12 max-w-[320px] text-center text-[15px] italic leading-[1.25] text-neutral-500">
   Use share button either on card or below to share with teammates,
   friends, family, coaches and fans.
 </p>
