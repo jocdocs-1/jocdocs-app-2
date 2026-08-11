@@ -31,22 +31,24 @@ export default function NavigationButton({
   );
 
   const sharedClassName = `
-    absolute
-    left-7
-    top-7
-    z-50
-    flex
-    h-11
-    w-11
-    items-center
-    justify-center
-    rounded-full
-    transition-all
-    duration-200
-    hover:bg-white/5
-    active:scale-95
-    ${className}
-  `;
+  absolute
+  left-4
+  top-[calc(env(safe-area-inset-top)+16px)]
+  z-50
+  flex
+  h-11
+  w-11
+  items-center
+  justify-center
+  rounded-full
+  bg-black/60
+  shadow-md
+  transition-all
+  duration-200
+  hover:bg-black/85
+  active:scale-95
+  ${className}
+`;
 
   const label = type === "back" ? "Go back" : "Close";
 
