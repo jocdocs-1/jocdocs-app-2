@@ -31,7 +31,7 @@ export default function NavigationButton({
   );
 
   const sharedClassName = `
-  absolute
+  fixed
   ${type === "back" ? "left-4" : "right-4"}
   top-[calc(env(safe-area-inset-top)+16px)]
   z-50

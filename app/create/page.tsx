@@ -473,7 +473,7 @@ return (
           />
           <input
             name="hometown"
-            placeholder="Hometown"
+            placeholder="Hometown: City, State"
             onChange={handleChange}
             className="input"
           />
@@ -561,19 +561,29 @@ return (
             />
           </div>
 
-                              <select name="theme" onChange={handleChange} className="input">
-            <option value="gold">Gold</option>
-            <option value="red">Red</option>
-            <option value="orange">Orange</option>
-            <option value="yellow">Yellow</option>
-            <option value="green">Green</option>
-            <option value="navy">Navy</option>
-            <option value="royal">Royal</option>
-            <option value="purple">Purple</option>
-            <option value="maroon">Maroon</option>
-            <option value="silver">Silver</option>
-            <option value="black">Black</option>
-          </select>
+                              <div className="space-y-2">
+  <label className="block text-sm font-semibold text-white">
+    Color
+  </label>
+
+  <select
+    name="theme"
+    onChange={handleChange}
+    className="input"
+  >
+    <option value="gold">Gold</option>
+    <option value="red">Red</option>
+    <option value="orange">Orange</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+    <option value="navy">Navy</option>
+    <option value="royal">Royal</option>
+    <option value="purple">Purple</option>
+    <option value="maroon">Maroon</option>
+    <option value="silver">Silver</option>
+    <option value="black">Black</option>
+  </select>
+</div>
 
 <div className="pt-4">
   <button
