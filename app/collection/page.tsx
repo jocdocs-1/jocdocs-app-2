@@ -101,7 +101,7 @@ if (!collectorId) {
 }, []);
 
   return (
-  <main className="relative min-h-screen bg-black text-white">
+  <main className="relative min-h-screen bg-black px-6 pb-6 pt-20 text-white">
     <NavigationButton
   type="back"
   onClick={() => {
@@ -123,18 +123,18 @@ if (!collectorId) {
 />
       <div className="mx-auto max-w-6xl">
 
-        <header className="mt-6 text-center">
-          <h1 className="text-3xl font-extrabold uppercase tracking-wide">
-            My Collection
-          </h1>
+  <header className="text-center">
+    <h1 className="mb-1 text-3xl font-bold">
+      My Collection
+    </h1>
 
-          <p className="mt-2 text-sm text-white/60">
-            {collection.length}{" "}
-            {collection.length === 1 ? "Athlete Card" : "Athlete Cards"}
-          </p>
-        </header>
+    <p className="mb-8 text-sm leading-tight text-white/70">
+      {collection.length}{" "}
+      {collection.length === 1 ? "Athlete Card" : "Athlete Cards"}
+    </p>
+  </header>
 
-        <div className="mt-10 flex justify-center">
+        <div className="flex justify-center">
       <Link
   href={`/explore?source=collection&from=${from}${
     ownerId ? `&ownerId=${ownerId}` : ""

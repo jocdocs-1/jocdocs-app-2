@@ -279,26 +279,26 @@ export default function CreateFanPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-black text-white">
+    <div className="relative min-h-screen bg-black px-6 pb-6 pt-20 text-white">
       <NavigationButton
   type="back"
   href="/"
 />
-      <main className="px-6 py-10">
+      <main>
         <div className="mx-auto max-w-5xl">
 
-          <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {/* FORM */}
             <section>
-              <h1 className="text-3xl font-extrabold">
-                Create Your Fan Ticket
-              </h1>
+              <h1 className="mb-1 text-3xl font-bold">
+  Create Your Fan Ticket
+</h1>
 
-              <p className="mt-2 text-sm leading-relaxed text-white/60">
-                Watch your Fan Ticket come to life as you build it.
-              </p>
+<p className="mb-8 text-sm leading-tight text-white/70">
+  Watch your Fan Ticket come to life as you build it.
+</p>
 
-              <div className="mt-8 space-y-5">
+<div className="space-y-5">
                 <div>
                   <label
                     htmlFor="fan-name"

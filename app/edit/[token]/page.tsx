@@ -6,7 +6,7 @@ import type { Athlete } from "../../data/athletes";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter, useParams } from "next/navigation";
 import Footer from "../../components/Footer";
-import Link from "next/link";
+import NavigationButton from "../../components/navigation/NavigationButton";
 
 export default function CreateAthletePage() {
   const router = useRouter();
@@ -385,13 +385,11 @@ await emailResponse.json();
 }
 
 return (
-  <div className="min-h-screen bg-black p-6 text-white">
-     <Link
+  <div className="relative min-h-screen bg-black px-6 pb-6 pt-20 text-white">
+     <NavigationButton
+  type="back"
   href="/"
-  className="mb-6 inline-block text-md text-[#C5A96A] underline underline-offset-4"
->
-  ← Back to Home
-</Link>
+/>
 
 <h1 className="mb-1 text-3xl font-bold">
   Edit Your Athlete Card
@@ -621,7 +619,7 @@ return (
     className="input"
   />
   <p className="text-xs text-white/60">
-    Currant photo is in place. Choose a new photo if you want to change.
+    Current photo is in place. Choose a new photo if you want to change.
   </p>
 </div>
 

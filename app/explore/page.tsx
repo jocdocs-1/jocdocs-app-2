@@ -95,7 +95,7 @@ const matchesSport =
 });
 
   return (
-    <main className="relative min-h-screen bg-black px-4 py-10 text-white">
+    <main className="relative min-h-screen bg-black px-4 pb-10 pt-20 text-white">
       <NavigationButton
   type="back"
   onClick={() => {
@@ -112,15 +112,15 @@ const matchesSport =
 />
       <div className="mx-auto max-w-6xl">
 
-        <h1 className="mb-2 text-center text-4xl font-bold">
+        <h1 className="mb-1 text-center text-3xl font-bold uppercase">
   Explore Athletes
 </h1>
 
-<p className="mb-2 text-center text-sm font-semibold uppercase tracking-[0.15em] text-[#C5A96A]">
+<p className="mb-1 text-center text-sm font-semibold uppercase tracking-[0.15em] text-[#C5A96A]">
   {cards.length} Athlete Cards
 </p>
 
-<p className="mb-10 text-center text-white/60">
+<p className="mb-8 text-center text-sm leading-tight text-white/70">
   Browse athlete cards from across the jocdocs community.
 </p>
 

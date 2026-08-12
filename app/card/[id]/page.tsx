@@ -12,6 +12,7 @@ export default function CardPage() {
   const searchParams = useSearchParams();
 
   const source = searchParams.get("source");
+  const fansAthleteId = searchParams.get("fansAthleteId");
 
 const exploreSource =
   searchParams.get("exploreSource") === "collection"
@@ -401,14 +402,19 @@ const handleOpenCollection = () => {
 };
 
 return (
-  <main className="relative min-h-screen bg-white flex flex-col items-center px-4 pt-8 pb-12">
+  <main className="relative min-h-screen bg-white flex flex-col items-center px-4 pt-16 pb-12">
     <NavigationButton
-  type={isOwnCard ? "back" : "close"}
+  type={source === "fans" ? "close" : isOwnCard ? "back" : "close"}
   onClick={() => {
-    if (isOwnCard) {
-      window.location.href = "/";
-      return;
-    }
+  if (source === "fans" && fansAthleteId) {
+    window.location.href = `/fans/${fansAthleteId}`;
+    return;
+  }
+
+  if (isOwnCard) {
+    window.location.href = "/";
+    return;
+  }
 
     const ownerParam = ownerId ? `&ownerId=${ownerId}` : "";
 

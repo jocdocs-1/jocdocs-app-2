@@ -349,13 +349,13 @@ await emailResponse.json();
 }
 
 return (
-  <div className="relative min-h-screen bg-black px-6 pb-6 pt-24 text-white">
+  <div className="relative min-h-screen bg-black px-6 pb-6 pt-20 text-white">
     <NavigationButton
   type="back"
   href="/"
 />
 
-    <h1 className="mb-1 text-2xl font-bold">
+    <h1 className="mb-1 text-3xl font-bold">
       Create Your Athlete Card
     </h1>
 

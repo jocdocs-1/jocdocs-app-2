@@ -1,5 +1,6 @@
 import FanTicket from "@/app/components/cards/FanTicket";
 import ShareFanTicketActions from "@/app/components/fan/ShareFanTicketActions";
+import FanTicketNavigation from "@/app/components/fan/FanTicketNavigation";
 import { supabase } from "@/app/lib/supabaseClient";
 import NavigationButton from "../../components/navigation/NavigationButton";
 
@@ -84,9 +85,11 @@ if (collectionCountError) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-white px-4 pb-12 pt-8">
-      {/* FAN TICKET */}
-<div className="relative flex w-full justify-center">
+  <main className="relative flex min-h-screen flex-col items-center bg-white px-4 pb-12 pt-16">
+    <FanTicketNavigation fanId={fan.id} />
+
+    {/* FAN TICKET */}
+    <div className="relative flex w-full justify-center">
   <div className="relative h-[583px] w-[341px] sm:h-[716px] sm:w-[419px]">
     <div
       className="

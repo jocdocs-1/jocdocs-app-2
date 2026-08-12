@@ -150,22 +150,22 @@ export default function AthleteFansPage() {
   }, [athleteId]);
 
   return (
-    <main className="relative min-h-screen bg-black px-4 py-6 text-white">
+    <main className="relative min-h-screen bg-black px-4 pb-6 pt-20 text-white">
       <NavigationButton
         type="back"
         href={`/card/${athleteId}`}
       />
 
       <div className="mx-auto w-full max-w-6xl">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl font-extrabold uppercase tracking-wide text-[#C5A96A] sm:text-4xl">
-            Fans of {athleteName}
-          </h1>
+        <header className="text-center">
+  <h1 className="mb-1 text-3xl font-bold">
+    Fans of {athleteName}
+  </h1>
 
-          <p className="mt-2 text-sm text-white/65">
-            {totalFans} {totalFans === 1 ? "Fan" : "Fans"}
-          </p>
-        </header>
+  <p className="mb-8 text-sm leading-tight text-white/70">
+    {totalFans} {totalFans === 1 ? "Fan" : "Fans"}
+  </p>
+</header>
 
         {isLoading ? (
           <p className="text-center text-white/60">
@@ -187,7 +187,11 @@ export default function AthleteFansPage() {
               <button
                 key={`athlete-${athlete.id}`}
                 type="button"
-                onClick={() => router.push(`/card/${athlete.id}`)}
+                onClick={() =>
+  router.push(
+    `/card/${athlete.id}?source=fans&fansAthleteId=${athleteId}`
+  )
+}
                 className="text-left transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <MiniAthleteCard
@@ -200,7 +204,11 @@ export default function AthleteFansPage() {
               <button
                 key={`fan-${fan.id}`}
                 type="button"
-                onClick={() => router.push(`/fan/${fan.id}`)}
+                onClick={() =>
+  router.push(
+    `/fan/${fan.id}?source=fans&fansAthleteId=${athleteId}`
+  )
+}
                 className="text-left transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <MiniFanTicket

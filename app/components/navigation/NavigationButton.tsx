@@ -32,7 +32,7 @@ export default function NavigationButton({
 
   const sharedClassName = `
   absolute
-  left-4
+  ${type === "back" ? "left-4" : "right-4"}
   top-[calc(env(safe-area-inset-top)+16px)]
   z-50
   flex
@@ -41,11 +41,11 @@ export default function NavigationButton({
   items-center
   justify-center
   rounded-full
-  bg-black/60
-  shadow-md
+  bg-white/30
+  shadow-[0_3px_10px_rgba(0,0,0,0.28)]
   transition-all
   duration-200
-  hover:bg-black/85
+  hover:bg-white/55
   active:scale-95
   ${className}
 `;

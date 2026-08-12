@@ -1,26 +1,26 @@
 "use client";
 
+import NavigationButton from "../components/navigation/NavigationButton";
+
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-white px-6 py-10 text-black">
-      <div className="mx-auto max-w-3xl">
-        <button
-  type="button"
-  onClick={() => window.history.back()}
-  className="text-md font-bold underline"
->
-  ← Back to Home
-</button>
+    <main className="relative min-h-screen bg-white px-6 pb-10 pt-20 text-black">
+  <NavigationButton
+    type="back"
+    onClick={() => window.history.back()}
+  />
 
-        <h1 className="mt-8 text-4xl font-extrabold tracking-tight">
-          Contact & Removal Requests
-        </h1>
+  <div className="mx-auto max-w-3xl">
 
-        <p className="mt-3 text-sm text-black/60">
-          Last updated: June 27, 2026
-        </p>
+        <h1 className="mb-1 text-3xl font-bold uppercase">
+  Contact & Removal Requests
+</h1>
 
-        <div className="mt-8 space-y-6 text-[16px] leading-7 text-black/80">
+<p className="mb-8 text-sm leading-tight text-black/60">
+  Last updated: June 27, 2026
+</p>
+
+<div className="space-y-6 text-[16px] leading-7 text-black/80">
   <p>
     Questions, feedback, partnership opportunities, or technical issues?
     We'd love to hear from you. Please contact us at

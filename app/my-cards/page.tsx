@@ -109,7 +109,7 @@ async function deleteCard(cardId: string) {
 }
 
  return (
-  <main className="min-h-screen bg-black px-5 py-8 text-white">
+  <main className="relative min-h-screen bg-black px-5 pb-8 pt-20 text-white">
     <div className="mx-auto max-w-[520px]">
       
         <NavigationButton
@@ -119,15 +119,15 @@ async function deleteCard(cardId: string) {
   }}
 />
 
-      <h1 className="text-4xl font-black tracking-[-0.04em]">
-        Manage My Cards
-      </h1>
+      <h1 className="mb-1 text-3xl font-bold">
+  Manage My Cards
+</h1>
 
-        <p className="mt-2 text-sm leading-tight text-white/60">
-          Enter the email address you used when publishing your card to view and manage your cards.
-        </p>
+<p className="mb-8 text-sm leading-tight text-white/70">
+  Enter the email address you used when publishing your card to view and manage your cards.
+</p>
 
-        <div className="mt-8 space-y-3">
+<div className="space-y-3">
           <input
             type="email"
             value={email}

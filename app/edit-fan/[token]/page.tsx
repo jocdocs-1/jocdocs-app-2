@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import FanTicket from "../../components/cards/FanTicket";
 import Footer from "../../components/Footer";
 import { supabase } from "../../lib/supabaseClient";
+import NavigationButton from "../../components/navigation/NavigationButton";
 
 type FanRecord = {
   id: string;
@@ -300,29 +301,25 @@ export default function EditFanPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <main className="px-6 py-10">
+  <main className="relative px-6 pb-10 pt-20">
         <div className="mx-auto max-w-5xl">
-          <button
-            type="button"
-            onClick={() => window.history.back()}
-            className="text-sm font-bold underline underline-offset-4"
-          >
-            ← Back
-          </button>
+          <NavigationButton
+  type="back"
+  onClick={() => window.history.back()}
+/>
 
-          <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
             {/* EDIT FORM */}
             <section>
-              <h1 className="text-3xl font-extrabold">
-                Edit Your Fan Ticket
-              </h1>
+              <h1 className="mb-1 text-3xl font-bold">
+  Edit Your Fan Ticket
+</h1>
 
-              <p className="mt-2 text-sm leading-relaxed text-white/60">
-                Update your name or profile photo and watch your
-                Fan Ticket change instantly.
-              </p>
+<p className="mb-8 text-sm leading-tight text-white/70">
+  Update your name or profile photo and watch your Fan Ticket change instantly.
+</p>
 
-              <div className="mt-8 space-y-5">
+<div className="space-y-5">
                 <div>
                   <label
                     htmlFor="fan-name"
