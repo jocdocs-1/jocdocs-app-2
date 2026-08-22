@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import FanTicket from "../components/cards/FanTicket";
 import Footer from "../components/Footer";
@@ -363,14 +363,16 @@ export default function CreateFanPage() {
               </div>
             </section>
 
-            {/* LIVE PREVIEW */}
-            <section className="flex justify-center md:justify-end">
-              <FanTicket
-                name={name.trim() || "Your Name"}
-                photo={photo}
-                collectedCount={0}
-              />
-            </section>
+{/* LIVE PREVIEW */}
+<section className="flex justify-center md:justify-end">
+  <Suspense fallback={null}>
+   <FanTicket
+    name={name.trim() || "Your Name"}
+    photo={photo}
+    collectedCount={0}
+   />
+  </Suspense>
+</section>
           </div>
         </div>
       </main>
