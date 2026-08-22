@@ -102,6 +102,7 @@ if (collectionCountError) {
       "
     >
       <FanTicket
+  fanId={fan.id}
   name={fan.name}
   photo={fan.photo_url || ""}
   collectedCount={collectedCount ?? 0}

@@ -493,7 +493,15 @@ return (
   name="jerseyNumber"
   value={athlete.jerseyNumber}
   placeholder="Jersey Number"
-  onChange={handleChange}
+  inputMode="numeric"
+  onChange={(e) => {
+    const value = e.target.value.replace(/\D/g, "").slice(0, 2);
+
+    setAthlete({
+      ...athlete,
+      jerseyNumber: value,
+    });
+  }}
   className="input"
 />
 

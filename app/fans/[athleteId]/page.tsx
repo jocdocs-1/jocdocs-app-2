@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/app/lib/supabaseClient";
 import MiniFanTicket from "@/app/components/cards/MiniFanTicket";
 import MiniAthleteCard from "@/app/components/MiniAthleteCard";
 import NavigationButton from "../../components/navigation/NavigationButton";
 import type { Athlete } from "@/app/data/athletes";
+import {
+  useParams,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 type FanRecord = {
   id: string;
@@ -18,6 +22,12 @@ type FanRecord = {
 export default function AthleteFansPage() {
   const params = useParams<{ athleteId: string }>();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+const cardSource = searchParams.get("cardSource");
+const exploreSource = searchParams.get("exploreSource");
+const from = searchParams.get("from");
+const ownerId = searchParams.get("ownerId");
 
   const athleteId =
     typeof params?.athleteId === "string" ? params.athleteId : "";
@@ -152,9 +162,32 @@ export default function AthleteFansPage() {
   return (
     <main className="relative min-h-screen bg-black px-4 pb-6 pt-20 text-white">
       <NavigationButton
-        type="back"
-        href={`/card/${athleteId}`}
-      />
+  type="back"
+  onClick={() => {
+    const params = new URLSearchParams();
+
+    if (cardSource) {
+      params.set("source", cardSource);
+    }
+
+    if (exploreSource) {
+      params.set("exploreSource", exploreSource);
+    }
+
+    if (from) {
+      params.set("from", from);
+    }
+
+    if (ownerId) {
+      params.set("ownerId", ownerId);
+    }
+
+    const query = params.toString();
+
+    window.location.href =
+      `/card/${athleteId}${query ? `?${query}` : ""}`;
+  }}
+/>
 
       <div className="mx-auto w-full max-w-6xl">
         <header className="text-center">

@@ -7,9 +7,10 @@ import {
 } from "lucide-react";
 import { frederickSans } from "../../fonts";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type FanTicketProps = {
+  fanId?: string;
   name?: string;
   photo?: string;
   collectedCount?: number;
@@ -17,6 +18,7 @@ type FanTicketProps = {
 };
 
 export default function FanTicket({
+  fanId,
   name = "Your Name",
   photo = "",
   collectedCount = 0,
@@ -24,6 +26,30 @@ export default function FanTicket({
 }: FanTicketProps) {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+const source = searchParams.get("source");
+const fansAthleteId = searchParams.get("fansAthleteId");
+
+const handleOpenCollection = () => {
+  const params = new URLSearchParams();
+
+  params.set("from", "fan");
+
+  if (fanId) {
+    params.set("returnFanId", fanId);
+  }
+
+  if (source) {
+    params.set("returnSource", source);
+  }
+
+  if (fansAthleteId) {
+    params.set("fansAthleteId", fansAthleteId);
+  }
+
+  router.push(`/collection?${params.toString()}`);
+};
 
   const memberSince = new Intl.DateTimeFormat("en-US", {
   month: "long",
@@ -72,14 +98,14 @@ export default function FanTicket({
 
   const nameLength = name.trim().length;
 
-  const nameSize =
-    nameLength <= 16
-      ? "text-[39px]"
-      : nameLength <= 22
-      ? "text-[35px]"
-      : nameLength <= 28
-      ? "text-[31px]"
-      : "text-[28px]";
+const nameSize =
+  nameLength <= 16
+    ? "text-[43px]"
+    : nameLength <= 22
+    ? "text-[39px]"
+    : nameLength <= 28
+    ? "text-[35px]"
+    : "text-[31px]";
 
   return (
     <div
@@ -88,18 +114,20 @@ export default function FanTicket({
         fontFamily: '"Roboto Condensed", Roboto, sans-serif',
       }}
     >
-      {/* SAME RESPONSIVE SPACE AS ATHLETE CARD */}
-      <div className="relative aspect-[310/530] w-full">
+{/* RESPONSIVE FAN TICKET STAGE */}
+<div className="relative aspect-[310/530] w-full">
+
         {/* SAME FIXED CARD SIZE AS ATHLETE CARD */}
-        <div
-          className="absolute left-1/2 top-0"
-          style={{
-            width: "310px",
-            height: "530px",
-            transform: "translateX(-50%)",
-            transformOrigin: "top center",
-          }}
-        >
+<div
+  className="absolute left-1/2 top-0"
+  style={{
+    width: "310px",
+    height: "530px",
+    transform: "translateX(-50%)",
+    transformOrigin: "top center",
+  }}
+>
+
           {/* LOCKED TICKET SHELL */}
           <svg
             viewBox="0 0 310 530"
@@ -110,143 +138,39 @@ export default function FanTicket({
   filter: "drop-shadow(0 10px 24px rgba(0,0,0,0.42))",
 }}
           >
-            <defs>
-  {/* MAIN BACKGROUND GRADIENT */}
-  <linearGradient
-    id="fanTicketGradient"
-    x1="0"
-    y1="0"
-    x2="0"
-    y2="1"
-  >
-    <stop offset="0%" stopColor="#000000" />
-    <stop offset="35%" stopColor="#060606" />
-    <stop offset="50%" stopColor="#18150F" />
-    <stop offset="61%" stopColor="#5B4A28" />
-    <stop offset="70%" stopColor="#A98B4F" />
-    <stop offset="78%" stopColor="#D9C79B" />
-    <stop offset="84%" stopColor="#F5EEE1" />
-    <stop offset="88%" stopColor="#FFFFFF" />
-    <stop offset="100%" stopColor="#FFFFFF" />
-  </linearGradient>
-
-  {/* GOLD MEZZOTINT */}
-  <pattern
-    id="fanTicketMezzotint"
-    width="8"
-    height="8"
-    patternUnits="userSpaceOnUse"
-  >
-    <circle
-      cx="1.5"
-      cy="1.5"
-      r="0.65"
-      fill="#C5A96A"
-      opacity="0.22"
-    />
-
-    <circle
-      cx="6"
-      cy="4"
-      r="0.45"
-      fill="#ffffff"
-      opacity="0.10"
-    />
-
-    <circle
-      cx="3.5"
-      cy="7"
-      r="0.35"
-      fill="#C5A96A"
-      opacity="0.15"
-    />
-  </pattern>
-
-  {/* LEFT LIGHT */}
-  <radialGradient id="leftLight">
-    <stop offset="0%" stopColor="#ffffff" stopOpacity=".70" />
-    <stop offset="25%" stopColor="#fff5d5" stopOpacity=".34" />
-    <stop offset="60%" stopColor="#C5A96A" stopOpacity=".10" />
-    <stop offset="100%" stopColor="#C5A96A" stopOpacity="0" />
-  </radialGradient>
-
-  {/* RIGHT LIGHT */}
-<radialGradient id="rightLight">
-  <stop offset="0%" stopColor="#ffffff" stopOpacity=".70" />
-  <stop offset="25%" stopColor="#fff5d5" stopOpacity=".34" />
-  <stop offset="60%" stopColor="#C5A96A" stopOpacity=".10" />
-  <stop offset="100%" stopColor="#C5A96A" stopOpacity="0" />
-</radialGradient>
-
-{/* STADIUM-TO-WHITE TRANSITION */}
-<linearGradient
-  id="ticketWhiteFade"
-  x1="0"
-  y1="0"
-  x2="0"
-  y2="1"
->
-  <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
-  <stop offset="30%" stopColor="#FFFFFF" stopOpacity="0.15" />
-  <stop offset="55%" stopColor="#FFFFFF" stopOpacity="0.55" />
-  <stop offset="74%" stopColor="#FFFFFF" stopOpacity="0.9" />
-  <stop offset="84%" stopColor="#FFFFFF" stopOpacity="1" />
-  <stop offset="100%" stopColor="#FFFFFF" stopOpacity="1" />
-</linearGradient>
-
-<clipPath id="fanTicketClip">
-  <path d={ticketShape} />
-</clipPath>
+<defs>
+  <clipPath id="fanTicketClip">
+    <path d={ticketShape} />
+  </clipPath>
 </defs>
 
-{/* SLIM WHITE OUTER SILHOUETTE */}
+{/* SIMPLE BASE BEHIND STADIUM */}
 <path
   d={ticketShape}
-  fill="none"
-  stroke="#FFFFFF"
-  strokeWidth="11"
-  strokeLinejoin="round"
-  vectorEffect="non-scaling-stroke"
+  fill="#050505"
+  stroke="none"
 />
 
-{/* BACKGROUND */}
-<path
-  d={ticketShape}
-  fill="url(#fanTicketGradient)"
-  stroke="#C5A96A"
-  strokeWidth="7"
-  strokeLinejoin="round"
-  vectorEffect="non-scaling-stroke"
-/>
-
-{/* STADIUM BACKGROUND IMAGE */}
+{/* NEW STADIUM BACKGROUND */}
 <g clipPath="url(#fanTicketClip)">
   <image
-    href="/fan-ticket/fan-ticket-stadium-bg.png"
-    x="0"
-    y="80"
-    width="310"
-    height="327"
+    href="/fan-ticket/stadium-fan-ticket.png"
+    x="-10"
+    y="25"
+    width="330"
+    height="470"
     preserveAspectRatio="xMidYMid slice"
-    opacity="0.92"
+    opacity="1"
   />
 
-  {/* FADE THE STADIUM TO WHITE */}
+  {/* SUBTLE GOLD ATMOSPHERE */}
   <rect
     x="0"
-    y="315"
+    y="0"
     width="310"
-    height="115"
-    fill="url(#ticketWhiteFade)"
-  />
-
-  {/* PURE WHITE AREA BEFORE PERFORATION */}
-  <rect
-    x="0"
-    y="420"
-    width="310"
-    height="25"
-    fill="#ffffff"
+    height="445"
+    fill="#C5A96A"
+    opacity="0.20"
   />
 </g>
 
@@ -256,12 +180,12 @@ export default function FanTicket({
   y="445"
   width="310"
   height="85"
-  fill="#ffffff"
+  fill="#FCF8EE"
   clipPath="url(#fanTicketClip)"
 />
 
-            {/* PERFORATION */}
-            <line
+{/* PERFORATION */}
+<line
   x1="27"
   y1="445"
   x2="283"
@@ -272,19 +196,31 @@ export default function FanTicket({
   vectorEffect="non-scaling-stroke"
 />
 
-            {/* LOCKED GOLD OUTLINE */}
-            <path
-              d={ticketShape}
-              fill="none"
-              stroke="#C5A96A"
-              strokeWidth="7"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
+{/* GOLD INNER RULE */}
+<path
+  d={ticketShape}
+  fill="none"
+  stroke="#C5A96A"
+  strokeWidth="17"
+  strokeLinejoin="round"
+  vectorEffect="non-scaling-stroke"
+  clipPath="url(#fanTicketClip)"
+/>
+
+{/* WHITE FRAME */}
+<path
+  d={ticketShape}
+  fill="none"
+  stroke="#FFFFFF"
+  strokeWidth="12"
+  strokeLinejoin="round"
+  vectorEffect="non-scaling-stroke"
+  clipPath="url(#fanTicketClip)"
+/>
           </svg>
 
           {/* BRANDING SECTION */}
-          <header className="absolute left-[22px] right-[22px] top-[11px] z-20 text-center">
+          <header className="absolute left-[22px] right-[22px] top-[18px] z-20 text-center">
             <div className="mx-auto w-[175px]">
               <Image
                 src="/jocdocs-logo-full-light-2.png"
@@ -294,37 +230,32 @@ export default function FanTicket({
                 priority
                 className="h-auto w-full"
               />
-
-              {/* CENTERED BENEATH JOCDOCS TYPOGRAPHY */}
-              <p className="ml-[39px] mt-[-3.7px] whitespace-nowrap text-center text-[10.4px] font-normal leading-none tracking-[0.01em] text-[#C5A96A]">
-                Create. Collect. Connect.
-              </p>
             </div>
 
             {/* THIN BRANDING DIVIDER */}
-            <div className="mt-[7px] h-px w-full bg-[#C5A96A]/60" />
+            <div className="mx-auto mt-[6px] h-px w-[92%] bg-[#C5A96A]/60" />
           </header>
 
           {/* FAN TICKET TITLE */}
-<div className="absolute left-[20px] right-[20px] top-[87px] z-10 text-center">
+<div className="absolute left-[20px] right-[20px] top-[83px] z-10 text-center">
   <h2
-    className={`${frederickSans.className} whitespace-nowrap text-[58px] leading-[0.88] tracking-[0.025em] text-white`}
+    className={`${frederickSans.className} whitespace-nowrap text-[50px] leading-[0.88] tracking-[0.025em] text-white`}
   >
     FAN TICKET
   </h2>
 
   {/* OFFICIAL MEMBER */}
-  <div className="mt-[-8px] text-center text-[#C5A96A]">
+  <div className="mt-[-11px] text-center text-[#C5A96A]">
     <div className="inline-flex items-center justify-center gap-[6px]">
       <Star
-        size={8}
+        size={7}
         strokeWidth={1.8}
         fill="currentColor"
         className="shrink-0 opacity-60"
         aria-hidden="true"
       />
 
-      <p className="whitespace-nowrap text-[12px] font-bold uppercase leading-none tracking-[0.24em]">
+      <p className="whitespace-nowrap text-[11.5px] font-bold uppercase leading-none tracking-[0.24em]">
         OFFICIAL MEMBER
       </p>
 
@@ -340,10 +271,10 @@ export default function FanTicket({
 </div>
 
 {/* PROFILE PHOTO */}
-<div className="absolute left-1/2 top-[158px] z-10 -translate-x-1/2">
+<div className="absolute left-1/2 top-[147.5px] z-10 -translate-x-1/2">
   <div className="rounded-full border-[2px] border-[#C5A96A] bg-[#C5A96A]">
-    <div className="rounded-full border-[4px] border-white shadow-[0_8px_18px_rgba(0,0,0,0.38)]">
-      <div className="h-[132px] w-[132px] overflow-hidden rounded-full bg-black/35">
+    <div className="rounded-full border-[4px] border-white shadow-[0_6px_15px_rgba(0,0,0,0.66)]">
+      <div className="h-[145px] w-[145px] overflow-hidden rounded-full bg-black/35">
         {photo ? (
           <img
             src={photo}
@@ -378,12 +309,12 @@ export default function FanTicket({
     {name}
   </h3>
 
-  <div className="mt-[1px] flex items-center justify-center gap-[7px]">
+  <div className="mt-[-2px] flex items-center justify-center gap-[7px]">
     <span className="h-px w-[23px] bg-[#C5A96A]" />
 
-    <p className="whitespace-nowrap text-[8px] font-bold uppercase leading-none tracking-[0.16em] text-black/55">
+    <p className="whitespace-nowrap text-[8px] font-bold uppercase leading-none tracking-[0.10em] text-black/55">
       Member Since{" "}
-      <span className="relative -top-[-0.5px] text-[10px] tracking-normal text-black">
+      <span className="relative -top-[-0.5px] text-[9.5px] tracking-normal text-black">
   {memberSince}
 </span>
     </p>
@@ -395,10 +326,10 @@ export default function FanTicket({
 {/* MY COLLECTION BUTTON */}
 <button
   type="button"
-  onClick={() => router.push("/collection?from=fan")}
-  className="absolute left-[36px] right-[36px] top-[370px] z-20 h-[62px] rounded-[17px] border-[2px] border-[#C5A96A] bg-black px-[10px] text-white"
+  onClick={handleOpenCollection}
+  className="absolute left-[41px] right-[41px] top-[371px] z-20 h-[61px] rounded-[17px] border-[2px] border-[#C5A96A] bg-black px-[8px] text-white"
 >
-  <span className="flex h-full items-center">
+  <span className="flex h-full items-center justify-center">
     {/* COLLECTION ICON */}
     <span className="flex h-[42px] w-[46px] shrink-0 items-center justify-center">
       <img
@@ -412,7 +343,7 @@ export default function FanTicket({
     {/* DIVIDER */}
     <span
       aria-hidden="true"
-      className="ml-[3px] mr-[14px] h-[39px] w-px shrink-0 bg-[#C5A96A]/55"
+      className="ml-[3px] mr-[10px] h-[39px] w-px shrink-0 bg-[#C5A96A]/55"
     />
 
     {/* BUTTON TYPOGRAPHY */}
@@ -423,46 +354,60 @@ export default function FanTicket({
         MY COLLECTION
       </span>
 
-      <span className="mt-[3px] block whitespace-nowrap text-[9px] font-bold uppercase leading-none tracking-[0.17em] text-[#C5A96A]">
-        View My Athlete Cards
-      </span>
+<span className="mt-[2.5px] block whitespace-nowrap text-[10px] font-bold uppercase leading-none tracking-[0.14em] text-[#C5A96A]">
+  View My Athlete Cards
+</span>
     </span>
   </span>
 </button>
 
-          {/* ACTION BUTTONS */}
-<footer className="absolute bottom-[7px] left-[50px] right-[50px] z-20 grid h-[75px] grid-cols-2 text-center text-black">
-  {/* COLLECTION ACTION */}
-<button
-  type="button"
-  aria-label={`View ${collectedCount} collected athlete cards`}
-  onClick={() => router.push("/collection?from=fan")}
-  className="flex flex-col items-center justify-center border-r border-black/10"
->
-  <span className="flex h-[41px] w-[41px] items-center justify-center rounded-full border-[1.5px] border-[#C5A96A] bg-black text-white shadow-[0_4px_10px_rgba(0,0,0,0.22)]">
-    <Bookmark size={21} strokeWidth={1.9} />
-  </span>
+{/* ACTION BUTTONS */}
+<footer className="absolute bottom-[18px] left-[50px] right-[50px] z-20 flex items-start justify-between text-black">
 
-  <span className="mt-[9px] text-[9px] font-bold uppercase leading-none tracking-[0.12em] text-black/55">
-    {collectedCount} Collected
-  </span>
-</button>
+  {/* CENTER SEPARATOR — same height/position as Athlete Card */}
+  <div className="pointer-events-none absolute left-1/2 top-[5px] h-[42px] w-px -translate-x-1/2 bg-[#C5A96A]/65" />
+
+  {/* COLLECTION ACTION */}
+  <button
+    type="button"
+    aria-label={`View ${collectedCount} collected athlete cards`}
+    onClick={handleOpenCollection}
+    className="flex w-[70px] flex-col items-center gap-1"
+  >
+    <span className="relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-[#C5A96A] bg-black text-white shadow-[0_2px_3px_rgba(0,0,0,0.48)]">
+      <Bookmark size={21} strokeWidth={2} />
+
+      {collectedCount > 0 && (
+        <span className="absolute -right-[8px] -top-[5px] flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#c51f24] px-[4px] shadow-[0_1px_2px_rgba(0,0,0,0.72)]">
+          <span className="relative top-[1px] text-[9px] font-bold leading-none text-white">
+            {collectedCount}
+          </span>
+        </span>
+      )}
+    </span>
+
+<span className="text-[10px] font-medium not-italic uppercase leading-none text-black/55">
+  Collected
+</span>
+  </button>
 
   {/* SHARE ACTION */}
   <button
     type="button"
     aria-label="Share Fan Ticket"
-    className="flex flex-col items-center justify-center"
+    className="flex w-[70px] flex-col items-center gap-1"
   >
-    <span className="flex h-[41px] w-[41px] items-center justify-center rounded-full border-[1.5px] border-[#C5A96A] bg-black text-white shadow-[0_4px_10px_rgba(0,0,0,0.22)]">
-  <Share2 size={21} strokeWidth={1.9} />
-</span>
-
-    <span className="mt-[9px] text-[9px] font-bold uppercase leading-none tracking-[0.14em] text-black/55">
-      Share
+    <span className="relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-[#C5A96A] bg-black text-white shadow-[0_2px_3px_rgba(0,0,0,0.48)]">
+      <Share2 size={21} strokeWidth={2} />
     </span>
+
+<span className="text-[10px] font-medium not-italic uppercase leading-none text-black/55">
+  Share
+</span>
   </button>
+
 </footer>
+
         </div>
       </div>
     </div>

@@ -18,6 +18,9 @@ const [ownerId, setOwnerId] = useState<string | null>(null);
 const [collection, setCollection] = useState<any[]>([]);
 const [isLoaded, setIsLoaded] = useState(false);
 const ownerIdFromParams = searchParams.get("ownerId");
+const returnFanId = searchParams.get("returnFanId");
+const returnSource = searchParams.get("returnSource");
+const fansAthleteId = searchParams.get("fansAthleteId");
 
   useEffect(() => {
   async function loadCollection() {
@@ -111,6 +114,25 @@ if (!collectorId) {
       window.location.href = "/";
       return;
     }
+
+    if (from === "fan" && returnFanId) {
+  const params = new URLSearchParams();
+
+  if (returnSource) {
+    params.set("source", returnSource);
+  }
+
+  if (fansAthleteId) {
+    params.set("fansAthleteId", fansAthleteId);
+  }
+
+  const query = params.toString();
+
+  window.location.href =
+    `/fan/${returnFanId}${query ? `?${query}` : ""}`;
+
+  return;
+}
 
     if (from === "athlete") {
       window.location.href =

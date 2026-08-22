@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import AthleteCard from "../../components/cards/AthleteCard";
 import type { Athlete } from "@/app/data/athletes";
 import { supabase } from "@/app/lib/supabaseClient";
 import NavigationButton from "@/app/components/navigation/NavigationButton";
 
 export default function CardPage() {
-  const params = useParams<{ id: string }>();
-  const searchParams = useSearchParams();
+const params = useParams<{ id: string }>();
+const router = useRouter();
+const searchParams = useSearchParams();
 
   const source = searchParams.get("source");
   const fansAthleteId = searchParams.get("fansAthleteId");
@@ -385,7 +386,26 @@ const handleShareCard = async () => {
 };
 
 const handleOpenFans = () => {
-  window.location.href = `/fans/${athlete.id}`;
+  const params = new URLSearchParams();
+
+  if (source) {
+    params.set("cardSource", source);
+  }
+
+  if (source === "explore") {
+    params.set("exploreSource", exploreSource);
+    params.set("from", from);
+
+    if (ownerId) {
+      params.set("ownerId", ownerId);
+    }
+  }
+
+  const query = params.toString();
+
+router.push(
+  `/fans/${athlete.id}${query ? `?${query}` : ""}`
+);
 };
 
 const handleOpenCollection = () => {

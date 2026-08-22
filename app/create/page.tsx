@@ -449,7 +449,12 @@ return (
 <input
   name="jerseyNumber"
   placeholder="Jersey Number"
-  onChange={handleChange}
+  inputMode="numeric"
+  maxLength={2}
+  onChange={(e) => {
+    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 2);
+    handleChange(e);
+  }}
   className="input"
 />
 
