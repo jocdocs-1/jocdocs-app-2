@@ -8,13 +8,23 @@ import { useRouter, useParams } from "next/navigation";
 import Footer from "../../components/Footer";
 import NavigationButton from "../../components/navigation/NavigationButton";
 
+function safeRandomUUID() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random()
+    .toString(36)
+    .slice(2)}`;
+}
+
 export default function CreateAthletePage() {
   const router = useRouter();
   const params = useParams();
   const token = params.token as string;
 
   const [athlete, setAthlete] = useState<Athlete>({
-    id: crypto.randomUUID(),
+    id: safeRandomUUID(),
   name: "",
   school: "",
   team: "",
@@ -224,7 +234,7 @@ const handleToggleFollow = (athleteId: string) => {
 
     const collectedAthlete: Athlete = {
       ...athlete,
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       actionImage: athlete.actionImage || "",
       profileImage: athlete.profileImage || "",
     };

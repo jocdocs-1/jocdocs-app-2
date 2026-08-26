@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Ref } from "react";
 import {
   Users,
   Bookmark,
@@ -119,6 +119,10 @@ export default function AthleteCard({
   collectionCount = 0,
   isCollected = false,
   fansCount = 0,
+  frontExportRef,
+backExportRef,
+  exportMode = false,
+  forceFace,
 }: {
   athlete: Athlete;
   isOwnCard?: boolean;
@@ -129,6 +133,10 @@ export default function AthleteCard({
   collectionCount?: number;
   isCollected?: boolean;
   fansCount?: number;
+  frontExportRef?: Ref<HTMLDivElement>;
+backExportRef?: Ref<HTMLDivElement>;
+  exportMode?: boolean;
+  forceFace?: "front" | "back";
 }) {
   const collectLabel = isCollected ? "Collected" : "Collect";
 const fansLabel = "Fans";
@@ -137,6 +145,12 @@ const collectionLabel = "Collection";
   const cardColor = themeColors.from;
 
 const [isFlipped, setIsFlipped] = useState(false);
+const resolvedIsFlipped =
+  forceFace === "back"
+    ? true
+    : forceFace === "front"
+    ? false
+    : isFlipped;
 const [showToast, setShowToast] = useState(false);
 const [cardScale, setCardScale] = useState(1);
 
@@ -473,19 +487,19 @@ const renderCardNavigation = (face: "front" | "back") => {
       style={{ fontFamily: '"Roboto Condensed", Roboto, sans-serif' }}
     >
       <div className="relative w-full aspect-[310/530]">
-  <div
-    className="absolute left-1/2 top-0"
-    style={{
-      width: "310px",
-      height: "530px",
-      transform: `translateX(-50%) scale(${cardScale})`,
-      transformOrigin: "top center",
-    }}
-  >
+<div
+  className="absolute left-1/2 top-0"
+  style={{
+    width: "310px",
+    height: "530px",
+    transform: `translateX(-50%) scale(${cardScale})`,
+    transformOrigin: "top center",
+  }}
+>
     <div
       className="relative h-full w-full transform-gpu duration-700 ease-in-out"
       style={{
-        transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+        transform: resolvedIsFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
         transformStyle: "preserve-3d",
         WebkitTransformStyle: "preserve-3d",
       }}
@@ -499,12 +513,14 @@ const renderCardNavigation = (face: "front" | "back") => {
                   WebkitBackfaceVisibility: "hidden",
                 }}
               >
-                <div
+<div
+  ref={frontExportRef}
   className="relative h-full w-full overflow-visible rounded-[22px] bg-white p-[5.5px]"
-  style={{
-    boxShadow:
-      "0 14px 38px rgba(0,0,0,0.62), 0 3px 10px rgba(0,0,0,0.55)",
-  }}
+style={{
+  boxShadow: exportMode
+    ? "none"
+    : "0 14px 38px rgba(0,0,0,0.62), 0 3px 10px rgba(0,0,0,0.55)",
+}}
 >
 
                   {/* ACHIEVEMENT RIBBON */}
@@ -657,7 +673,7 @@ const renderCardNavigation = (face: "front" | "back") => {
 
                     <div className="absolute bottom-[92px] left-[14px] right-[14px] top-[54px] overflow-hidden rounded-[15px] border-[2.7px] border-white bg-neutral-300 shadow-[0_0_0_1px_rgba(0,0,0,0.18),inset_0_0_0_1px_rgba(255,255,255,0.55)]">
   <img
-    src={athlete.actionImage || athlete.image || "/action.jpg"}
+    src={athlete.actionImage || athlete.image || "/action-sample.png?v=2"}
     alt="Athlete action"
     className="h-full w-full object-cover"
     style={{
@@ -741,7 +757,15 @@ const renderCardNavigation = (face: "front" | "back") => {
                   WebkitBackfaceVisibility: "hidden",
                 }}
               >
-                <div className="relative h-full w-full rounded-[20px] bg-white p-[5px] shadow-[0_14px_38px_rgba(0,0,0,0.62)]">
+<div
+  ref={backExportRef}
+  className="relative h-full w-full rounded-[20px] bg-white p-[5px]"
+  style={{
+    boxShadow: exportMode
+      ? "none"
+      : "0 14px 38px rgba(0,0,0,0.62)",
+  }}
+>
                   <div className="relative flex h-full w-full flex-col overflow-hidden rounded-[16px] bg-[#242424] text-white">
 
 {/* BACK STADIUM ATMOSPHERE */}
@@ -753,7 +777,7 @@ const renderCardNavigation = (face: "front" | "back") => {
       backgroundSize: "cover",
       backgroundPosition: "center center",
       backgroundRepeat: "no-repeat",
-      filter: "grayscale(1) brightness(0.80) contrast(1.06)",
+      filter: "grayscale(1) brightness(0.65) contrast(1.06)",
       opacity: 0.52,
     }}
   />

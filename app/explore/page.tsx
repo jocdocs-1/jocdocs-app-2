@@ -174,28 +174,28 @@ const matchesSport =
             className="overflow-hidden rounded-[16px] md:rounded-[19px]"
             style={{ backgroundColor: themeColor }}
           >
-            {/* NAME */}
-            <div
-              className="
-                ml-0
-                mr-5
-                mt-2
-                -mb-3
-                relative
-                z-20
-                rounded-r-full
-                bg-white
-                px-2
-                pt-[3px]
-                pb-[4px]
-                text-center
-                md:mt-3
-                md:-mb-4
-                md:px-3
-                md:pt-1
-                md:pb-1
-              "
-            >
+{/* NAME */}
+<div
+  className="
+    mx-auto
+    w-[88%]
+    mt-2
+    -mb-3
+    relative
+    z-20
+    rounded-full
+    bg-white
+    px-2
+    pt-[3px]
+    pb-[4px]
+    text-center
+    md:mt-3
+    md:-mb-4
+    md:px-3
+    md:pt-1
+    md:pb-1
+  "
+>
               <div className="text-[15px] italic font-semibold leading-[1.05] text-black md:text-[18px] lg:text-[20px]">
                 {firstName}
               </div>
@@ -222,55 +222,59 @@ const matchesSport =
               />
             </div>
 
-            {/* SCHOOL */}
-            <div className="relative z-20 -mt-5 pl-2 pr-0 md:-mt-6 md:pl-5">
-              <div
-                title={card.school}
-                className="
-                  ml-auto
-                  max-w-[92%]
-                  rounded-l-full
-                  bg-black
-                  py-[6px]
-                  pl-5
-                  pr-3
-                  text-left
-                  text-[14px]
-                  font-medium
-                  text-white
-                  whitespace-nowrap
-                  overflow-hidden
-                  text-ellipsis
-                  md:max-w-[94%]
-                  md:py-[7px]
-                  md:pl-6
-                  md:pr-4
-                  md:text-[16px]
-                  lg:text-[17px]
-                "
-              >
+{/* SCHOOL */}
+<div className="relative z-20 -mt-5 px-2 md:-mt-6 md:px-5">
+  <div
+    title={card.school}
+    className="
+      mx-auto
+      w-[88%]
+      rounded-full
+      bg-black
+      py-[6px]
+      pl-5
+      pr-3
+      text-center
+      text-[14px]
+      font-medium
+      text-white
+      whitespace-nowrap
+      overflow-hidden
+      text-ellipsis
+      md:py-[7px]
+      md:pl-6
+      md:pr-4
+      md:text-[16px]
+      lg:text-[17px]
+    "
+  >
                 {card.school || "\u00A0"}
               </div>
             </div>
 
-            {/* SPORT */}
-            <div
-              className="
-                px-3
-                pt-1
-                pb-2
-                text-right
-                text-[14px]
-                uppercase
-                tracking-[0.12em]
-                text-white
-                md:px-4
-                md:text-[15px]
-                lg:text-[16px]
-              "
-            >
-              {card.sport}
-            </div>
+{/* SPORT */}
+<div
+  title={card.sport}
+  className="
+    w-full
+    overflow-hidden
+    whitespace-nowrap
+    text-ellipsis
+    px-3
+    pt-1
+    pb-2
+    text-right
+    text-[14px]
+    uppercase
+    tracking-[0.12em]
+    text-white
+    md:px-4
+    md:text-[15px]
+    lg:text-[16px]
+  "
+>
+  {card.sport}
+</div>
           </div>
         </div>
       </a>

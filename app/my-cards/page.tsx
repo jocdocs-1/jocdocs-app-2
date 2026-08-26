@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
 import NavigationButton from "../components/navigation/NavigationButton";
+import Footer from "../components/Footer";
 
 type CardRecord = {
   id: string;
@@ -108,7 +109,8 @@ async function deleteCard(cardId: string) {
   );
 }
 
- return (
+return (
+  <>
   <main className="relative min-h-screen bg-black px-5 pb-8 pt-20 text-white">
     <div className="mx-auto max-w-[520px]">
       
@@ -211,5 +213,8 @@ async function deleteCard(cardId: string) {
         </div>
       </div>
     </main>
-  );
+
+    <Footer />
+  </>
+);
 }

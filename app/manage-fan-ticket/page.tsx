@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NavigationButton from "../components/navigation/NavigationButton";
+import Footer from "../components/Footer";
+import { frederickSans } from "../fonts";
 
 export default function ManageFanTicketPage() {
   const [email, setEmail] = useState("");
@@ -62,15 +65,12 @@ export default function ManageFanTicketPage() {
     }
   }
 
-  return (
-    <main className="min-h-screen bg-black px-5 py-8 text-white">
+return (
+  <>
+    <NavigationButton type="back" href="/" />
+
+    <main className="min-h-screen bg-black px-5 pb-8 pt-20 text-white">
       <div className="mx-auto max-w-[520px]">
-        <Link
-          href="/"
-          className="mb-6 inline-block text-[16px] text-[#C5A96A] underline underline-offset-4"
-        >
-          ← Back to Home
-        </Link>
 
         <h1 className="text-4xl font-black tracking-[-0.04em]">
           Manage My Fan Ticket
@@ -136,19 +136,26 @@ export default function ManageFanTicketPage() {
           </div>
         )}
 
-        <div className="mt-10 border-t border-white/10 pt-6">
-          <p className="text-sm text-white/50">
-            Haven’t joined the jocdocs fan community yet?
-          </p>
+<div className="mt-10 border-t border-white/10 pt-7">
+  <p className="mb-4 text-center text-[19px] italic text-white/55">
+    Don&apos;t have a Fan Ticket yet?
+  </p>
 
-          <Link
-            href="/create-fan"
-            className="mt-3 inline-block font-bold text-[#C5A96A] underline underline-offset-4"
-          >
-            Claim My Fan Ticket →
-          </Link>
-        </div>
+  <Link
+    href="/create-fan"
+    className="group relative mx-auto flex min-h-[58px] w-[76%] items-center justify-center rounded-[11px] border-[1.5px] border-white bg-[#C5A96A] px-3 text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+  >
+    <span
+      className={`${frederickSans.className} translate-y-[2px] text-[clamp(34px,9vw,41px)] uppercase leading-[0.92] tracking-[-0.005em]`}
+    >
+      Claim My Fan Ticket
+    </span>
+  </Link>
+</div>
       </div>
     </main>
-  );
+
+    <Footer />
+  </>
+);
 }

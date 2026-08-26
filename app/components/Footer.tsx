@@ -1,67 +1,39 @@
-type FooterProps = {
-  theme?: "light" | "dark";
-};
+import Link from "next/link";
 
-export default function Footer({ theme = "light" }: FooterProps) {
-  const isDark = theme === "dark";
-
+export default function Footer() {
   return (
-    <footer
-      className={`mt-14 border-t py-8 ${
-        isDark ? "border-white/10" : "border-black/10"
-      }`}
-    >
-      <div
-        className={`mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-6 px-6 text-sm ${
-          isDark ? "text-white/45" : "text-black/50"
-        }`}
-      >
-        <a
-          href="/explore"
-          className={`transition ${
-            isDark ? "hover:text-white" : "hover:text-black"
-          }`}
-        >
-          Explore Athletes
-        </a>
+    <footer className="bg-black px-6 pb-6 pt-4 text-white">
+      <div className="mx-auto w-full max-w-[430px] text-center">
 
-        <a
-          href="/my-cards"
-          className={`font-semibold transition ${
-            isDark
-              ? "text-[#C5A96A] hover:text-white"
-              : "text-[#C5A96A] hover:text-black"
-          }`}
-        >
-          Manage My Cards
-        </a>
+        {/* FOOTER LINKS */}
+        <nav className="mx-auto flex items-center justify-center gap-14">
+          <Link
+            href="/terms"
+            className="text-[17px] font-medium transition-opacity hover:opacity-70"
+          >
+            Terms
+          </Link>
 
-        <a
-          href="/terms"
-          className={`transition ${
-            isDark ? "hover:text-white" : "hover:text-black"
-          }`}
-        >
-          Terms
-        </a>
+          <Link
+            href="/privacy"
+            className="text-[16px] font-medium transition-opacity hover:opacity-70"
+          >
+            Privacy
+          </Link>
 
-        <a
-          href="/privacy"
-          className={`transition ${
-            isDark ? "hover:text-white" : "hover:text-black"
-          }`}
-        >
-          Privacy
-        </a>
+          <Link
+            href="/contact"
+            className="text-[16px] font-medium transition-opacity hover:opacity-70"
+          >
+            Contact
+          </Link>
+        </nav>
 
-        <a
-          href="/contact"
-          className={`transition ${
-            isDark ? "hover:text-white" : "hover:text-black"
-          }`}
-        >
-          Contact
-        </a>
+        {/* COPYRIGHT */}
+        <p className="mt-4 text-[12px] leading-none text-white/60">
+          Copyright © 2026, 29 Sweep Media. All rights reserved.
+        </p>
+
       </div>
     </footer>
   );

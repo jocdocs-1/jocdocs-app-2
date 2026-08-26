@@ -1,46 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "./components/Footer";
 import { frederickSans } from "./fonts";
-
-const featuredCards = [
-  { src: "/featured-cards/track.png", alt: "Featured track athlete card" },
-  { src: "/featured-cards/soccer.png", alt: "Featured soccer athlete card" },
-  {
-    src: "/featured-cards/football.png",
-    alt: "Featured football athlete card",
-  },
-  { src: "/featured-cards/tennis.png", alt: "Featured tennis athlete card" },
-  {
-    src: "/featured-cards/baseball.png",
-    alt: "Featured baseball athlete card",
-  },
-  {
-    src: "/featured-cards/basketball.png",
-    alt: "Featured basketball athlete card",
-  },
-];
+import FanTicket from "./components/cards/FanTicket";
 
 export default function HomePage() {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [showFeatured, setShowFeatured] = useState(false);
-
-  const [selectedCard, setSelectedCard] = useState<null | {
-    src: string;
-    alt: string;
-  }>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const flipToBack = window.setTimeout(() => {
       setIsFlipped(true);
-    }, 1400);
+    }, 1600);
 
     const flipToFront = window.setTimeout(() => {
       setIsFlipped(false);
-    }, 6200);
+    }, 5200);
 
     return () => {
       window.clearTimeout(flipToBack);
@@ -48,313 +26,479 @@ export default function HomePage() {
     };
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <main className="min-h-screen bg-white text-black">
-      <section className="mx-auto flex w-full max-w-[430px] flex-col items-center px-5 pb-6 pt-7">
-        {/* LOGO */}
-        <div className="w-[292px] max-w-full">
-  <Image
-    src="/jocdocs-logo-full-v2.png"
-    alt="jocdocs"
-    width={320}
-    height={110}
-    priority
-    className="h-auto w-full"
-  />
-
-  {/* Centered beneath the JOCDOCS typography, excluding the badge */}
-  <p className="ml-[65px] mt-[-4px] text-center text-[19px] font-normal leading-none tracking-[-0.01em] text-black">
-    Create. Collect. Connect.
-  </p>
-</div>
-
-        {/* FEATURED ATHLETE HEADING */}
-        <div className="mt-7 text-center">
-          <p
-  className={`${frederickSans.className} text-[50px] leading-none tracking-[0.025em] text-[#C9AD68]`}
+    <main className="min-h-screen bg-black text-white">
+{/* =========================================================
+    HEADER
+========================================================= */}
+<header className="sticky top-0 z-50 border-b border-black/10 bg-white">
+  <div className="mx-auto flex h-[96px] w-full max-w-[430px] items-center justify-between px-[18px]">
+<Link
+  href="/"
+  aria-label="jocdocs home"
+  className="ml-[8px] block w-[287px]"
 >
-  FEATURED ATHLETE
-</p>
-        </div>
+      <Image
+        src="/jocdocs-logo-full-v2.png"
+        alt="jocdocs"
+        width={320}
+        height={110}
+        priority
+        className="h-auto w-full"
+      />
+    </Link>
 
-        {/* HERO FLIP CARD */}
-        <button
-          type="button"
-          onClick={() => setIsFlipped((current) => !current)}
-          className="relative mt-0 h-[640px] w-[378px] max-w-[calc(100vw-32px)] cursor-pointer [perspective:1200px]"
-          aria-label="Tap to flip featured athlete card"
-        >
-          <div
-            className={`relative h-full w-full transition-transform duration-[3000ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] ${
-              isFlipped
-                ? "[transform:rotateY(-180deg)]"
-                : "[transform:rotateY(0deg)]"
-            }`}
-          >
-            {/* FRONT */}
-            <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden]">
-              <Image
-                src="/hero-cards/bdavie-front.png"
-                alt="Featured athlete card front"
-                fill
-                priority
-                sizes="(max-width: 768px) 92vw, 378px"
-                className="object-contain"
-              />
-            </div>
-
-            {/* BACK */}
-            <div className="absolute inset-0 overflow-hidden rounded-[28px] drop-shadow-[0_10px_14px_rgba(0,0,0,0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
-              <Image
-                src="/hero-cards/bdavie-back.png"
-                alt="Featured athlete card back"
-                fill
-                priority
-                sizes="(max-width: 768px) 92vw, 378px"
-                className="object-contain"
-              />
-            </div>
-
-            {/* SHIMMER */}
-            <div className="pointer-events-none absolute inset-0 z-40 overflow-hidden rounded-[28px]">
-              <div className="hero-shimmer absolute inset-y-0 -left-1/2 w-[42%]" />
-            </div>
-          </div>
-        </button>
-
-        <p className="mt-2 text-[13px] italic text-black/45">
-          Tap card to flip
-        </p>
-
-        <button
-          type="button"
-          onClick={() => setShowFeatured(true)}
-          className="mt-3 text-[17px] italic underline decoration-[#C9AD68] underline-offset-4"
-        >
-          See More Featured Cards
-        </button>
-
-        {/* COMMUNITY SECTION */}
-        <section className="mt-8 w-full">
-          <div className="text-center">
-            <h1
-  className={`${frederickSans.className} text-[58px] leading-[0.88] tracking-[0.025em] text-black`}
->
-  JOIN THE
-  <br />
-  <span className="text-[#C9AD68]">JOCDOCS COMMUNITY</span>
-</h1>
-
-<p className="mx-auto mt-0 max-w-[330px] text-[17px] leading-[1.2] text-black/65">
-  Create your sports identity, discover athletes and become part
-  of the jocdocs community.
-</p>
-          </div>
-
-          {/* ATHLETE INVITATION */}
-          <Link
-            href="/create"
-            className="group relative mt-8 block overflow-hidden rounded-[25px] border-2 border-[#C9AD68] bg-black px-5 py-5 text-white shadow-[0_10px_22px_rgba(0,0,0,0.20)] transition duration-200 active:translate-y-[2px] active:shadow-[0_5px_12px_rgba(0,0,0,0.18)]"
-          >
-            <div className="text-center">
-              <p
-                className={`${frederickSans.className} text-[38px] leading-none tracking-[0.04em] text-[#C9AD68]`}
-              >
-                ATHLETES
-              </p>
-
-              <h2
-  className={`${frederickSans.className} mt-2 whitespace-nowrap text-[46px] leading-none tracking-[0.015em]`}
->
-  CREATE MY ATHLETE CARD
-</h2>
-
-              <p className="mt-2 text-[17px] leading-tight text-white/75">
-                Showcase your athletic career.
-              </p>
-            </div>
-
-            <span
-              aria-hidden="true"
-              className="absolute bottom-4 right-5 text-[24px] text-[#C9AD68] transition-transform group-hover:translate-x-1"
-            >
-              →
-            </span>
-          </Link>
-
-          {/* SPORTS FAN INVITATION */}
-          <Link
-  href="/create-fan"
-  className="group relative mt-5 block overflow-hidden rounded-[25px] border-2 border-[#C9AD68] bg-black px-5 py-5 text-white shadow-[0_10px_22px_rgba(0,0,0,0.20)] transition duration-200 active:translate-y-[2px] active:shadow-[0_5px_12px_rgba(0,0,0,0.18)]"
->
-
-            <div className="text-center">
-              <p
-                className={`${frederickSans.className} text-[38px] leading-none tracking-[0.04em] text-[#C9AD68]`}
-              >
-                FANS
-              </p>
-
-              <h2
-  className={`${frederickSans.className} mt-2 whitespace-nowrap text-[46px] leading-none tracking-[0.015em]`}
->
-  CLAIM MY FAN TICKET
-</h2>
-
-              <p className="mt-2 text-[17px] leading-tight text-white/75">
-                Collect and follow your favorite athletes.
-              </p>
-            </div>
-          <span
-  aria-hidden="true"
-  className="absolute bottom-4 right-5 text-[24px] text-[#C9AD68] transition-transform group-hover:translate-x-1"
->
-  →
+    <button
+      type="button"
+      onClick={() => setMenuOpen((current) => !current)}
+      aria-label={menuOpen ? "Close menu" : "Open menu"}
+      aria-expanded={menuOpen}
+      className="flex h-12 w-12 items-center justify-center text-[#C5A96A]"
+    >
+{menuOpen ? (
+<span className="flex h-[38px] w-[38px] items-center justify-center text-[48px] font-light leading-none">
+  ×
 </span>
+) : (
+        <span className="flex w-[27px] flex-col gap-[5px]">
+          <span className="h-[3px] w-full rounded-full bg-[#C5A96A]" />
+          <span className="h-[3px] w-full rounded-full bg-[#C5A96A]" />
+          <span className="h-[3px] w-full rounded-full bg-[#C5A96A]" />
+        </span>
+      )}
+    </button>
+  </div>
 
+{/* SLIDE-IN MENU */}
+<div
+  className={`fixed right-0 top-[96px] z-40 h-[calc(100vh-96px)] w-[82%] max-w-[330px] bg-white text-black shadow-[-12px_0_34px_rgba(0,0,0,0.30)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
+    menuOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  <nav className="px-7 pb-6 pt-1">
+    <a
+      href="#spotlight"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+    >
+      Spotlight Athlete
+    </a>
+
+    <a
+      href="#community"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+    >
+      Join the Community
+    </a>
+
+    <a
+      href="#story"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+    >
+      The jocdocs Story
+    </a>
+
+    <a
+      href="#fans"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+    >
+      Fan Ticket
+    </a>
+
+    <Link
+      href="/meet-the-fans"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+    >
+      Meet the Fans
+    </Link>
+
+    <Link
+  href="/explore"
+  onClick={closeMenu}
+  className="block border-b-[1.5px] border-[#C5A96A]/70 py-4 text-[19px] font-medium"
+>
+  Explore Athletes
 </Link>
 
-          {/* EVERYONE INVITATION */}
-          <Link
-            href="/explore"
-            className="group relative mt-5 block overflow-hidden rounded-[25px] border-2 border-[#C9AD68] bg-black px-5 py-5 text-white shadow-[0_10px_22px_rgba(0,0,0,0.20)] transition duration-200 active:translate-y-[2px] active:shadow-[0_5px_12px_rgba(0,0,0,0.18)]"
-          >
-            <div className="text-center">
-              <p
-                className={`${frederickSans.className} text-[38px] leading-none tracking-[0.04em] text-[#C9AD68]`}
-              >
-                EVERYONE
-              </p>
+    <Link
+      href="/terms"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/60 py-4 text-[18px] font-medium text-black/55"
+    >
+      Terms
+    </Link>
 
-              <h2
-  className={`${frederickSans.className} mt-2 whitespace-nowrap text-[46px] leading-none tracking-[0.015em]`}
+    <Link
+      href="/privacy"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/60 py-4 text-[18px] font-medium text-black/55"
+    >
+      Privacy
+    </Link>
+
+    <Link
+      href="/contact"
+      onClick={closeMenu}
+      className="block border-b-[1.5px] border-[#C5A96A]/60 py-4 text-[18px] font-medium text-black/55"
+    >
+      Contact
+    </Link>
+
+<a
+  href="https://www.instagram.com/jocdocsapp/"
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={closeMenu}
+  className="flex items-center gap-3 border-b-[1.5px] border-[#C5A96A]/60 py-4 text-[18px] font-medium text-black/70"
 >
-  EXPLORE ATHLETES
-</h2>
+  <Image
+    src="/social/instagram-icon.png"
+    alt=""
+    width={24}
+    height={24}
+    className="h-[24px] w-[24px] object-contain"
+  />
+  Instagram
+</a>
 
-              <p className="mt-2 text-[17px] leading-tight text-white/75">
-                Discover athletes from every sport.
-              </p>
-            </div>
+<a
+  href="https://www.facebook.com/profile.php?id=61589316473413"
+  target="_blank"
+  rel="noopener noreferrer"
+  onClick={closeMenu}
+  className="flex items-center gap-3 border-b-[1.5px] border-[#C5A96A]/60 py-4 text-[18px] font-medium text-black/70"
+>
+  <Image
+    src="/social/facebook-icon.png"
+    alt=""
+    width={24}
+    height={24}
+    className="h-[24px] w-[24px] object-contain"
+  />
+  Facebook
+</a>
+  </nav>
+</div>
 
-            <span
-              aria-hidden="true"
-              className="absolute bottom-4 right-5 text-[24px] text-[#C9AD68] transition-transform group-hover:translate-x-1"
-            >
-              →
-            </span>
-          </Link>
-        </section>
+{/* DARK OVERLAY BEHIND MENU */}
+<button
+  type="button"
+  aria-label="Close menu"
+  onClick={closeMenu}
+  className={`fixed inset-x-0 bottom-0 top-[96px] z-30 bg-black/55 backdrop-blur-[1px] transition-opacity duration-500 ${
+    menuOpen
+      ? "pointer-events-auto opacity-100"
+      : "pointer-events-none opacity-0"
+  }`}
+/>
+</header>
 
-        {/* EXISTING MEMBERS */}
-        <section className="mt-9 w-full border-t border-black/10 pt-7 text-center">
+{/* =========================================================
+    HERO STATEMENT
+========================================================= */}
+<section className="mx-auto flex min-h-[245px] w-full max-w-[430px] items-center justify-center bg-black px-[15px] py-6 text-center">
+  <h1
+    className={`${frederickSans.className} w-full max-w-[415px] translate-y-[7px] text-[57px] uppercase leading-[0.94] tracking-[0.015em] text-[#D0B36D]`}
+  >
+    Your Athletic Story,
+    <br />
+    On One Shareable,
+    <br />
+    Collectible,
+    <br />
+    Easy-Access Card.
+  </h1>
+</section>
 
-          <div>
-            <p className="text-[16px] text-black/60">
-              Already have an Athlete Card?
-            </p>
+{/* =========================================================
+    SPOTLIGHT ATHLETE
+========================================================= */}
+<section
+  id="spotlight"
+  className="scroll-mt-[96px] bg-white px-4 pb-5 pt-6 text-black"
+>
+  <div className="mx-auto w-full max-w-[430px] text-center">
+    <div className="mx-auto mb-2 inline-flex min-w-[250px] items-center justify-center rounded-full border border-black/30 bg-[#C5A96A] px-7 py-[5px] shadow-[0_2px_4px_rgba(0,0,0,0.20)]">
+      <span className="text-[17px] font-bold uppercase tracking-[0.13em] text-white">
+        Spotlight Athlete
+      </span>
+    </div>
 
-            <Link
-              href="/my-cards"
-              className="mt-2 inline-flex min-h-[48px] w-full max-w-[315px] items-center justify-center rounded-full border-2 border-[#C9AD68] bg-white px-6 py-3 text-[18px] font-bold text-[#A98B43] transition active:scale-[0.98]"
-            >
-              Manage My Cards
-            </Link>
-          </div>
-
-          <div className="mt-7">
-            <p className="text-[16px] text-black/60">
-              Already have a Fan Ticket?
-            </p>
-
-            <div
-              aria-disabled="true"
-              className="mt-2 inline-flex min-h-[48px] w-full max-w-[315px] items-center justify-center rounded-full border-2 border-black/15 bg-black/[0.04] px-6 py-3 text-[18px] font-bold text-black/35"
-            >
-              Manage My Ticket — Coming Soon
-            </div>
-          </div>
-        </section>
-      </section>
-
-      {/* SLIDE-UP FEATURED CARDS PANEL */}
+    {/* FEATURED ATHLETE FLIP CARD */}
+    <button
+      type="button"
+      onClick={() => setIsFlipped((current) => !current)}
+      className="relative -mt-[2px] mx-auto block aspect-[310/530] w-[calc(100vw-34px)] max-w-[378px] cursor-pointer [perspective:1200px]"
+      aria-label="Tap to flip featured athlete card"
+    >
       <div
-        className={`fixed inset-x-0 bottom-0 z-50 mx-auto w-full max-w-[430px] transform rounded-t-[28px] bg-white px-5 pb-8 pt-5 shadow-[0_-14px_34px_rgba(0,0,0,0.22)] transition-transform duration-500 ease-out ${
-          showFeatured ? "translate-y-0" : "translate-y-full"
+        className={`relative h-full w-full transition-transform duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] ${
+          isFlipped
+            ? "[transform:rotateY(-180deg)]"
+            : "[transform:rotateY(0deg)]"
         }`}
       >
-        <button
-          type="button"
-          onClick={() => setShowFeatured(false)}
-          className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-black/10 bg-[#C9AD68]/20 text-[22px] font-semibold leading-none text-black/70"
-          aria-label="Close featured cards"
-        >
-          ×
-        </button>
-
-        <div className="pr-12 text-center">
-          <h2
-            className={`${frederickSans.className} text-[29px] leading-none tracking-[0.03em]`}
-          >
-            FEATURED CARDS
-          </h2>
-
-          <p className="mt-2 text-[15px] text-black/55">
-            Swipe to scroll. Tap a card to open it.
-          </p>
+        {/* FRONT */}
+        <div className="absolute inset-0 overflow-hidden rounded-[18px] drop-shadow-[0_8px_12px_rgba(0,0,0,0.45)] [backface-visibility:hidden]">
+          <Image
+            src="/hero-cards/bdavie-front.png"
+            alt="Featured athlete card front"
+            fill
+            priority
+            sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+            className="object-contain"
+          />
         </div>
 
-        <div className="-mx-5 mt-5 flex snap-x gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {featuredCards.map((card) => (
-            <button
-              key={card.src}
-              type="button"
-              onClick={() => setSelectedCard(card)}
-              className="w-[155px] shrink-0 snap-center overflow-hidden rounded-[20px] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.22)] transition active:scale-[0.98]"
-            >
-              <Image
-                src={card.src}
-                alt={card.alt}
-                width={330}
-                height={520}
-                className="h-auto w-full"
-              />
-            </button>
-          ))}
+        {/* BACK */}
+        <div className="absolute inset-0 overflow-hidden rounded-[18px] drop-shadow-[0_8px_12px_rgba(0,0,0,0.45)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <Image
+            src="/hero-cards/bdavie-back.png"
+            alt="Featured athlete card back"
+            fill
+            priority
+            sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+            className="object-contain"
+          />
         </div>
       </div>
+    </button>
 
-      {/* FEATURED CARD PREVIEW */}
-      {selectedCard && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 px-5 backdrop-blur-sm"
-          onClick={() => setSelectedCard(null)}
-        >
-          <button
-            type="button"
-            onClick={() => setSelectedCard(null)}
-            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[24px] text-black shadow-md"
-            aria-label="Close preview"
-          >
-            ×
-          </button>
+    <p className="mt-5 text-[18px] italic leading-none text-black/55">
+      Tap card to flip.
+    </p>
+  </div>
+</section>
 
-          <div
-            className="relative w-full max-w-[360px]"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Image
-              src={selectedCard.src}
-              alt={selectedCard.alt}
-              width={720}
-              height={1230}
-              className="h-auto w-full rounded-[28px] shadow-2xl"
-            />
-          </div>
-        </div>
-      )}
+{/* =========================================================
+    COMMUNITY INTRO
+========================================================= */}
+<section
+  id="community"
+  className="scroll-mt-[96px] bg-black px-4 pb-8 pt-4"
+>
+  <div className="mx-auto w-full max-w-[430px]">
+    <div className="text-center">
+      <p className="text-[24px] italic leading-[1.02] text-white/75">
+        Whether you're
+        <br />
+        an athlete or sports fan,
+      </p>
+
+      <h2
+        className={`${frederickSans.className} mt-4 text-[62px] uppercase leading-[0.86] tracking-[0.01em] text-[#C5A96A]`}
+      >
+        Join the jocdocs
+        <br />
+        Sports Community.
+      </h2>
+    </div>
+    <div className="-mt-4">
+    </div>
+
+    <HomeCTA
+      eyebrow="ATHLETES"
+      title="CREATE MY ATHLETE CARD"
+      subtitle="Showcase your athletic career."
+      href="/create"
+    />
+
+    <HomeCTA
+      eyebrow="FANS"
+      title="CLAIM MY FAN TICKET"
+      subtitle="Follow and collect your favorite athletes."
+      href="/create-fan"
+    />
+
+    <HomeCTA
+      eyebrow="EVERYONE"
+      title="EXPLORE ATHLETES"
+      subtitle="Discover athletes from every sport."
+      href="/explore"
+    />
+  </div>
+</section>
+
+{/* =========================================================
+    EXISTING MEMBERS
+========================================================= */}
+<section className="bg-[#C5A96A] px-5 pb-7.5 pt-5 text-black">
+  <div className="mx-auto w-full max-w-[430px] text-center">
+    <p className="mb-4 text-[24px] italic leading-none">
+      Already have a card? Access here:
+    </p>
+
+    <div className="flex flex-col items-center gap-5">
+      <Link
+        href="/my-cards"
+        className="flex min-h-[58px] w-[84%] items-center justify-center rounded-full border-[1.5px] border-white bg-black px-6 text-[25px] font-semibold text-white shadow-[0_5px_10px_rgba(0,0,0,0.30)] transition active:scale-[0.98]"
+      >
+        My Athlete Card
+      </Link>
+
+      <Link
+        href="/manage-fan-ticket"
+        className="flex min-h-[58px] w-[84%] items-center justify-center rounded-full border-[1.5px] border-white bg-black px-6 text-[25px] font-semibold text-white shadow-[0_5px_10px_rgba(0,0,0,0.30)] transition active:scale-[0.98]"
+      >
+        My Fan Ticket
+      </Link>
+    </div>
+  </div>
+</section>
+
+{/* =========================================================
+    JOCDOCS STORY / PROMO VIDEO
+========================================================= */}
+<section
+  id="story"
+  className="scroll-mt-[96px] bg-white px-4 pb-9 pt-8"
+>
+  <div className="mx-auto w-full max-w-[430px] text-center">
+    <h2
+      className={`${frederickSans.className} text-[66px] uppercase leading-[0.83] tracking-[0.015em] text-black`}
+    >
+      Every Athlete
+      <br />
+      Has A Story
+    </h2>
+
+    <div className="mx-auto mt-3 w-[92%] overflow-hidden rounded-[12px] border-[1.5px] border-[#C5A96A] bg-black shadow-[0_8px_20px_rgba(0,0,0,0.45)]">
+<video
+  controls
+  playsInline
+  preload="metadata"
+  poster="/videos/jocdocs-vid1-Cover.jpg"
+  className="block h-auto w-full"
+>
+  <source
+    src="/videos/jocdocs-vid1.mp4"
+    type="video/mp4"
+  />
+  Your browser does not support the video tag.
+</video>
+    </div>
+  </div>
+</section>
+
+{/* =========================================================
+    FAN TICKET
+========================================================= */}
+<section
+  id="fans"
+  className="scroll-mt-[96px] border-t-[2px] border-[#C5A96A] bg-white px-4 pb-8 pt-8 text-center text-black"
+>
+  <div className="mx-auto w-full max-w-[430px]">
+    <h2
+      className={`${frederickSans.className} text-[66px] uppercase leading-[0.83] tracking-[0.015em] text-black`}
+    >
+      Every Fan
+      <br />
+      Has A Favorite
+    </h2>
+
+    <div className="mt-2 flex justify-center">
+      <Suspense fallback={null}>
+<FanTicket
+  name="JOHN SMITH"
+  photo="/homepage/fan-sample.png"
+  collectedCount={3}
+/>
+      </Suspense>
+    </div>
+
+<p className="mx-auto -mt-33 max-w-[390px] text-[23px] italic leading-[1.15] text-black/65">
+  Create your own Fan Ticket,
+  <br />
+  follow your favorite athletes and
+  <br />
+  build your personal sports collection.
+</p>
+
+<Link
+  href="/create-fan"
+  className="group relative mx-auto mt-4 flex min-h-[58px] w-[76%] items-center justify-center rounded-[11px] border-[1.5px] border-white bg-[#C5A96A] px-4 text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+>
+  <span
+    className={`${frederickSans.className} translate-y-[4px] text-[clamp(34px,9vw,41px)] uppercase leading-[0.92] tracking-[0.005em]`}
+  >
+    Claim My Fan Ticket
+  </span>
+</Link>
+  </div>
+</section>
+
+{/* =========================================================
+    ATHLETIC CONNECTIVITY
+========================================================= */}
+<section className="bg-[#C5A96A] px-6 py-8 text-center text-black">
+  <div className="mx-auto w-full max-w-[430px]">
+    <p className="mx-auto max-w-[385px] text-[26px] font-medium italic leading-[1.15]">
+      Athleticonnectivity,
+      <br />
+      powering the connection between
+      <br />
+      athletes and the sports community.
+    </p>
+  </div>
+</section>
 
       <Footer />
     </main>
+  );
+}
+
+/* ===============================================================
+   HOME CTA
+================================================================ */
+
+function HomeCTA({
+  eyebrow,
+  title,
+  subtitle,
+  href,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group relative mx-auto mt-12 block w-[90%] rounded-[12px] border-[1.5px] border-white bg-[#C5A96A] px-3 pb-[18px] pt-[31px] text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+    >
+      {/* CATEGORY PILL */}
+      <div className="absolute left-1/2 top-0 flex min-w-[165px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[1.5px] border-white bg-black px-5 py-[1px]">
+        <span className="text-[18px] font-bold uppercase tracking-[0.16em] text-white">
+          {eyebrow}
+        </span>
+      </div>
+
+      {/* CTA HEADLINE */}
+      <div
+        className={`${frederickSans.className} whitespace-nowrap text-[clamp(40px,10.8vw,49px)] uppercase leading-[0.92] tracking-[-0.005em]`}
+      >
+        {title}
+      </div>
+
+      {/* SUBHEAD */}
+      <p className="mt-[-2px] text-[19px] italic leading-[1.05] text-black/80">
+        {subtitle}
+      </p>
+
+      {/* ARROW */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-[4px] right-[10px] text-[48px] font-light leading-none text-white transition-transform group-hover:translate-x-[2px]"
+      >
+        ›
+      </span>
+    </Link>
   );
 }

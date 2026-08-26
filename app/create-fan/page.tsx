@@ -7,6 +7,16 @@ import Footer from "../components/Footer";
 import { supabase } from "../lib/supabaseClient";
 import NavigationButton from "../components/navigation/NavigationButton";
 
+function safeRandomUUID() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random()
+    .toString(36)
+    .slice(2)}`;
+}
+
 export default function CreateFanPage() {
   const router = useRouter();
 
@@ -189,7 +199,7 @@ export default function CreateFanPage() {
       let photoUrl: string | null = null;
 
       if (photo.startsWith("data:")) {
-        const photoFileName = `fan-tickets/${crypto.randomUUID()}-profile.jpg`;
+        const photoFileName = `fan-tickets/${safeRandomUUID()}-profile.jpg`;
 
         const photoFile = dataURLtoFile(
           photo,
@@ -214,7 +224,7 @@ export default function CreateFanPage() {
         photoUrl = publicUrlData.publicUrl;
       }
 
-      const editToken = crypto.randomUUID();
+      const editToken = safeRandomUUID();
 
       const { data: fan, error: fanError } = await supabase
         .from("fans")

@@ -8,10 +8,20 @@ import { useRouter } from "next/navigation";
 import Footer from "../components/Footer";
 import NavigationButton from "../components/navigation/NavigationButton";
 
+function safeRandomUUID() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random()
+    .toString(36)
+    .slice(2)}`;
+}
+
 export default function CreateAthletePage() {
   const router = useRouter();
 const [athlete, setAthlete] = useState<Athlete>({
-  id: crypto.randomUUID(),
+  id: safeRandomUUID(),
   name: "",
   school: "",
   team: "",
@@ -200,7 +210,7 @@ const handleToggleFollow = (athleteId: string) => {
 
     const collectedAthlete: Athlete = {
       ...athlete,
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       actionImage: athlete.actionImage || "",
       profileImage: athlete.profileImage || "",
     };
@@ -282,7 +292,7 @@ if (portraitSource && portraitSource.startsWith("data:")) {
 
   portraitImageUrl = publicUrlData.publicUrl;
 }
-const editToken = crypto.randomUUID();
+const editToken = safeRandomUUID();
 
 const { data: card, error: cardError } = await supabase
   .from("cards")
@@ -347,6 +357,15 @@ await emailResponse.json();
     console.error("Supabase save error:", error);
   }
 }
+
+const previewAthlete: Athlete = {
+  ...athlete,
+  name: athlete.name.trim() || "Your Name",
+  school: athlete.school.trim() || "Your School",
+  team: athlete.team.trim() || "Your Team",
+  jerseyNumber: athlete.jerseyNumber.trim() || "",
+  actionImage: athlete.actionImage || "/action-sample.png?v=2",
+};
 
 return (
   <div className="relative min-h-screen bg-black px-6 pb-6 pt-20 text-white">
@@ -602,13 +621,13 @@ return (
 
         <div className="flex min-h-[100dvh] w-full justify-center bg-black px-2 py-2 text-white">
   <div className="flex w-full max-w-[560px] items-center justify-center">
-            <AthleteCard
-              athlete={athlete}
-              isOwnCard={true}
-              onToggleCollect={handleCollect}
-              isCollected={isCollected}
-              fansCount={fansByAthlete[athlete.id] || 0}
-            />
+<AthleteCard
+  athlete={previewAthlete}
+  isOwnCard={true}
+  onToggleCollect={handleCollect}
+  isCollected={isCollected}
+  fansCount={fansByAthlete[athlete.id] || 0}
+/>
           </div>
         </div>
       </div>

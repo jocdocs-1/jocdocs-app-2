@@ -34,7 +34,7 @@ export default function MiniAthleteCard({
 
   const imageSrc = athlete.actionImage || athlete.image || "";
   const school = athlete.school || "";
-  const sport = athlete.primarySport || "";
+const sport = athlete.primarySport || "";
 
   return (
     <button
@@ -53,10 +53,10 @@ export default function MiniAthleteCard({
               relative
               z-20
               -mb-3
-              ml-0
-              mr-5
-              mt-2
-              rounded-r-full
+mx-auto
+mt-2
+w-[88%]
+rounded-full
               bg-white
               px-2
               pb-[4px]
@@ -96,16 +96,16 @@ export default function MiniAthleteCard({
           </div>
 
           {/* SCHOOL */}
-          <div className="relative z-20 -mt-5 pl-2 pr-0 md:-mt-6 md:pl-5">
+          <div className="relative z-20 -mt-5 px-2 md:-mt-6 md:px-5">
             <div
               title={school}
               className="
-                ml-auto
-                max-w-[92%]
+mx-auto
+w-[88%]
                 overflow-hidden
                 text-ellipsis
                 whitespace-nowrap
-                rounded-l-full
+rounded-full
                 bg-black
                 py-[6px]
                 pl-5
@@ -126,24 +126,24 @@ export default function MiniAthleteCard({
             </div>
           </div>
 
-          {/* SPORT */}
-          <div
-            className="
-              px-3
-              pb-2
-              pt-1
-              text-right
-              text-[14px]
-              uppercase
-              tracking-[0.12em]
-              text-white
-              md:px-4
-              md:text-[15px]
-              lg:text-[16px]
-            "
-          >
-            {sport}
-          </div>
+{/* SPORT */}
+<div
+  className="
+    px-3
+    pb-2
+    pt-1
+    text-right
+    text-[14px]
+    uppercase
+    tracking-[0.12em]
+    text-white
+    md:px-4
+    md:text-[15px]
+    lg:text-[16px]
+  "
+>
+  {sport}
+</div>
         </div>
       </div>
     </button>

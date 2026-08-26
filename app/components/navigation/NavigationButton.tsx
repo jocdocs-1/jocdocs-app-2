@@ -16,21 +16,22 @@ export default function NavigationButton({
   onClick,
   className = "",
 }: NavigationButtonProps) {
-  const content = (
-    <Image
-      src={
-        type === "back"
-          ? "/icons/nav-back.png"
-          : "/icons/nav-close.png"
-      }
-      alt=""
-      width={26}
-      height={26}
-      priority
-    />
-  );
+const content = (
+  <Image
+    src={
+      type === "back"
+        ? "/icons/nav-back.png"
+        : "/icons/nav-close.png"
+    }
+    alt=""
+    width={26}
+    height={26}
+    priority
+    className="brightness-0 opacity-45"
+  />
+);
 
-  const sharedClassName = `
+const sharedClassName = `
   fixed
   ${type === "back" ? "left-4" : "right-4"}
   top-[calc(env(safe-area-inset-top)+16px)]
@@ -41,11 +42,11 @@ export default function NavigationButton({
   items-center
   justify-center
   rounded-full
-  bg-white/30
+  bg-white/67
   shadow-[0_3px_10px_rgba(0,0,0,0.28)]
   transition-all
   duration-200
-  hover:bg-white/55
+  hover:bg-white/85
   active:scale-95
   ${className}
 `;
