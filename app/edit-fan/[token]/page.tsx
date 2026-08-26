@@ -304,7 +304,7 @@ export default function EditFanPage() {
           </div>
         </main>
 
-        <Footer theme="dark" />
+        <Footer />
       </div>
     );
   }
@@ -413,7 +413,7 @@ export default function EditFanPage() {
         </div>
       </main>
 
-      <Footer theme="dark" />
+      <Footer />
     </div>
   );
 }

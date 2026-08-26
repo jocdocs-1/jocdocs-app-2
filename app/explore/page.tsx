@@ -283,7 +283,7 @@ const matchesSport =
 </div>
       </div>
 
-<Footer theme="dark" />
+<Footer />
 
 </main>
 );

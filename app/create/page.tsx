@@ -363,7 +363,7 @@ const previewAthlete: Athlete = {
   name: athlete.name.trim() || "Your Name",
   school: athlete.school.trim() || "Your School",
   team: athlete.team.trim() || "Your Team",
-  jerseyNumber: athlete.jerseyNumber.trim() || "",
+  jerseyNumber: athlete.jerseyNumber?.trim() || "",
   actionImage: athlete.actionImage || "/action-sample.png?v=2",
 };
 
@@ -633,7 +633,7 @@ return (
       </div>
     </div>
 
-    <Footer theme="dark" />
+    <Footer />
     
   {showSaveModal && (
   <div

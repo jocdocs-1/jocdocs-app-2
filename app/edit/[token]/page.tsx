@@ -690,7 +690,7 @@ return (
       </div>
     </div>
 
-    <Footer theme="dark" />
+    <Footer />
     
   {showSaveModal && (
   <div

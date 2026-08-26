@@ -86,7 +86,7 @@ export default function MeetTheFansPage() {
         </div>
       </div>
 
-      <Footer theme="dark" />
+      <Footer />
     </main>
   );
 }

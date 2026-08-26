@@ -387,7 +387,7 @@ export default function CreateFanPage() {
         </div>
       </main>
 
-      <Footer theme="dark" />
+      <Footer />
 
       {/* PUBLISH MODAL */}
       {showSaveModal && (
