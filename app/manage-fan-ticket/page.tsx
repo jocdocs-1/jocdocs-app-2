@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { supabase } from "../lib/supabaseClient";
 import NavigationButton from "../components/navigation/NavigationButton";
 import Footer from "../components/Footer";
 import { frederickSans } from "../fonts";
@@ -11,6 +12,51 @@ export default function ManageFanTicketPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  async function findTicket() {
+    const cleanedEmail = email.trim().toLowerCase();
+
+    setMessage("");
+    setErrorMessage("");
+
+    if (!cleanedEmail) {
+      setErrorMessage("Please enter your email address.");
+      return;
+    }
+
+    if (!cleanedEmail.includes("@")) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase
+        .from("fans")
+        .select("id")
+        .eq("email", cleanedEmail)
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data?.id) {
+        setErrorMessage("No Fan Ticket was found for that email address.");
+        return;
+      }
+
+      window.localStorage.setItem("jocdocsFanId", data.id);
+      window.location.href = `/fan/${data.id}`;
+    } catch (error) {
+      console.error("Fan Ticket lookup error:", error);
+      setErrorMessage("Unable to find your Fan Ticket. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function sendTicketLinks() {
     const cleanedEmail = email.trim().toLowerCase();
@@ -77,18 +123,10 @@ return (
         </h1>
 
         <p className="mt-2 text-sm leading-relaxed text-white/60">
-          Enter the email address you used when publishing your Fan
-          Ticket. We’ll send you secure links to view and edit it.
+          Enter the email address you used when publishing your Fan Ticket to view and manage your Fan Ticket.
         </p>
 
         <div className="mt-8 space-y-3">
-          <label
-            htmlFor="fan-ticket-email"
-            className="block text-sm font-semibold text-white"
-          >
-            Email
-          </label>
-
           <input
             id="fan-ticket-email"
             type="email"
@@ -96,7 +134,7 @@ return (
             onChange={(event) => setEmail(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !loading) {
-                void sendTicketLinks();
+                void findTicket();
               }
             }}
             placeholder="you@example.com"
@@ -104,9 +142,10 @@ return (
             className="input"
           />
 
+          <div className="mt-5">
           <button
             type="button"
-            onClick={sendTicketLinks}
+            onClick={findTicket}
             disabled={loading}
             className={`w-full rounded-2xl px-6 py-4 text-[18px] font-extrabold uppercase tracking-[0.08em] transition active:scale-[0.98] ${
               loading
@@ -114,7 +153,17 @@ return (
                 : "bg-[#C5A96A] text-black shadow-[0_0_24px_rgba(197,169,106,0.35)]"
             }`}
           >
-            {loading ? "Sending Links..." : "Send My Ticket Links"}
+            Find My Ticket
+          </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={sendTicketLinks}
+            disabled={loading}
+            className="mt-3 w-full rounded-2xl border border-[#C5A96A] px-6 py-4 text-[18px] font-extrabold uppercase tracking-[0.08em] text-[#C5A96A] transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40" 
+          >
+            Send My Ticket Link
           </button>
         </div>
 

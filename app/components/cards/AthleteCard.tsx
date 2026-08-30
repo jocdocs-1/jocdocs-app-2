@@ -323,9 +323,13 @@ const renderCardNavigation = (face: "front" | "back") => {
   const buttonClass =
     "flex w-[70px] flex-col items-center gap-1 text-white";
 
-  const iconClass = isFront
-  ? "relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-[#C5A96A] bg-black shadow-[0_2px_3px_rgba(0,0,0,0.78)]"
-  : "relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-white/40 bg-white/10 backdrop-blur-sm shadow-[0_2px_3px_rgba(0,0,0,0.35)]";
+const iconClass = isFront
+  ? `relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-[#C5A96A] bg-black ${
+      exportMode ? "" : "shadow-[0_2px_3px_rgba(0,0,0,0.78)]"
+    }`
+  : `relative top-[-1px] flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-white/40 bg-white/10 backdrop-blur-sm ${
+      exportMode ? "" : "shadow-[0_2px_3px_rgba(0,0,0,0.35)]"
+    }`;
 
   const labelClass =
   "text-[10px] font-medium not-italic uppercase leading-none text-white";
@@ -562,15 +566,12 @@ style={{
   {/* STADIUM BACKGROUND */}
 <div className="pointer-events-none absolute inset-0 z-0">
   {/* Stadium artwork */}
-  <div
-    className="absolute inset-0"
-    style={{
-      backgroundImage: `url("/card-backgrounds/stadium-athlete-2.png")`,
-      backgroundSize: "cover",
-      backgroundPosition: "center center",
-      backgroundRepeat: "no-repeat",
-    }}
-  />
+<img
+  src="/card-backgrounds/stadium-athlete-2.png"
+  alt=""
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+/>
 
   {/* Theme-specific luminosity lift */}
   <div
@@ -597,15 +598,15 @@ style={{
   }}
 />
 
-  {/* Theme color */}
-  <div
-    className="absolute inset-0"
-    style={{
-      backgroundColor: themeColors.stadium,
-      mixBlendMode: "color",
-      opacity: 0.94,
-    }}
-  />
+{/* Theme color */}
+<div
+  className="absolute inset-0"
+  style={{
+    backgroundColor: themeColors.stadium,
+mixBlendMode: "color",
+opacity: 0.94,
+  }}
+/>
 </div>
 
 {/* LEGACY STRIP */}
@@ -613,7 +614,9 @@ style={{
   <div
   className="absolute left-[16px] top-[69px] z-30"
   style={{
-    filter: "drop-shadow(0 2px 1px rgba(0,0,0,0.72))",
+    filter: exportMode
+  ? "none"
+  : "drop-shadow(0 2px 1px rgba(0,0,0,0.72))",
   }}
 >
     <div
@@ -628,8 +631,9 @@ style={{
     borderTop: "1px solid rgba(255,255,255,0.68)",
     borderTopRightRadius: "6px",
 
-    boxShadow:
-      "0 3px 2px -1px rgba(0,0,0,0.78)",
+boxShadow: exportMode
+  ? "none"
+  : "0 3px 2px -1px rgba(0,0,0,0.78)",
   }}
 >
       <span
@@ -654,7 +658,9 @@ style={{
 </div>
 
 <div
-  className="absolute left-1/2 top-[8px] z-30 w-max min-w-[185px] max-w-[275px] -translate-x-1/2 rounded-[24px] border-[2.7px] border-[#C5A96A] bg-white px-6 pt-[5px] pb-[1px] shadow-[0_3px_5px_2px_rgba(0,0,0,0.75)]"
+  className={`absolute left-1/2 top-[8px] z-30 w-max min-w-[185px] max-w-[275px] -translate-x-1/2 rounded-[24px] border-[2.7px] border-[#C5A96A] bg-white px-6 pt-[5px] pb-[1px] ${
+    exportMode ? "" : "shadow-[0_3px_5px_2px_rgba(0,0,0,0.75)]"
+  }`}
 >
   <div className="relative top-[-3.4px]">
     <p
@@ -671,7 +677,13 @@ style={{
   </div>
 </div>
 
-                    <div className="absolute bottom-[92px] left-[14px] right-[14px] top-[54px] overflow-hidden rounded-[15px] border-[2.7px] border-white bg-neutral-300 shadow-[0_0_0_1px_rgba(0,0,0,0.18),inset_0_0_0_1px_rgba(255,255,255,0.55)]">
+<div
+  className={`absolute bottom-[92px] left-[14px] right-[14px] top-[54px] overflow-hidden rounded-[15px] border-[2.7px] border-white bg-neutral-300 ${
+    exportMode
+      ? "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.55)]"
+      : "shadow-[0_0_0_1px_rgba(0,0,0,0.18),inset_0_0_0_1px_rgba(255,255,255,0.55)]"
+  }`}
+>
   <img
     src={athlete.actionImage || athlete.image || "/action-sample.png?v=2"}
     alt="Athlete action"
@@ -688,18 +700,53 @@ style={{
   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black/45 via-black/18 to-transparent" />
 </div>
 
+{exportMode && (
+<svg
+  className="pointer-events-none absolute bottom-[110px] right-[29px] z-[21]"
+    width="105"
+    height="90"
+    viewBox="0 0 105 90"
+    overflow="visible"
+  >
+    <text
+      x="100"
+      y="70"
+      textAnchor="end"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+      paintOrder="stroke"
+      style={{
+        fontFamily: barlowCondensed.style.fontFamily,
+        fontSize: "82px",
+        fontWeight: 700,
+        fontStyle: "italic",
+        transform: "skewX(-5deg) scaleX(1.04)",
+        transformOrigin: "center",
+      }}
+    >
+      {String(athlete.jerseyNumber || athlete.number || "")
+        .replace(/\D/g, "")
+        .slice(0, 2)}
+    </text>
+  </svg>
+)}
+
   <div
   className={`${barlowCondensed.className} absolute bottom-[126.5px] right-[29px] z-20 select-none pointer-events-none font-bold italic leading-none`}
-  style={{
-    fontSize: "82px",
-    lineHeight: "0.85",
-    color: `color-mix(in srgb, ${cardColor} 38%, transparent)`,
-    WebkitTextStroke: "1.4px white",
-    letterSpacing: "0.015em",
-    transform: "skewX(-5deg) scaleX(1.04)",
-    transformOrigin: "center",
-    filter: "drop-shadow(1px 2px 1.5px rgba(0,0,0,0.82))",
-  }}
+style={{
+  fontSize: "82px",
+  lineHeight: "0.85",
+  color: `color-mix(in srgb, ${cardColor} 38%, transparent)`,
+  WebkitTextStroke: exportMode ? "0px transparent" : "1.4px white",
+  letterSpacing: "0.015em",
+  transform: "skewX(-5deg) scaleX(1.04)",
+  transformOrigin: "center",
+  filter: exportMode
+    ? "none"
+    : "drop-shadow(1px 2px 1.5px rgba(0,0,0,0.82))",
+}}
 >
 {String(athlete.jerseyNumber || athlete.number || "")
   .replace(/\D/g, "")
@@ -709,9 +756,11 @@ style={{
 <div className="absolute bottom-[70px] left-1/2 z-30 w-max min-w-[218px] max-w-[265px] -translate-x-1/2">
   <div
     className="rounded-[16px] border-[2px] border-[#C5A96A] bg-black px-4 pt-[5px] pb-[4px] text-center"
-    style={{
-      boxShadow: "0 3px 4px 1px rgba(0,0,0,0.52)",
-    }}
+style={{
+  boxShadow: exportMode
+    ? "none"
+    : "0 3px 4px 1px rgba(0,0,0,0.52)",
+}}
   >
     <div className="relative top-[-2px]">
       <p className="truncate whitespace-nowrap text-[13px] font-bold not-italic uppercase leading-[1.4] tracking-[0.09em] text-[#C5A96A]">
@@ -814,7 +863,9 @@ background:
                       </div>
 
 <div
-  className="absolute left-1/2 top-[8px] z-30 w-max min-w-[170px] max-w-[270px] -translate-x-1/2 rounded-[22px] border-[2px] border-[#C5A96A] bg-white px-5 pt-[4px] pb-[2px] shadow-[0_3px_5px_1px_rgba(0,0,0,0.62)]"
+  className={`absolute left-1/2 top-[8px] z-30 w-max min-w-[170px] max-w-[270px] -translate-x-1/2 rounded-[22px] border-[2px] border-[#C5A96A] bg-white px-5 pt-[4px] pb-[2px] ${
+    exportMode ? "" : "shadow-[0_3px_5px_1px_rgba(0,0,0,0.62)]"
+  }`}
 >
   <div className="relative top-[-2px]">
     <p
@@ -834,7 +885,11 @@ background:
 
                     <div className="px-5 pt-[57px]">
                       <div className="flex gap-[10px]">
-                        <div className="h-[112px] w-[106px] shrink-0 overflow-hidden rounded-[15px] border-[1.5px] border-white bg-neutral-300 shadow-md">
+                        <div
+  className={`h-[112px] w-[106px] shrink-0 overflow-hidden rounded-[15px] border-[1.5px] border-white bg-neutral-300 ${
+    exportMode ? "" : "shadow-md"
+  }`}
+>
                           <img
                             src={athlete.profileImage || athlete.portraitImage || "/portrait.png"}
                             alt="Athlete portrait"
@@ -855,7 +910,11 @@ background:
   {athlete.position}
 </p>
 
-                          <p className="text-[53px] font-extrabold italic leading-[0.84] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]">
+                          <p
+  className={`text-[53px] font-extrabold italic leading-[0.84] text-white ${
+    exportMode ? "" : "drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]"
+  }`}
+>
                             <span className="relative -top-[17px] mr-[1px] text-[27px] font-normal italic">
                               #
                             </span>
@@ -925,7 +984,9 @@ background:
                         ].map((stat, index) => (
                           <div
   key={index}
-  className="min-w-0 w-[75px] shrink-0 rounded-xl border border-white/20 bg-white/5 px-2 py-[4px] text-center shadow-sm"
+className={`min-w-0 w-[75px] shrink-0 rounded-xl border border-white/20 bg-white/5 px-2 py-[4px] text-center ${
+  exportMode ? "" : "shadow-sm"
+}`}
 >
 <div className="truncate text-[19px] font-extrabold italic leading-none text-[#C5A96A]">
   {stat.value}

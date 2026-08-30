@@ -230,45 +230,65 @@ export default function HomePage() {
       </span>
     </div>
 
-    {/* FEATURED ATHLETE FLIP CARD */}
-    <button
-      type="button"
-      onClick={() => setIsFlipped((current) => !current)}
-      className="relative -mt-[2px] mx-auto block aspect-[310/530] w-[calc(100vw-34px)] max-w-[378px] cursor-pointer [perspective:1200px]"
-      aria-label="Tap to flip featured athlete card"
+{/* FEATURED ATHLETE HERO CARD */}
+<button
+  type="button"
+  onClick={() => setIsFlipped((current) => !current)}
+  aria-label="Flip featured athlete card"
+  className="relative -mt-[2px] mx-auto block aspect-[310/530] w-[calc(100vw-34px)] max-w-[378px] cursor-pointer border-0 bg-transparent p-0 drop-shadow-[0_8px_12px_rgba(0,0,0,0.45)]"
+  style={{ perspective: "1200px" }}
+>
+  <div
+    className="relative h-full w-full transition-transform duration-700 ease-in-out"
+    style={{
+      transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+      transformStyle: "preserve-3d",
+      WebkitTransformStyle: "preserve-3d",
+    }}
+  >
+    {/* FRONT */}
+    <div
+      className="absolute inset-0"
+      style={{
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+      }}
     >
-      <div
-        className={`relative h-full w-full transition-transform duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] [transform-style:preserve-3d] ${
-          isFlipped
-            ? "[transform:rotateY(-180deg)]"
-            : "[transform:rotateY(0deg)]"
-        }`}
-      >
-        {/* FRONT */}
-        <div className="absolute inset-0 overflow-hidden rounded-[18px] drop-shadow-[0_8px_12px_rgba(0,0,0,0.45)] [backface-visibility:hidden]">
-          <Image
-            src="/hero-cards/bdavie-front.png"
-            alt="Featured athlete card front"
-            fill
-            priority
-            sizes="(max-width: 430px) calc(100vw - 34px), 378px"
-            className="object-contain"
-          />
-        </div>
+      <Image
+        src="/hero-cards/jake-anderson-jocdocs-front-2.png"
+        alt="Jake Anderson jocdocs card front"
+        fill
+        priority
+        sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+        className="object-contain"
+      />
+    </div>
 
-        {/* BACK */}
-        <div className="absolute inset-0 overflow-hidden rounded-[18px] drop-shadow-[0_8px_12px_rgba(0,0,0,0.45)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <Image
-            src="/hero-cards/bdavie-back.png"
-            alt="Featured athlete card back"
-            fill
-            priority
-            sizes="(max-width: 430px) calc(100vw - 34px), 378px"
-            className="object-contain"
-          />
-        </div>
-      </div>
-    </button>
+    {/* BACK */}
+    <div
+      className="absolute inset-0"
+      style={{
+        transform: "rotateY(180deg)",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+      }}
+    >
+      <Image
+        src="/hero-cards/jake-anderson-jocdocs-back-2.png"
+        alt="Jake Anderson jocdocs card back"
+        fill
+        priority
+        sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+        className="object-contain"
+      />
+    </div>
+  </div>
+
+  {/* HERO CARD SHIMMER */}
+  <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px]">
+    <div className="hero-card-shimmer absolute -left-[35%] -top-[40%] h-[180%] w-[14%] bg-gradient-to-r from-transparent via-white/45 to-transparent blur-[2px]" />
+  </div>
+</button>
 
     <p className="mt-5 text-[18px] italic leading-none text-black/55">
       Tap card to flip.
@@ -447,6 +467,34 @@ export default function HomePage() {
     </p>
   </div>
 </section>
+
+      <style jsx global>{`
+        @keyframes heroCardShimmer {
+          0% {
+            transform: translate3d(0, -18%, 0) rotate(45deg);
+            opacity: 0;
+          }
+
+          10% {
+            opacity: 1;
+          }
+
+          90% {
+            opacity: 1;
+          }
+
+          100% {
+            transform: translate3d(850%, 115%, 0) rotate(45deg);
+            opacity: 0;
+          }
+        }
+
+        .hero-card-shimmer {
+          will-change: transform, opacity;
+          backface-visibility: hidden;
+          animation: heroCardShimmer 0.62s linear 0.35s 1 forwards;
+        }
+      `}</style>
 
       <Footer />
     </main>

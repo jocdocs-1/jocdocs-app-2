@@ -69,7 +69,23 @@ useEffect(() => {
       return;
     }
 
-    setAthlete(data.card_data);
+setAthlete({
+  ...data.card_data,
+  actionImage:
+    data.card_data?.actionImage ||
+    data.action_image_url ||
+    "",
+  portraitImage:
+    data.card_data?.portraitImage ||
+    data.card_data?.profileImage ||
+    data.portrait_image_url ||
+    "",
+  profileImage:
+    data.card_data?.profileImage ||
+    data.card_data?.portraitImage ||
+    data.portrait_image_url ||
+    "",
+});
   }
 
   loadCard();

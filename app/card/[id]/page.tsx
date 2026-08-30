@@ -460,7 +460,7 @@ return (
 />
 
     {/* CARD */}
-<div className="relative z-10 w-full max-w-[420px] pb-[48px]">
+<div className="relative z-10 w-full max-w-[420px] pb-[190px]">
   <AthleteCard
   athlete={athlete}
   isOwnCard={isOwnCard}
@@ -480,29 +480,13 @@ return (
 </div>
 
 {/* CTA SECTION */}
-<div className="relative z-0 mt-6 flex w-full flex-col items-center sm:mt-6">
-  <a
-    href="/?ref=card"
-    className="flex w-full max-w-[340px] flex-col items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-  >
-    <span className="text-[26px] font-bold leading-tight">
-      Create Your Own Card
-    </span>
-    <span className="-mt-[2px] text-[20px] font-roboto-condensed italic leading-tight tracking-tight opacity-90">
-      It takes 60 seconds
-    </span>
-  </a>
+<div className="relative z-0 mt-24 flex w-full flex-col items-center sm:mt-6">
 
 {/* SHARE SECTION */}
 
-<p className="mt-12 max-w-[320px] text-center text-[15px] italic leading-[1.25] text-neutral-500">
-  Use share button either on card or below to share with teammates,
-  friends, family, coaches and fans.
-</p>
-
 <button
   onClick={handleShareCard}
-  className="mt-4 flex w-full max-w-[340px] items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-[26px] font-bold leading-tight text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+  className="flex w-full max-w-[340px] items-center justify-center rounded-full bg-[#C9AD68] px-6 py-3 text-center text-[26px] font-bold leading-tight text-white shadow-lg shadow-[#C9AD68]/25 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
 >
   Share My Card
 </button>

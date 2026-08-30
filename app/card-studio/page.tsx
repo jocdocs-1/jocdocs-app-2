@@ -83,21 +83,22 @@ const loadedAthlete: Athlete = {
     data.card_data?.theme ??
     "gold",
 
-  actionImage:
-    data.card_data?.actionImage ??
-    data.action_image_url ??
-    "",
+actionImage:
+  data.card_data?.actionImage ||
+  data.action_image_url ||
+  "",
 
-  portraitImage:
-    data.card_data?.portraitImage ??
-    data.portrait_image_url ??
-    "",
+portraitImage:
+  data.card_data?.portraitImage ||
+  data.card_data?.profileImage ||
+  data.portrait_image_url ||
+  "",
 
-  profileImage:
-    data.card_data?.profileImage ??
-    data.card_data?.portraitImage ??
-    data.portrait_image_url ??
-    "",
+profileImage:
+  data.card_data?.profileImage ||
+  data.card_data?.portraitImage ||
+  data.portrait_image_url ||
+  "",
 };
 
       setStudioAthlete(loadedAthlete);
@@ -110,20 +111,83 @@ const loadedAthlete: Athlete = {
     }
   };
 
+const waitForImages = async (element: HTMLElement) => {
+  const images = Array.from(element.querySelectorAll("img"));
+
+  await Promise.all(
+    images.map(async (img) => {
+      if (!img.complete) {
+        await new Promise<void>((resolve) => {
+          img.addEventListener("load", () => resolve(), { once: true });
+          img.addEventListener("error", () => resolve(), { once: true });
+        });
+      }
+
+      try {
+        await img.decode();
+      } catch {
+        // Image may already be decoded or browser may not support decode cleanly.
+      }
+    })
+  );
+
+  const elements = [element, ...Array.from(element.querySelectorAll("*"))];
+
+  const backgroundUrls = elements
+    .map((el) => window.getComputedStyle(el).backgroundImage)
+    .filter((backgroundImage) => backgroundImage && backgroundImage !== "none")
+    .flatMap((backgroundImage) => {
+      return Array.from(
+        backgroundImage.matchAll(/url\(["']?(.*?)["']?\)/g)
+      ).map((match) => match[1]);
+    });
+
+  await Promise.all(
+    backgroundUrls.map(
+      (url) =>
+        new Promise<void>((resolve) => {
+          const image = new Image();
+
+          image.onload = () => resolve();
+          image.onerror = () => resolve();
+
+          image.src = url;
+
+          if (image.complete) {
+            resolve();
+          }
+        })
+    )
+  );
+
+  // Give loaded images and CSS backgrounds time to paint before capture.
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
+};
+
   const exportFrontPng = async () => {
-  if (!frontExportRef.current || !studioAthlete) return;
+  if (!studioAthlete?.id) return;
 
   setIsExporting(true);
   setError("");
-setExportFace("front");
+  setExportFace("front");
 
   try {
-const dataUrl = await toPng(frontExportRef.current, {
-  pixelRatio: 4,
-  cacheBust: true,
-  width: 310,
-  height: 530,
-});
+    const response = await fetch(
+      `/api/card-studio-export?id=${encodeURIComponent(
+        studioAthlete.id
+      )}&face=front`
+    );
+
+    if (!response.ok) {
+      throw new Error("Front PNG capture failed.");
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
 
     const safeName =
       studioAthlete.name
@@ -135,29 +199,38 @@ const dataUrl = await toPng(frontExportRef.current, {
     const link = document.createElement("a");
 
     link.download = `${safeName}-jocdocs-front.png`;
-    link.href = dataUrl;
+    link.href = url;
     link.click();
+
+    URL.revokeObjectURL(url);
   } catch (err) {
-    console.error("CARD STUDIO EXPORT ERROR:", err);
+    console.error("CARD STUDIO FRONT EXPORT ERROR:", err);
     setError("Could not export the Athlete Card.");
   } finally {
     setIsExporting(false);
   }
 };
+
 const exportBackPng = async () => {
-  if (!backExportRef.current || !studioAthlete) return;
+  if (!studioAthlete?.id) return;
 
   setIsExporting(true);
   setError("");
+  setExportFace("back");
 
   try {
+    const response = await fetch(
+      `/api/card-studio-export?id=${encodeURIComponent(
+        studioAthlete.id
+      )}&face=back`
+    );
 
-    const dataUrl = await toPng(backExportRef.current, {
-      pixelRatio: 4,
-      cacheBust: true,
-      width: 310,
-      height: 530,
-    });
+    if (!response.ok) {
+      throw new Error("Back PNG capture failed.");
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
 
     const safeName =
       studioAthlete.name
@@ -169,8 +242,10 @@ const exportBackPng = async () => {
     const link = document.createElement("a");
 
     link.download = `${safeName}-jocdocs-back.png`;
-    link.href = dataUrl;
+    link.href = url;
     link.click();
+
+    URL.revokeObjectURL(url);
   } catch (err) {
     console.error("CARD STUDIO BACK EXPORT ERROR:", err);
     setError("Could not export the back of the Athlete Card.");
@@ -306,35 +381,67 @@ ctx.drawImage(
 
       ctx.restore();
 
-      if (shimmerProgress !== null) {
-        const shimmerWidth = canvas.width * 0.18;
-        const startX = -shimmerWidth;
-        const endX = canvas.width + shimmerWidth;
-        const x = startX + (endX - startX) * shimmerProgress;
+if (shimmerProgress !== null) {
+  const width = canvas.width;
+  const height = canvas.height;
 
-        const gradient = ctx.createLinearGradient(
-          x - shimmerWidth,
-          0,
-          x + shimmerWidth,
-          0
-        );
+  // Match the Card Studio CSS preview exactly.
+  const shimmerWidth = width * 0.16;
+  const shimmerHeight = height * 2.4;
 
-        gradient.addColorStop(0, "rgba(255,255,255,0)");
-        gradient.addColorStop(0.5, "rgba(255,255,255,0.28)");
-        gradient.addColorStop(1, "rgba(255,255,255,0)");
+  const baseLeft = -width * 0.70;
+  const baseTop = -height * 0.55;
 
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate((18 * Math.PI) / 180);
-        ctx.fillStyle = gradient;
-        ctx.fillRect(
-          -canvas.width,
-          -canvas.height,
-          canvas.width * 2,
-          canvas.height * 2
-        );
-        ctx.restore();
-      }
+  // CSS translate percentages are relative to the shimmer element itself.
+  const translateX =
+    (-1.2 * shimmerWidth) +
+    ((11 * shimmerWidth) - (-1.2 * shimmerWidth)) *
+      shimmerProgress;
+
+  const translateY =
+    (-0.30 * shimmerHeight) +
+    ((0.45 * shimmerHeight) - (-0.30 * shimmerHeight)) *
+      shimmerProgress;
+
+  const centerX =
+    baseLeft +
+    shimmerWidth / 2 +
+    translateX;
+
+  const centerY =
+    baseTop +
+    shimmerHeight / 2 +
+    translateY;
+
+  const gradient = ctx.createLinearGradient(
+    -shimmerWidth / 2,
+    0,
+    shimmerWidth / 2,
+    0
+  );
+
+  gradient.addColorStop(0, "rgba(255,255,255,0)");
+  gradient.addColorStop(0.5, "rgba(255,255,255,0.35)");
+  gradient.addColorStop(1, "rgba(255,255,255,0)");
+
+  ctx.save();
+
+  ctx.translate(centerX, centerY);
+  ctx.rotate((18 * Math.PI) / 180);
+
+  // 3px preview blur, doubled because video canvas is 2× card size.
+  ctx.filter = "blur(6px)";
+  ctx.fillStyle = gradient;
+
+  ctx.fillRect(
+    -shimmerWidth / 2,
+    -shimmerHeight / 2,
+    shimmerWidth,
+    shimmerHeight
+  );
+
+  ctx.restore();
+}
     };
 
     const animate = (
@@ -365,11 +472,11 @@ ctx.drawImage(
 
     await new Promise((resolve) => setTimeout(resolve, 350));
 
-    await animate(550, (progress) => {
-      drawFrame(frontImage, 1, progress);
-    });
+drawFrame(frontImage);
 
-    await animate(900, (progress) => {
+await new Promise((resolve) => setTimeout(resolve, 800));
+
+    await animate(800, (progress) => {
       const scaleX = Math.cos(progress * Math.PI);
 
       if (progress < 0.5) {
@@ -483,7 +590,7 @@ backExportRef={backExportRef}
 {showHeroShimmer && (
   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px]">
 <div
-  className="absolute -left-[50%] -top-[60%] h-[220%] w-[18%] rotate-[18deg] bg-gradient-to-r from-transparent via-white/40 to-transparent blur-[3px] animate-[cardStudioShimmer_0.55s_ease-in-out_forwards]"
+  className="absolute -left-[70%] -top-[55%] h-[240%] w-[16%] rotate-[18deg] bg-gradient-to-r from-transparent via-white/35 to-transparent blur-[3px] animate-[cardStudioShimmer_0.8s_linear_forwards]"
 />
   </div>
 )}
@@ -561,20 +668,20 @@ backExportRef={backExportRef}
 <style jsx>{`
 @keyframes cardStudioShimmer {
   0% {
-    transform: translateX(-100%) rotate(18deg);
+    transform: translate(-120%, -30%) rotate(18deg);
     opacity: 0;
   }
 
-  8% {
+  6% {
     opacity: 1;
   }
 
-  92% {
+  94% {
     opacity: 1;
   }
 
   100% {
-    transform: translateX(850%) rotate(18deg);
+    transform: translate(1100%, 45%) rotate(18deg);
     opacity: 0;
   }
 }

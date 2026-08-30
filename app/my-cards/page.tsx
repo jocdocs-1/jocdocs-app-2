@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
 import NavigationButton from "../components/navigation/NavigationButton";
+import { frederickSans } from "../fonts";
 import Footer from "../components/Footer";
 
 type CardRecord = {
@@ -126,7 +127,7 @@ return (
 </h1>
 
 <p className="mb-8 text-sm leading-tight text-white/70">
-  Enter the email address you used when publishing your card to view and manage your cards.
+  Enter the email address you used when publishing your Athlete Card to view and manage your cards.
 </p>
 
 <div className="space-y-3">
@@ -138,6 +139,7 @@ return (
             className="input"
           />
 
+          <div className="mt-5">
           <button
             type="button"
             onClick={findCards}
@@ -145,6 +147,7 @@ return (
           >
             {loading ? "Finding Cards..." : "Find My Cards"}
           </button>
+          </div>
           <button
   type="button"
   onClick={sendCardLinks}
@@ -210,6 +213,23 @@ return (
 </button>
   </div>
 ))}
+        </div>
+
+        <div className="mt-10 border-t border-white/10 pt-6 text-center">
+          <p className="text-[16px] italic text-white/50">
+            Don&apos;t have an Athlete Card yet?
+          </p>
+
+          <Link
+            href="/create"
+            className="group relative mx-auto mt-4 flex min-h-[58px] w-[76%] items-center justify-center rounded-[11px] border-[1.5px] border-white bg-[#C5A96A] px-4 text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+          >
+            <span
+              className={`${frederickSans.className} translate-y-[4px] text-[clamp(34px,9vw,41px)] uppercase leading-[0.92] tracking-[0.005em]`}
+            >
+              Create My Athlete Card
+            </span>
+          </Link>
         </div>
       </div>
     </main>
