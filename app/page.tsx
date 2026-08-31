@@ -342,6 +342,13 @@ export default function HomePage() {
       subtitle="Discover athletes from every sport."
       href="/explore"
     />
+
+    <HomeCTA
+      eyebrow="EVERYONE"
+      title="MEET THE FANS"
+      subtitle="Meet the fans behind the athletes."
+      href="/meet-the-fans"
+    />
   </div>
 </section>
 

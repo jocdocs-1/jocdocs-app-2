@@ -222,7 +222,7 @@ return (
 
           <Link
             href="/create"
-            className="group relative mx-auto mt-4 flex min-h-[58px] w-[76%] items-center justify-center rounded-[11px] border-[1.5px] border-white bg-[#C5A96A] px-4 text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+            className="group relative mx-auto mt-4 flex min-h-[58px] w-[90%] items-center justify-center rounded-[11px] border-[1.5px] border-white bg-[#C5A96A] px-4 text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
           >
             <span
               className={`${frederickSans.className} translate-y-[4px] text-[clamp(34px,9vw,41px)] uppercase leading-[0.92] tracking-[0.005em]`}
