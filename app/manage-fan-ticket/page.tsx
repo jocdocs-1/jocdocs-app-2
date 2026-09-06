@@ -7,8 +7,15 @@ import NavigationButton from "../components/navigation/NavigationButton";
 import Footer from "../components/Footer";
 import { frederickSans } from "../fonts";
 
+type FanRecord = {
+  id: string;
+  name: string | null;
+  edit_token: string | null;
+};
+
 export default function ManageFanTicketPage() {
   const [email, setEmail] = useState("");
+  const [fan, setFan] = useState<FanRecord | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,12 +39,12 @@ export default function ManageFanTicketPage() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase
-        .from("fans")
-        .select("id")
-        .eq("email", cleanedEmail)
-        .limit(1)
-        .maybeSingle();
+const { data, error } = await supabase
+  .from("fans")
+  .select("id, name, edit_token")
+  .eq("email", cleanedEmail)
+  .limit(1)
+  .maybeSingle();
 
       if (error) {
         throw error;
@@ -48,8 +55,7 @@ export default function ManageFanTicketPage() {
         return;
       }
 
-      window.localStorage.setItem("jocdocsFanId", data.id);
-      window.location.href = `/fan/${data.id}`;
+setFan(data);
     } catch (error) {
       console.error("Fan Ticket lookup error:", error);
       setErrorMessage("Unable to find your Fan Ticket. Please try again.");
@@ -166,6 +172,44 @@ return (
             Send My Ticket Link
           </button>
         </div>
+
+        {fan && (
+  <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-4">
+    <p className="text-2xl font-extrabold">
+      {fan.name || "My Fan Ticket"}
+    </p>
+
+    <p className="mt-1 text-sm text-white/60">
+      Fan Ticket
+    </p>
+
+    <div className="mt-4 flex gap-3">
+      <button
+        type="button"
+        onClick={() => {
+          window.localStorage.setItem(
+            "jocdocsFanId",
+            fan.id
+          );
+
+          window.location.href = `/fan/${fan.id}`;
+        }}
+        className="rounded-xl bg-[#C5A96A] px-4 py-2 text-sm font-bold text-black"
+      >
+        View Ticket
+      </button>
+
+      {fan.edit_token && (
+        <Link
+          href={`/edit-fan/${fan.edit_token}`}
+          className="rounded-xl border border-[#C5A96A] px-4 py-2 text-sm font-bold text-[#C5A96A]"
+        >
+          Edit Ticket
+        </Link>
+      )}
+    </div>
+  </div>
+)}
 
         {message && (
           <div

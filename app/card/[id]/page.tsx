@@ -102,19 +102,49 @@ useEffect(() => {
   if (!isOwnCard || !id) return;
 
   async function loadCollectionCount() {
-    const { count, error } = await supabase
-      .from("collections")
-      .select("*", { count: "exact", head: true })
-      .eq("collector_type", "athlete")
-      .eq("collector_id", id)
-      .eq("collected_type", "athlete_card");
+    const { data: collectionRows, error: collectionError } =
+      await supabase
+        .from("collections")
+        .select("collected_id")
+        .eq("collector_type", "athlete")
+        .eq("collector_id", id)
+        .eq("collected_type", "athlete_card");
 
-    if (error) {
-      console.error("Error loading collection count:", error);
+    if (collectionError) {
+      console.error(
+        "Error loading collection count:",
+        collectionError
+      );
       return;
     }
 
-    setCollectionCount(count ?? 0);
+    const collectedIds = Array.from(
+      new Set(
+        (collectionRows ?? [])
+          .map((row) => row.collected_id)
+          .filter((cardId): cardId is string => Boolean(cardId))
+      )
+    );
+
+    if (collectedIds.length === 0) {
+      setCollectionCount(0);
+      return;
+    }
+
+    const { data: cardRows, error: cardsError } = await supabase
+      .from("cards")
+      .select("id")
+      .in("id", collectedIds);
+
+    if (cardsError) {
+      console.error(
+        "Error validating collected cards:",
+        cardsError
+      );
+      return;
+    }
+
+    setCollectionCount(cardRows?.length ?? 0);
   }
 
   loadCollectionCount();
@@ -192,18 +222,67 @@ useEffect(() => {
   async function loadFansCount() {
     if (!id) return;
 
-    const { count, error } = await supabase
-      .from("collections")
-      .select("*", { count: "exact", head: true })
-      .eq("collected_type", "athlete_card")
-      .eq("collected_id", id);
+    const { data: collectionRows, error: collectionError } =
+      await supabase
+        .from("collections")
+        .select("collector_type, collector_id")
+        .eq("collected_type", "athlete_card")
+        .eq("collected_id", id);
 
-    if (error) {
-      console.error("Error loading fans count:", error);
+    if (collectionError) {
+      console.error("Error loading fans count:", collectionError);
       return;
     }
 
-    setFansCount(count ?? 0);
+    const fanIds = Array.from(
+      new Set(
+        (collectionRows ?? [])
+          .filter((row) => row.collector_type === "fan")
+          .map((row) => row.collector_id)
+          .filter((collectorId): collectorId is string =>
+            Boolean(collectorId)
+          )
+      )
+    );
+
+    const athleteIds = Array.from(
+      new Set(
+        (collectionRows ?? [])
+          .filter((row) => row.collector_type === "athlete")
+          .map((row) => row.collector_id)
+          .filter((collectorId): collectorId is string =>
+            Boolean(collectorId)
+          )
+      )
+    );
+
+    const [fanResult, athleteResult] = await Promise.all([
+      fanIds.length
+        ? supabase.from("fans").select("id").in("id", fanIds)
+        : Promise.resolve({ data: [], error: null }),
+
+      athleteIds.length
+        ? supabase.from("cards").select("id").in("id", athleteIds)
+        : Promise.resolve({ data: [], error: null }),
+    ]);
+
+    if (fanResult.error) {
+      console.error("Error validating fan collectors:", fanResult.error);
+      return;
+    }
+
+    if (athleteResult.error) {
+      console.error(
+        "Error validating athlete collectors:",
+        athleteResult.error
+      );
+      return;
+    }
+
+    setFansCount(
+      (fanResult.data?.length ?? 0) +
+        (athleteResult.data?.length ?? 0)
+    );
   }
 
   loadFansCount();

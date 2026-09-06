@@ -21,19 +21,46 @@ export default async function FanPage({
     .eq("id", id)
     .single();
 
-    const { count: collectedCount, error: collectionCountError } =
+const { data: collectionRows, error: collectionError } =
   await supabase
     .from("collections")
-    .select("*", { count: "exact", head: true })
+    .select("collected_id")
     .eq("collector_type", "fan")
     .eq("collector_id", id)
     .eq("collected_type", "athlete_card");
 
-if (collectionCountError) {
+let collectedCount = 0;
+
+if (collectionError) {
   console.error(
     "Fan collection count error:",
-    collectionCountError
+    collectionError
   );
+} else {
+  const collectedIds = Array.from(
+    new Set(
+      (collectionRows ?? [])
+        .map((row) => row.collected_id)
+        .filter((cardId): cardId is string => Boolean(cardId))
+    )
+  );
+
+  if (collectedIds.length > 0) {
+    const { data: cardRows, error: cardsError } =
+      await supabase
+        .from("cards")
+        .select("id")
+        .in("id", collectedIds);
+
+    if (cardsError) {
+      console.error(
+        "Error validating fan collection cards:",
+        cardsError
+      );
+    } else {
+      collectedCount = cardRows?.length ?? 0;
+    }
+  }
 }
 
   if (error) {

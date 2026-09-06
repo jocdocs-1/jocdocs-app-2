@@ -24,10 +24,12 @@ const fansAthleteId = searchParams.get("fansAthleteId");
 
   useEffect(() => {
   async function loadCollection() {
-    const collectorId =
+const collectorId =
   from === "athlete"
-    ? window.localStorage.getItem("jocdocsAthleteCardId")
-    : window.localStorage.getItem("jocdocsFanId");
+    ? ownerIdFromParams ||
+      window.localStorage.getItem("jocdocsAthleteCardId")
+    : returnFanId ||
+      window.localStorage.getItem("jocdocsFanId");
 
 setOwnerId(collectorId);
 
