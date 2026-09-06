@@ -378,7 +378,7 @@ export default function CreateFanPage() {
   <Suspense fallback={null}>
    <FanTicket
     name={name.trim() || "Your Name"}
-    photo={photo}
+    photo={photo || "/fan-form-page-sample.png"}
     collectedCount={0}
    />
   </Suspense>

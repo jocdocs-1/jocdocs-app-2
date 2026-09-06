@@ -365,6 +365,8 @@ const previewAthlete: Athlete = {
   team: athlete.team.trim() || "Your Team",
   jerseyNumber: athlete.jerseyNumber?.trim() || "",
   actionImage: athlete.actionImage || "/action-sample.png?v=2",
+  portraitImage:
+    athlete.portraitImage || "/athlete-formpage-portrait.png",
 };
 
 return (

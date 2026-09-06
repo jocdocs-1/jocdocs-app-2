@@ -890,11 +890,15 @@ background:
     exportMode ? "" : "shadow-md"
   }`}
 >
-                          <img
-                            src={athlete.profileImage || athlete.portraitImage || "/portrait.png"}
-                            alt="Athlete portrait"
-                            className="h-full w-full object-cover"
-                          />
+{athlete.profileImage || athlete.portraitImage ? (
+  <img
+    src={athlete.profileImage || athlete.portraitImage}
+    alt="Athlete portrait"
+    className="h-full w-full object-cover"
+  />
+) : (
+  <div className="h-full w-full bg-neutral-300" />
+)}
                         </div>
 
                         <div className="flex min-w-0 flex-1 flex-col justify-between py-[1px]">

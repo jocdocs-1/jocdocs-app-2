@@ -129,6 +129,10 @@ rounded-full
 {/* SPORT */}
 <div
   className="
+    max-w-full
+    overflow-hidden
+    truncate
+    whitespace-nowrap
     px-3
     pb-2
     pt-1

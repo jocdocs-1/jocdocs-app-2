@@ -275,17 +275,15 @@ const nameSize =
   <div className="rounded-full border-[2px] border-[#C5A96A] bg-[#C5A96A]">
     <div className="rounded-full border-[4px] border-white shadow-[0_6px_15px_rgba(0,0,0,0.66)]">
       <div className="h-[145px] w-[145px] overflow-hidden rounded-full bg-black/35">
-        {photo ? (
-          <img
-            src={photo}
-            alt={name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-[10px] font-semibold uppercase tracking-[0.08em] text-white/55">
-            Profile Photo
-          </div>
-        )}
+{photo ? (
+  <img
+    src={photo}
+    alt={name}
+    className="h-full w-full object-cover"
+  />
+) : (
+  <div className="h-full w-full bg-[#C9C9C9]" />
+)}
       </div>
     </div>
   </div>
