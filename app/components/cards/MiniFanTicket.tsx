@@ -62,11 +62,15 @@ export default function MiniFanTicket({
 
       {/* PHOTO */}
       <div className="absolute left-1/2 top-[34%] z-10 aspect-square w-[47%] -translate-x-1/2 overflow-hidden rounded-full border-[3px] border-white shadow-[0_0_0_2px_#C5A96A]">
-        <img
-          src={photo || "/portrait.png"}
-          alt={name}
-          className="h-full w-full object-cover"
-        />
+{photo ? (
+  <img
+    src={photo}
+    alt={name}
+    className="h-full w-full object-cover"
+  />
+) : (
+  <div className="h-full w-full bg-neutral-300" />
+)}
       </div>
 
       {/* NAME */}

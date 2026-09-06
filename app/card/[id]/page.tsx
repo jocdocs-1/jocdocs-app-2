@@ -68,10 +68,10 @@ const ownerId = searchParams.get("ownerId");
       link1: searchParams.get("link1") || "",
       link2: searchParams.get("link2") || "",
       number: Number(searchParams.get("jerseyNumber") || 0),
-      image: "/action.jpg",
-      portraitImage: "/portrait.png",
-      actionImage: "/action.jpg",
-      profileImage: "/portrait.png",
+      image: "",
+portraitImage: "",
+actionImage: "",
+profileImage: "",
     }),
     [id, searchParams]
   );

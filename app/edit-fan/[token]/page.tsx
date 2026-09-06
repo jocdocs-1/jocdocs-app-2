@@ -405,7 +405,7 @@ export default function EditFanPage() {
             <section className="flex justify-center md:justify-end">
               <FanTicket
                 name={name.trim() || "Your Name"}
-                photo={photo}
+                photo={photo || "/fan-form-page-sample.png"}
                 collectedCount={0}
               />
             </section>
