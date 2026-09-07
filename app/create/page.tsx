@@ -720,9 +720,10 @@ return (
           />
 
           <span>
-            I confirm that I have the right to use the images and information
-            submitted to jocdocs. If I am under 18, I confirm that I have
-            permission from a parent or guardian.
+I confirm that I am at least 18 years old, or that I am at least 13 years old
+and have permission from my parent or legal guardian to create and publish this
+content. I also confirm that I have the right to use the images and information
+submitted to jocdocs.
 
             <span className="mt-2 block text-xs text-white/45">
               By publishing, you agree to the{" "}
