@@ -69,6 +69,10 @@ export default function MeetTheFansPage() {
           />
         </div>
 
+<p className="mb-6 mt-[-4px] text-center text-[15px] text-white/60">
+  Tap any fan to open their ticket.
+</p>
+
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {filteredFans.map((fan) => (
             <a

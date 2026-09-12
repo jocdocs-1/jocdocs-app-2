@@ -336,19 +336,21 @@ export default function HomePage() {
       href="/create-fan"
     />
 
-    <HomeCTA
-      eyebrow="EVERYONE"
-      title="EXPLORE ATHLETES"
-      subtitle="Discover athletes from every sport."
-      href="/explore"
-    />
+<HomeCTA
+  eyebrow="DISCOVER"
+  title="EXPLORE ATHLETES"
+  subtitle="Discover athletes from every sport."
+  href="/explore"
+  variant="secondary"
+/>
 
-    <HomeCTA
-      eyebrow="EVERYONE"
-      title="MEET THE FANS"
-      subtitle="Meet the fans behind the athletes."
-      href="/meet-the-fans"
-    />
+<HomeCTA
+  eyebrow="DISCOVER"
+  title="MEET THE FANS"
+  subtitle="Meet the fans behind the athletes."
+  href="/meet-the-fans"
+  variant="secondary"
+/>
   </div>
 </section>
 
@@ -517,16 +519,24 @@ function HomeCTA({
   title,
   subtitle,
   href,
+  variant = "primary",
 }: {
   eyebrow: string;
   title: string;
   subtitle: string;
   href: string;
+  variant?: "primary" | "secondary";
 }) {
+  const isSecondary = variant === "secondary";
+
   return (
     <Link
       href={href}
-      className="group relative mx-auto mt-12 block w-[90%] rounded-[12px] border-[1.5px] border-white bg-[#C5A96A] px-3 pb-[18px] pt-[31px] text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px]"
+      className={`group relative mx-auto mt-12 block w-[90%] rounded-[12px] border-[1.5px] px-3 pb-[18px] pt-[31px] text-center text-black shadow-[0_5px_12px_rgba(0,0,0,0.32)] transition active:translate-y-[1px] ${
+        isSecondary
+          ? "border-[#C5A96A] bg-white"
+          : "border-white bg-[#C5A96A]"
+      }`}
     >
       {/* CATEGORY PILL */}
       <div className="absolute left-1/2 top-0 flex min-w-[165px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[1.5px] border-white bg-black px-5 py-[1px]">
@@ -550,7 +560,9 @@ function HomeCTA({
       {/* ARROW */}
       <span
         aria-hidden="true"
-        className="absolute bottom-[4px] right-[10px] text-[48px] font-light leading-none text-white transition-transform group-hover:translate-x-[2px]"
+        className={`absolute bottom-[4px] right-[10px] text-[48px] font-light leading-none transition-transform group-hover:translate-x-[2px] ${
+          isSecondary ? "text-[#C5A96A]" : "text-white"
+        }`}
       >
         ›
       </span>

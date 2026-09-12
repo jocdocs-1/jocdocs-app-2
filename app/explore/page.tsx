@@ -150,6 +150,10 @@ const matchesSport =
   ))}
 </div>
 
+<p className="mb-6 mt-[-4px] text-center text-[15px] text-white/60">
+  Tap any athlete to open their card.
+</p>
+
 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
   {filteredCards.map((card) => {
     const themeColor =
