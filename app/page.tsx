@@ -246,43 +246,43 @@ export default function HomePage() {
       WebkitTransformStyle: "preserve-3d",
     }}
   >
-    {/* FRONT */}
-    <div
-      className="absolute inset-0"
-      style={{
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-      }}
-    >
-      <Image
-        src="/hero-cards/jake-anderson-jocdocs-front-2.png"
-        alt="Jake Anderson jocdocs card front"
-        fill
-        priority
-        sizes="(max-width: 430px) calc(100vw - 34px), 378px"
-        className="object-contain"
-      />
-    </div>
+{/* FRONT */}
+<div
+  className="absolute inset-0"
+  style={{
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+  }}
+>
+  <Image
+    src="/hero-cards/michael-marzarella-jocdocs-front.png"
+    alt="Michael Marzarella jocdocs card front"
+    fill
+    priority
+    sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+    className="object-contain"
+  />
+</div>
 
-    {/* BACK */}
-    <div
-      className="absolute inset-0"
-      style={{
-        transform: "rotateY(180deg)",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-      }}
-    >
-      <Image
-        src="/hero-cards/jake-anderson-jocdocs-back-2.png"
-        alt="Jake Anderson jocdocs card back"
-        fill
-        priority
-        sizes="(max-width: 430px) calc(100vw - 34px), 378px"
-        className="object-contain"
-      />
-    </div>
-  </div>
+{/* BACK */}
+<div
+  className="absolute inset-0"
+  style={{
+    transform: "rotateY(180deg)",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+  }}
+>
+  <Image
+    src="/hero-cards/michael-marzarella-jocdocs-back.png"
+    alt="Michael Marzarella jocdocs card back"
+    fill
+    priority
+    sizes="(max-width: 430px) calc(100vw - 34px), 378px"
+    className="object-contain"
+  />
+</div>
+</div>
 
   {/* HERO CARD SHIMMER */}
   <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px]">
