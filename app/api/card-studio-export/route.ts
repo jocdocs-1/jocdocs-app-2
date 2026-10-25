@@ -1,4 +1,5 @@
-import { chromium } from "playwright";
+import { chromium as playwrightChromium } from "playwright-core";
+import chromium from "@sparticuz/chromium";
 
 export const runtime = "nodejs";
 
@@ -12,9 +13,11 @@ export async function GET(request: Request) {
     return new Response("Missing card ID.", { status: 400 });
   }
 
-  const browser = await chromium.launch({
-    headless: true,
-  });
+  const browser = await playwrightChromium.launch({
+  executablePath: await chromium.executablePath(),
+  args: chromium.args,
+  headless: true,
+});
 
   try {
     const page = await browser.newPage({
