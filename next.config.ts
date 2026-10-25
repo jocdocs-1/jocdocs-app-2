@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
 
   serverExternalPackages: ["@sparticuz/chromium"],
 
+  outputFileTracingIncludes: {
+    "/api/card-studio-export": [
+      "./node_modules/@sparticuz/chromium/bin/**/*",
+    ],
+  },
+
   turbopack: {
     root: path.resolve(__dirname),
   },
